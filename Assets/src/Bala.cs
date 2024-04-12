@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bala : MonoBehaviour
 {
-    public float velocidad = 5f;
+    public float velocidad = 1f;
     private Transform objetivo;
 
     // Start is called before the first frame update
@@ -27,10 +27,9 @@ public class Bala : MonoBehaviour
             return;
         }
 
-        Vector3 direccion = (objetivo.position - transform.position).normalized;
-        transform.Translate(direccion * velocidad * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, objetivo.position, velocidad*Time.deltaTime);
 
-        if (Vector3.Distance(transform.position, objetivo.position) < 0.1f)
+        if (Vector3.Distance(transform.position, objetivo.position) < 0.8f)
         {
             Destroy(gameObject);
         }

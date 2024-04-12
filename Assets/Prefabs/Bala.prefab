@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3524165308428092831}
   - component: {fileID: 7233049044341478901}
+  - component: {fileID: 5940327514965230714}
   m_Layer: 0
   m_Name: Bala
   m_TagString: Untagged
@@ -84,3 +85,16 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &5940327514965230714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3565143859448950638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c12db857027a9ec49b0ef1979d569eac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  velocidad: 1
