@@ -16,7 +16,7 @@ public class SalidaEnemigo : MonoBehaviour
         {
             int indiceTiempo = Random.Range(0, 3);
             tiempo = tiempos[indiceTiempo];
-            Debug.Log("indice: " + indiceTiempo + ", timepo: " + tiempo);  
+            //Debug.Log("indice: " + indiceTiempo + ", timepo: " + tiempo);  
         } 
         else
         {

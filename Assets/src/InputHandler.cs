@@ -7,6 +7,7 @@ public class InputHandler : MonoBehaviour
 {
     private Camera mainCamera;
     [SerializeField] private GameObject prefabButton;
+    [SerializeField] private GameObject prefabTorrePrueba;
     private int lim = 0;
     private GameObject btn1;
     private GameObject btn2;
@@ -50,7 +51,11 @@ public class InputHandler : MonoBehaviour
             {
                 if(rayHit.collider.gameObject == btn1)
                 {
-                    Torre.GetComponent<SpriteRenderer>().color = Color.blue;
+                    Destroy(btn1); Destroy(btn2); Destroy(btn3); Destroy(btn4);
+                    Instantiate(prefabTorrePrueba, Torre.transform.position, Quaternion.identity);
+                    Destroy(Torre);
+                    Torre = null;
+
                 }
                 if (rayHit.collider.gameObject == btn2)
                 {
