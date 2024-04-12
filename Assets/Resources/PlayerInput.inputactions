@@ -1,0 +1,34 @@
+{
+    "name": "PlayerImput",
+    "maps": [
+        {
+            "name": "Gameplay",
+            "id": "1af8f508-8681-4681-9b23-ec5e0bd4e9e6",
+            "actions": [
+                {
+                    "name": "Click",
+                    "type": "Button",
+                    "id": "a1f8b56a-2ffb-4abe-b0fb-1d6afa8b4f19",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "e968f3cb-8906-4574-9d78-93b5f93e5773",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

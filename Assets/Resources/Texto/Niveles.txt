@@ -1,0 +1,93 @@
+Level1
+Wave 1
+2,Lobo
+1,LoboCamuflado
+1,Lobo
+/
+0,
+0,
+1.5,
+Wave 2
+3,Lobo
+2,LoboCamuflado
+2,Lobo
+/
+0,
+0,
+1.5,
+Wave 3
+5,Lobo
+3,LoboCamuflado
+3,Lobo
+/
+0,
+0,
+1.5,
+Level2
+Wave 1
+4,Lobo
+3,LoboCamuflado
+2,Lobo
+/
+0,
+5,
+5,
+Wave 2
+7,Lobo
+5,LoboCamuflado
+4,Lobo
+/
+0,
+5,
+7,
+Wave 3
+10,Lobo
+10,Lobo
+12,LoboCamuflado
+/
+0,
+7,
+10,
+Level3
+Wave 1
+15,LoboCamuflado
+20,Lobo
+7,LoboCamuflado
+10,Lobo
+/
+0,
+3,
+2,
+2,
+Wave 2
+20,LoboCamuflado
+1,Duque
+10,LoboCamuflado
+12,Lobo
+/
+0,
+4,
+4,
+3,
+Wave 3
+25,LoboCamuflado
+1,Duque
+7,LoboCamuflado
+1,Duque
+10,LoboCamuflado
+1,Duque
+10,LoboCamuflado
+30,Lobo
+3,Duque
+/
+0,
+4,
+3,
+5,
+3,
+3,
+2,
+8,
+2,
+Level4
+Wave 1
