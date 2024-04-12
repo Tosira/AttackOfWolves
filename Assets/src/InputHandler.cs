@@ -12,12 +12,7 @@ public class InputHandler : MonoBehaviour
     private GameObject btn2;
     private GameObject btn3;
     private GameObject btn4;
-    private GameObject Torre;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private GameObject Torre;    
 
     private void Awake()
     {
@@ -77,11 +72,5 @@ public class InputHandler : MonoBehaviour
                 Destroy(btn1); Destroy(btn2); Destroy(btn3); Destroy(btn4);
             }
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
