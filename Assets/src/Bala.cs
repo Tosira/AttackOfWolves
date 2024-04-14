@@ -4,14 +4,9 @@ using UnityEngine;
 
 public class Bala : MonoBehaviour
 {
-    public float velocidad = 1f;
-    private Transform objetivo;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    int damage = 1; 
+    public float velocidad;
+    private Transform objetivo;    
 
     public void SetObjetivo(Transform _obejtivo)
     {
@@ -21,17 +16,19 @@ public class Bala : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //  Previene referencia a enemigo destruido
         if (objetivo == null)
         {
             Destroy(gameObject);
             return;
         }
-
+        
         transform.position = Vector2.MoveTowards(transform.position, objetivo.position, velocidad*Time.deltaTime);
 
         if (Vector3.Distance(transform.position, objetivo.position) < 0.8f)
         {
             Destroy(gameObject);
-        }
+            objetivo.gameObject.GetComponent<Enemigo>().RecibirAtaque(damage); 
+        }        
     }
 }
