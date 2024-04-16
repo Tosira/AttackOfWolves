@@ -2251,6 +2251,7 @@ MonoBehaviour:
   prefabButton: {fileID: 7499465226173598056, guid: 99c15ddbfa7cf96419ae6b051e037867, type: 3}
   prefabTorrePiedra: {fileID: 7736345230201969372, guid: cbf7cf9b614d5814e8fb789faf016da4, type: 3}
   prefabTorreBarro: {fileID: 1897153753072636241, guid: bb00dbf66084bb44f966a8dd3e4af78e, type: 3}
+  prefabTorreAgua: {fileID: 1897153753072636241, guid: cb94f6ee159ed1e429b4900dda3d4aa9, type: 3}
 --- !u!114 &2093675445
 MonoBehaviour:
   m_ObjectHideFlags: 0

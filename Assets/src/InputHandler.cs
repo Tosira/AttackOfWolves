@@ -9,6 +9,7 @@ public class InputHandler : MonoBehaviour
     [SerializeField] private GameObject prefabButton;
     [SerializeField] private GameObject prefabTorrePiedra;
     [SerializeField] private GameObject prefabTorreBarro;
+    [SerializeField] private GameObject prefabTorreAgua;
     private bool interfazTorretaActiva = false;
     private GameObject btn1;
     private GameObject btn2;
@@ -52,29 +53,11 @@ public class InputHandler : MonoBehaviour
             if (rayHit.collider.gameObject.CompareTag("Boton"))
             {
                 //  Refactorizar lineas de esta seccion en una funcion
-                if(rayHit.collider.gameObject == btn1)
-                {
-                    destruirBotones(); 
-                    Instantiate(prefabTorrePiedra, Torre.transform.position, Quaternion.identity);
-                    Destroy(Torre);
-                    Torre = null;
-                }
-                if (rayHit.collider.gameObject == btn2)
-                {
-                    destruirBotones();
-                    Instantiate(prefabTorreBarro, Torre.transform.position, Quaternion.identity);
-                    Destroy(Torre);
-                    Torre = null; 
-                    //Torre.GetComponent<SpriteRenderer>().color = Color.red;
-                }
-                if (rayHit.collider.gameObject == btn3)
-                {
-                    Torre.GetComponent<SpriteRenderer>().color = Color.magenta;
-                }
-                if (rayHit.collider.gameObject == btn4)
-                {
-                    Torre.GetComponent<SpriteRenderer>().color = Color.black;
-                }
+                generarTorreta(rayHit.collider.gameObject, btn1, prefabTorrePiedra);
+                generarTorreta(rayHit.collider.gameObject, btn2, prefabTorreBarro);
+                //  Cambiar en un futuro
+                generarTorreta(rayHit.collider.gameObject, btn3, prefabTorreAgua);
+                generarTorreta(rayHit.collider.gameObject, btn4, prefabTorreBarro);
 
             }
             else
@@ -82,6 +65,17 @@ public class InputHandler : MonoBehaviour
                 destruirBotones(); 
                 interfazTorretaActiva = false;
             }
+        }
+    }
+
+    private void generarTorreta(GameObject rayHit, GameObject boton, GameObject prefabTorre)
+    {
+        if(rayHit == boton)
+        {
+            destruirBotones();
+            Instantiate(prefabTorre, Torre.transform.position, Quaternion.identity);
+            Destroy(Torre);
+            Torre = null;
         }
     }
 
