@@ -11,8 +11,8 @@ public class Enemigo : MonoBehaviour
     // duda con el agente que esta en privado y aun asi los enemigos se mueven. 
     // implementar vida de los enemigos
 
-    public int vidaActual; 
-    public int vidaMaxima; 
+    public float vidaActual; 
+    public float vidaMaxima; 
     public Vector3 velocidad;
 
     public BarraDeVida barraV;
@@ -21,7 +21,7 @@ public class Enemigo : MonoBehaviour
 
     public void Start()
     {
-        animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();    
     }
     public void SetAgent()
     {
@@ -38,7 +38,7 @@ public class Enemigo : MonoBehaviour
 
     public virtual void Atacar() { }
 
-    public void RecibirAtaque(int damage)
+    public void RecibirAtaque(float damage)
     {
         if ((vidaActual -= damage) <= 0)
         {
