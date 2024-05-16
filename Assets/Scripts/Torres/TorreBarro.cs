@@ -10,17 +10,17 @@ namespace Assets.src.Torres
         // Use this for initialization
         void Start()
         {
-            frecuencia = 0.2f;
-            velocidadBala = 10f;
-            radio = 3f; 
-
-            definirVariables(transform, _prefabBala, frecuencia, velocidadBala, radio); 
+            frequency = 1f;
+            bulletSpeed = 1.5f;
+            radio = 5f;
+            damage = 1f;
+            SetTower(transform, _prefabBala, frequency, bulletSpeed, radio, damage);
         }
 
         // Update is called once per frame
         void Update()
         {
-            ejecutar();
+            Defender();
         }
     }
 }

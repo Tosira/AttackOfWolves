@@ -5,16 +5,9 @@ namespace Assets.src.Enemigos
 {
     public class Lobo : Enemigo
     {
-        // Use this for initialization
-        void Start()
+        public override void SetEnemy()
         {
-            SetAgent(); 
-            vidaActual = vidaMaxima = 3;            
-        }
-
-        private void Update()
-        {
-            moverAgenteNavMesh(); 
+            vidaActual = vidaMaxima = 5;
         }
 
         public override void Atacar()

@@ -9,17 +9,17 @@ namespace Assets.src.Torres
         [SerializeField] private GameObject _prefabBala;
         void Start()
         {
-            frecuencia = 5f;
-            velocidadBala = 20f;
+            frequency = 1f;
+            bulletSpeed = 1f;
             radio = 50f;
-
-            definirVariables(transform, _prefabBala, frecuencia, velocidadBala, radio);
+            damage = 0.5f;
+            SetTower(transform, _prefabBala, frequency, bulletSpeed, radio, damage);
         }
 
         // Update is called once per frame
         void Update()
         {
-            ejecutar();
+            Defender();
         }
     }
 }

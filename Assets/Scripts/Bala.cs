@@ -4,31 +4,51 @@ using UnityEngine;
 
 public class Bala : MonoBehaviour
 {
-    int damage = 1; 
+    public float damage = 1;
+    private float alturaArco = 10f;
     public float velocidad;
-    private Transform objetivo;    
+    private Transform target;
 
-    public void SetObjetivo(Transform _obejtivo)
+    private Vector3 startPos;
+    private float startTime;
+
+    public void SetTarget(Transform target)
     {
-        objetivo = _obejtivo;
+        this.target = target;
+        startPos = transform.position;
+        startTime = Time.time;
     }
 
     // Update is called once per frame
     void Update()
     {
         //  Previene referencia a enemigo destruido
-        if (objetivo == null)
+        if (target == null)
         {
             Destroy(gameObject);
             return;
         }
-        
-        transform.position = Vector2.MoveTowards(transform.position, objetivo.position, velocidad*Time.deltaTime);
 
-        if (Vector3.Distance(transform.position, objetivo.position) < 1.1f)
+        float t = (Time.time - startTime) * velocidad;
+
+        //Calcula la posición en función del tiempo y la altura del arco
+        float x = Mathf.Lerp(startPos.x, target.position.x, t);
+
+        // Por favor, explique que es lo que sucede aqui. 
+        float y = startPos.y + (target.position.y - startPos.y) * t - (t * (t - 1)) * alturaArco;
+        
+        //Crea el vector de posición
+        Vector3 newPos = new Vector3(x, y, 0);
+
+        //Mueve la bala hacia la nueva posición
+        transform.position = newPos;
+
+        //transform.position = Vector2.MoveTowards(transform.position, objetivo.position, velocidad*Time.deltaTime);
+
+        if (Vector3.Distance(transform.position, target.position) < 1.1f)
         {
             
-            objetivo.gameObject.GetComponent<Enemigo>().RecibirAtaque(damage);
+            target.gameObject.GetComponent<Enemigo>().GetAttack(damage);
             Destroy(gameObject);
         }        
     }
