@@ -12,7 +12,8 @@ public class Torreta : MonoBehaviour
     public float frecuencia;
     public float frecuenciaOriginal;
     public float velocidadBala;
-    public float radio; 
+    public float radio;
+    public float damage;
 
     private float disMin = 10000000f;
 
@@ -73,7 +74,8 @@ public class Torreta : MonoBehaviour
             if (balaComponente != null)
             {
                 balaComponente.SetObjetivo(objetivo);
-                balaComponente.velocidad = velocidadBala;     // Posible extensibilidad de codigo
+                balaComponente.velocidad = velocidadBala;
+                balaComponente.damage = damage;// Posible extensibilidad de codigo
             }
             frecuencia = frecuenciaOriginal;
         }
@@ -90,7 +92,8 @@ public class Torreta : MonoBehaviour
                                 GameObject prefabBala, 
                                 float tipoDisparo, 
                                 float velocidadBala,
-                                float radio)
+                                float radio,
+                                float damage)
     {
 
         this.origenDisparo = origenDisparo; 
@@ -98,7 +101,8 @@ public class Torreta : MonoBehaviour
         this.frecuencia = tipoDisparo;
         this.frecuenciaOriginal = tipoDisparo;
         this.velocidadBala = velocidadBala;
-        this.radio = radio; 
+        this.radio = radio;
+        this.damage = damage;
     }
 
     //  Cambiar nombre funcion

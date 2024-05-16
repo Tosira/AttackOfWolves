@@ -9,7 +9,7 @@ namespace Assets.src.Enemigos
         void Start()
         {
             SetAgent(); 
-            vidaActual = vidaMaxima = 3;            
+            vidaActual = vidaMaxima = 5;            
         }
 
         private void Update()

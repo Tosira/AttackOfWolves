@@ -10,10 +10,10 @@ namespace Assets.src.Torres
         private void Start()
         {
             frecuencia = 1f;
-            velocidadBala = 5f;
-            radio = 5f; 
-
-            definirVariables(transform, _prefabBala, frecuencia, velocidadBala, radio);        
+            velocidadBala = 1f;
+            radio = 8f;
+            damage = 1f;
+            definirVariables(transform, _prefabBala, frecuencia, velocidadBala, radio, damage);
         }
 
         private void Update()
