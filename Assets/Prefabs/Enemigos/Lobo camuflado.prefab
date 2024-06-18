@@ -398,6 +398,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ce0729d8e6f13d4c9cae28dcb87032f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vidaActual: 0
+  vidaMaxima: 0
+  velocidad: {x: 0, y: 0, z: 0}
+  esVisible: 0
+  barraV: {fileID: 5058856842900766601}
+  transparencia: 0.5
 --- !u!1 &8764325618177205853
 GameObject:
   m_ObjectHideFlags: 0
