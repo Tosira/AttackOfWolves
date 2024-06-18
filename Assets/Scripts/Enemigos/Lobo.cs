@@ -8,6 +8,7 @@ namespace Assets.src.Enemigos
         public override void SetEnemy()
         {
             vidaActual = vidaMaxima = 5;
+            esVisible = true;
         }
 
         public override void Atacar()

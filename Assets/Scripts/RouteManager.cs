@@ -11,6 +11,7 @@ public class RouteManager : MonoBehaviour
     [SerializeField] private List<GameObject> route4;    
 
     [SerializeField] private GameObject prefabEnemigo;
+    [SerializeField] private GameObject prefabEnemigoCamuflado;
     [SerializeField] private Transform target;     
     private float[] tiempos = new float[] { 2, 4, 5 };
     private float tiempo = -1;    
@@ -50,11 +51,11 @@ public class RouteManager : MonoBehaviour
             return;
         }
 
-        GameObject gameObjectEnemigo = GameObject.Instantiate(prefabEnemigo);
+        GameObject gameObjectEnemigo = GameObject.Instantiate(prefabEnemigoCamuflado);
         gameObjectEnemigo.transform.position = this.transform.position;
 
         // Enemigo especifico: Lobo normal
-        Enemigo enemy = gameObjectEnemigo.GetComponent<Lobo>();
+        Enemigo enemy = gameObjectEnemigo.GetComponent<LoboCamuflado>();
 
         if (enemy == null)
         {

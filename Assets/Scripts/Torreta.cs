@@ -1,3 +1,4 @@
+using Assets.src.Enemigos;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -36,15 +37,21 @@ public class Torreta : MonoBehaviour
             //  Codigo extendible para dar prioridad a enemigos. 
             if (e.CompareTag("Enemigo"))
             {
-                float distancia = Vector3.Distance(e.gameObject.transform.position, Meta.insMeta.transform.position);   // ?? 
-                if (distancia < disMin)
-                {
-                    //disMin = Vector3.Distance(e.gameObject.transform.position, Meta.insMeta.transform.position);
-                    disMin = distancia; 
+                Enemigo enemigo = e.GetComponent<Enemigo>();
+                if (enemigo.esVisible) {
 
-                    //  Se define el objetivo
-                    target = e.transform;
-                }                
+                    float distancia = Vector3.Distance(e.gameObject.transform.position, Meta.insMeta.transform.position);   // ?? 
+                    if (distancia < disMin)
+                    {
+                        //disMin = Vector3.Distance(e.gameObject.transform.position, Meta.insMeta.transform.position);
+                        disMin = distancia;
+
+                        //  Se define el objetivo
+                        target = e.transform;
+                    }
+
+                }
+                            
             }
         }
     }
