@@ -340,8 +340,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1719069555}
-        m_TargetAssemblyTypeName: Botones, Assembly-CSharp
+      - m_Target: {fileID: 1719069557}
+        m_TargetAssemblyTypeName: GameState, Assembly-CSharp
         m_MethodName: Menu
         m_Mode: 1
         m_Arguments:
@@ -797,26 +797,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1719069556}
-  - component: {fileID: 1719069555}
+  - component: {fileID: 1719069557}
   m_Layer: 0
-  m_Name: Botones
+  m_Name: GameState
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1719069555
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1719069554}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e340d9ddbf5c7bb4081564705feb7399, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1719069556
 Transform:
   m_ObjectHideFlags: 0
@@ -832,6 +820,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1719069557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1719069554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47ac8aa933e7ae046853cc24889b7d12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1760315543
 GameObject:
   m_ObjectHideFlags: 0
@@ -915,8 +915,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1719069555}
-        m_TargetAssemblyTypeName: Botones, Assembly-CSharp
+      - m_Target: {fileID: 1719069557}
+        m_TargetAssemblyTypeName: GameState, Assembly-CSharp
         m_MethodName: Game
         m_Mode: 1
         m_Arguments:

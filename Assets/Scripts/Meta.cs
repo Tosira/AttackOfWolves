@@ -7,10 +7,9 @@ using TMPro;
 public class Meta : MonoBehaviour
 {    
     static public Meta insMeta;
-    [SerializeField] private TextMeshProUGUI txtMesh;
-    string resTxt = "Vida Meta: "; 
-    
-    int vida = 3; 
+    [SerializeField] private TextMeshProUGUI txtMesh;     
+    string resTxt = "Vida Meta: ";     
+    int vida = 100; 
 
     // Start is called before the first frame update
     void Start()
@@ -37,7 +36,7 @@ public class Meta : MonoBehaviour
         txtMesh.text = resTxt + vida.ToString();
         if (vida <= 0)
         {
-            SceneManager.LoadScene("GameOver"); 
-        }
-    }
+            SceneManager.LoadScene("GameOver");
+        }        
+    }    
 }
