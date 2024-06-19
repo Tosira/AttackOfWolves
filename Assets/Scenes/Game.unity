@@ -1017,6 +1017,7 @@ GameObject:
   - component: {fileID: 279150840}
   - component: {fileID: 279150839}
   - component: {fileID: 279150841}
+  - component: {fileID: 279150842}
   m_Layer: 0
   m_Name: Base
   m_TagString: Bases
@@ -1136,6 +1137,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &279150842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 279150838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30dcd02b58cdd6c4e83cf39464ed1f10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enlargedScale: {x: 1.2, y: 1.2, z: 1.2}
 --- !u!1 &302069789
 GameObject:
   m_ObjectHideFlags: 0
@@ -4080,6 +4094,7 @@ MonoBehaviour:
   route3: []
   route4: []
   prefabEnemigo: {fileID: 8717751999533671802, guid: 5a2f42cfb3a95634fbfc269a1d879f2c, type: 3}
+  prefabEnemigoCamuflado: {fileID: 8717751999533671802, guid: 71db8b5e7c93da94bbcf61683046591b, type: 3}
   target: {fileID: 719206346}
 --- !u!1 &817996711
 GameObject:
@@ -4974,6 +4989,7 @@ MonoBehaviour:
   route3: []
   route4: []
   prefabEnemigo: {fileID: 8717751999533671802, guid: 5a2f42cfb3a95634fbfc269a1d879f2c, type: 3}
+  prefabEnemigoCamuflado: {fileID: 8717751999533671802, guid: 71db8b5e7c93da94bbcf61683046591b, type: 3}
   target: {fileID: 719206346}
 --- !u!1 &1027243028
 GameObject:
@@ -6389,6 +6405,7 @@ GameObject:
   - component: {fileID: 1371242688}
   - component: {fileID: 1371242687}
   - component: {fileID: 1371242686}
+  - component: {fileID: 1371242689}
   m_Layer: 0
   m_Name: Base (3)
   m_TagString: Bases
@@ -6508,6 +6525,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1371242689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371242685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30dcd02b58cdd6c4e83cf39464ed1f10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enlargedScale: {x: 1.2, y: 1.2, z: 1.2}
 --- !u!1 &1379655862
 GameObject:
   m_ObjectHideFlags: 0
@@ -16946,6 +16976,7 @@ GameObject:
   - component: {fileID: 1895515911}
   - component: {fileID: 1895515910}
   - component: {fileID: 1895515909}
+  - component: {fileID: 1895515912}
   m_Layer: 0
   m_Name: Base (2)
   m_TagString: Bases
@@ -17065,6 +17096,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1895515912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1895515908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30dcd02b58cdd6c4e83cf39464ed1f10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enlargedScale: {x: 1.2, y: 1.2, z: 1.2}
 --- !u!1 &1901021437
 GameObject:
   m_ObjectHideFlags: 0
@@ -17244,6 +17288,7 @@ GameObject:
   - component: {fileID: 1941915880}
   - component: {fileID: 1941915879}
   - component: {fileID: 1941915878}
+  - component: {fileID: 1941915881}
   m_Layer: 0
   m_Name: Base (1)
   m_TagString: Bases
@@ -17363,6 +17408,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1941915881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941915877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30dcd02b58cdd6c4e83cf39464ed1f10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enlargedScale: {x: 1.2, y: 1.2, z: 1.2}
 --- !u!1 &1948639750
 GameObject:
   m_ObjectHideFlags: 0
@@ -18076,6 +18134,9 @@ MonoBehaviour:
   prefabTorrePiedra: {fileID: 7736345230201969372, guid: cbf7cf9b614d5814e8fb789faf016da4, type: 3}
   prefabTorreBarro: {fileID: 1897153753072636241, guid: bb00dbf66084bb44f966a8dd3e4af78e, type: 3}
   prefabTorreAgua: {fileID: 1897153753072636241, guid: cb94f6ee159ed1e429b4900dda3d4aa9, type: 3}
+  spriteAgua: {fileID: 21300000, guid: 83d0f594db341b9439fa7940e9be3504, type: 3}
+  spritePiedra: {fileID: 21300000, guid: 108dbfaf077002045b4423ad578857c0, type: 3}
+  spriteLodo: {fileID: 21300000, guid: 9d19a3105b275c148a7b1b937fd14844, type: 3}
 --- !u!114 &2093675445
 MonoBehaviour:
   m_ObjectHideFlags: 0
