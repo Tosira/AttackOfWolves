@@ -1,3 +1,4 @@
+using Assets.src.Enemigos;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -6,8 +7,8 @@ using UnityEngine;
 public class Torreta : MonoBehaviour
 {
     //  Variables que implican extensibilidad de codigo. Valores distintos dadas las mejoras de torretas. 
-    private Transform target;
-    private Transform originShot;
+    public Transform target;
+    public Transform originShot;
     private GameObject prefabBullet;
     public float frequency;
     public float originalFrequency;
@@ -36,15 +37,21 @@ public class Torreta : MonoBehaviour
             //  Codigo extendible para dar prioridad a enemigos. 
             if (e.CompareTag("Enemigo"))
             {
-                float distancia = Vector3.Distance(e.gameObject.transform.position, Meta.insMeta.transform.position);   // ?? 
-                if (distancia < disMin)
-                {
-                    //disMin = Vector3.Distance(e.gameObject.transform.position, Meta.insMeta.transform.position);
-                    disMin = distancia; 
+                Enemigo enemigo = e.GetComponent<Enemigo>();
+                if (enemigo.esVisible) {
 
-                    //  Se define el objetivo
-                    target = e.transform;
-                }                
+                    float distancia = Vector3.Distance(e.gameObject.transform.position, Meta.insMeta.transform.position);   // ?? 
+                    if (distancia < disMin)
+                    {
+                        //disMin = Vector3.Distance(e.gameObject.transform.position, Meta.insMeta.transform.position);
+                        disMin = distancia;
+
+                        //  Se define el objetivo
+                        target = e.transform;
+                    }
+
+                }
+                            
             }
         }
     }
@@ -63,7 +70,7 @@ public class Torreta : MonoBehaviour
         Shoot();
     }
 
-    void Shoot()
+    public virtual void Shoot()
     {
         //  'origenDisparo' no se setea desde esta clase padre en el metodo Start.
         //  Debug.Log("prefabBala: " + prefabBala + "origenDisparo: " + origenDisparo + "objetivo: " + objetivo + "frecuencia: " + frecuencia); 

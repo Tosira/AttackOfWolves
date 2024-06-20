@@ -15,6 +15,7 @@ public class Enemigo : MonoBehaviour
     public float vidaActual; 
     public float vidaMaxima; 
     public Vector3 velocidad;
+    public bool esVisible;
 
     public BarraDeVida barraV;
 

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8428992660282648516}
   - component: {fileID: 142512224351872194}
   - component: {fileID: 5493990845016923684}
+  - component: {fileID: 2251142788054955916}
   m_Layer: 0
   m_Name: Button
   m_TagString: Boton
@@ -75,7 +76,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 8
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.905076, g: 1, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -120,3 +121,16 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &2251142788054955916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7499465226173598056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30dcd02b58cdd6c4e83cf39464ed1f10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enlargedScale: {x: 1.2, y: 1.2, z: 1.2}
