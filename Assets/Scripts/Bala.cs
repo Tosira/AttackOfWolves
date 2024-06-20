@@ -1,3 +1,4 @@
+using Assets.src.Torres;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,8 @@ public class Bala : MonoBehaviour
 
     private Vector3 startPos;
     private float startTime;
+
+    public GameObject miTorre;
 
     public void SetTarget(Transform target)
     {
@@ -47,7 +50,7 @@ public class Bala : MonoBehaviour
 
         if (Vector3.Distance(transform.position, target.position) < 1.1f)
         {
-            
+            miTorre.GetComponent<Torreta>().ImpactoBala();
             target.gameObject.GetComponent<Enemigo>().GetAttack(damage);
             Destroy(gameObject);
         }        

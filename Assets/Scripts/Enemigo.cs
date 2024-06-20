@@ -7,14 +7,14 @@ public class Enemigo : MonoBehaviour
 {
     private List<GameObject> route = new List<GameObject>();
     private Transform target; 
-    NavMeshAgent agent;    
+    public NavMeshAgent agent;    
 
     // duda con el agente que esta en privado y aun asi los enemigos se mueven. 
     // implementar vida de los enemigos
 
     public float vidaActual; 
     public float vidaMaxima; 
-    public Vector3 velocidad;
+    private float velocidad = 2.0f;
     public bool esVisible;
 
     public BarraDeVida barraV;
@@ -35,6 +35,7 @@ public class Enemigo : MonoBehaviour
 
     private void FixedUpdate()
     {
+        
         UpdateRoute(); 
     }
 
@@ -44,6 +45,8 @@ public class Enemigo : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
+        agent.speed = velocidad;
+
     }
     
     private void SetTarget(Transform target)
@@ -59,7 +62,7 @@ public class Enemigo : MonoBehaviour
             Debug.Log("Ruta vacia");
             return; 
         }
-
+        
         foreach (GameObject nodo in route)
         {
             this.route.Add(nodo); 
@@ -98,6 +101,7 @@ public class Enemigo : MonoBehaviour
         }
         barraV.actualizarBarraVida(vidaMaxima, vidaActual);
     }
-    public virtual void SetEnemy() { }
+    public virtual void SetEnemy() {
+    }
     public virtual void Atacar() { }
 }

@@ -15,9 +15,9 @@ public class Torreta : MonoBehaviour
     public float bulletSpeed;
     public float radio;
     public float damage;
+    public SpriteRenderer spriteRend;
 
     private float disMin = 10000000f;
-
     void FindEnemy()
     {
         Collider2D[] enemigos = Physics2D.OverlapCircleAll(transform.position, radio);
@@ -63,10 +63,6 @@ public class Torreta : MonoBehaviour
             return;
         }
 
-        Vector3 direccion = (target.position - transform.position).normalized;
-        Quaternion rotacionObjetivo = Quaternion.LookRotation(Vector3.forward, direccion);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotacionObjetivo, Time.deltaTime * 3f);
-
         Shoot();
     }
 
@@ -83,6 +79,7 @@ public class Torreta : MonoBehaviour
                 balaComponente.SetTarget(target);
                 balaComponente.velocidad = bulletSpeed;
                 balaComponente.damage = damage;// Posible extensibilidad de codigo
+                balaComponente.miTorre = gameObject;
             }
             frequency = originalFrequency;
         }
@@ -117,4 +114,10 @@ public class Torreta : MonoBehaviour
         Aim();
         frequency -= Time.deltaTime;
     }
+
+    public virtual void ImpactoBala()
+    {
+        return;
+    }
+
 }

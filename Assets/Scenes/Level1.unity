@@ -4110,9 +4110,6 @@ MonoBehaviour:
   route2: []
   route3: []
   route4: []
-  prefabEnemigo: {fileID: 8717751999533671802, guid: 5a2f42cfb3a95634fbfc269a1d879f2c, type: 3}
-  prefabEnemigoCamuflado: {fileID: 8717751999533671802, guid: 71db8b5e7c93da94bbcf61683046591b, type: 3}
-  target: {fileID: 719206346}
   prefabsEnemy:
   - {fileID: 8717751999533671802, guid: 5a2f42cfb3a95634fbfc269a1d879f2c, type: 3}
   spawnPoints:
@@ -5013,9 +5010,10 @@ MonoBehaviour:
   route2: []
   route3: []
   route4: []
-  prefabEnemigo: {fileID: 8717751999533671802, guid: 5a2f42cfb3a95634fbfc269a1d879f2c, type: 3}
-  prefabEnemigoCamuflado: {fileID: 8717751999533671802, guid: 71db8b5e7c93da94bbcf61683046591b, type: 3}
-  target: {fileID: 719206346}
+  prefabsEnemy: []
+  spawnPoints: []
+  enemyQuantity: 
+  enemyInstanceTime: []
 --- !u!1 &1027243028
 GameObject:
   m_ObjectHideFlags: 0
@@ -18703,3 +18701,4 @@ SceneRoots:
   - {fileID: 894190297}
   - {fileID: 1262581940}
   - {fileID: 2112545364}
+  - {fileID: 1009864840}

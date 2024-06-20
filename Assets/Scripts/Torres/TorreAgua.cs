@@ -8,6 +8,8 @@ namespace Assets.src.Torres
     public class TorreAgua : Torreta
     {
         [SerializeField] private GameObject _prefabBala;
+        [SerializeField] private GameObject _prefabArea;
+
         private Transform targetAgua;
         void Start()
         {
@@ -26,7 +28,7 @@ namespace Assets.src.Torres
             {
                 if (targetAgua == target)
                 {
-                    damage = damage * 2;
+                    damage = damage * 1.50f;
                 }
                 else
                 {
@@ -41,6 +43,7 @@ namespace Assets.src.Torres
                     balaComponente.SetTarget(target);
                     balaComponente.velocidad = bulletSpeed;
                     balaComponente.damage = damage;// Posible extensibilidad de codigo
+                    balaComponente.miTorre = gameObject;
                 }
                 frequency = originalFrequency;
                 
@@ -53,6 +56,11 @@ namespace Assets.src.Torres
             
             Defender();
             
+        }
+
+        public override void ImpactoBala()
+        {
+            Instantiate(_prefabArea, target.position, target.rotation);
         }
     }
 }
