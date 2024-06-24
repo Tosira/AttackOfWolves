@@ -207,7 +207,7 @@ GameObject:
   - component: {fileID: 2780797467269144490}
   - component: {fileID: 1232972639250241204}
   m_Layer: 0
-  m_Name: Lobo camuflado
+  m_Name: LoboCamuflado
   m_TagString: Enemigo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

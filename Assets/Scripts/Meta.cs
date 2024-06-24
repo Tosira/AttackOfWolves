@@ -8,7 +8,7 @@ public class Meta : MonoBehaviour
 {    
     static public Meta insMeta;
     [SerializeField] private TextMeshProUGUI txtMesh;     
-    string resTxt = "Vida Meta: ";     
+    string resTxt = "Vidas: ";     
     int vida = 100; 
 
     // Start is called before the first frame update

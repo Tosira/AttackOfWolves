@@ -10,21 +10,28 @@ public class InputHandler : MonoBehaviour
     [SerializeField] private GameObject prefabTorrePiedra;
     [SerializeField] private GameObject prefabTorreBarro;
     [SerializeField] private GameObject prefabTorreAgua;
-    private bool interfazTorretaActiva = false;
+    [SerializeField] private GameObject prefabTorreRepeticionMultiple;
+    private bool activeTowerInterface = false;
     private GameObject btn;
     private GameObject btn1;
     private GameObject btn2;
     private GameObject btn3;
     private GameObject btn4;
-    private GameObject Torre;
+    private GameObject myTower;
     public Sprite spriteAgua;
     public Sprite spritePiedra;
     public Sprite spriteLodo;
     private Vector3 escalaOriginal;
+    //private GameState gs; 
 
     private void Awake()
     {
         mainCamera = Camera.main;
+        //gs = FindObjectOfType<GameState>(); 
+        //if (gs == null)
+        //{
+        //    Debug.Log("InputHandler no ha encontrado el GameState");
+        //}
     }
 
 
@@ -36,12 +43,12 @@ public class InputHandler : MonoBehaviour
         var rayHit = Physics2D.GetRayIntersection(mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue()));
         if (!rayHit)    // Interseccion con objeto collider
         {
-            destruirBotones();
-            interfazTorretaActiva = false; 
+            DestroyButtons();
+            activeTowerInterface = false; 
             return;
         }
 
-        if(rayHit.collider.gameObject.CompareTag("Bases") && !interfazTorretaActiva)
+        if(rayHit.collider.gameObject.CompareTag("Bases") && !activeTowerInterface)
         {
             btn1 = Instantiate(prefabButton, rayHit.collider.gameObject.transform.position + new Vector3(1.4f, 0, 0), Quaternion.identity);
             btn2 = Instantiate(prefabButton, rayHit.collider.gameObject.transform.position + new Vector3(-1.4f, 0, 0), Quaternion.identity);
@@ -64,41 +71,44 @@ public class InputHandler : MonoBehaviour
             AdjustarCollider(btn3);
             AdjustarCollider(btn4);
 
-            interfazTorretaActiva = true;
-            Torre = rayHit.collider.gameObject;
+            activeTowerInterface = true;
+            myTower = rayHit.collider.gameObject;
         }
         else
         {
             if (rayHit.collider.gameObject.CompareTag("Boton"))
             {
-                //  Refactorizar lineas de esta seccion en una funcion
-                generarTorreta(rayHit.collider.gameObject, btn1, prefabTorrePiedra);
-                generarTorreta(rayHit.collider.gameObject, btn2, prefabTorreBarro);
-                //  Cambiar en un futuro
-                generarTorreta(rayHit.collider.gameObject, btn3, prefabTorreAgua);
-                generarTorreta(rayHit.collider.gameObject, btn4, prefabTorreBarro);
+                InstantiateTower(rayHit.collider.gameObject, btn1, prefabTorrePiedra);
+                InstantiateTower(rayHit.collider.gameObject, btn2, prefabTorreBarro);                
+                InstantiateTower(rayHit.collider.gameObject, btn3, prefabTorreAgua);
+                InstantiateTower(rayHit.collider.gameObject, btn4, prefabTorreRepeticionMultiple);
 
             }
             else
             {
-                destruirBotones(); 
-                interfazTorretaActiva = false;
+                DestroyButtons(); 
+                activeTowerInterface = false;
             }
         }
     }
 
-    private void generarTorreta(GameObject rayHit, GameObject boton, GameObject prefabTorre)
+    private void InstantiateTower(GameObject rayHit, GameObject boton, GameObject prefabTower)
     {
-        if(rayHit == boton)
+        if (rayHit != boton) return;
+
+        Torreta tower = prefabTower.GetComponent<Torreta>();
+        bool gs_buy = GameState.gs.Buy(tower.GetPrecio());
+                
+        if (gs_buy)
         {
-            destruirBotones();
-            Instantiate(prefabTorre, Torre.transform.position, Quaternion.identity);
-            Destroy(Torre);
-            Torre = null;
+            DestroyButtons();
+            Instantiate(prefabTower, new Vector3(myTower.transform.position.x, myTower.transform.position.y + 0.7f, myTower.transform.position.z), Quaternion.identity);
+            Destroy(myTower);
+            myTower = null;
         }
     }
 
-    private void destruirBotones()
+    private void DestroyButtons()
     {
         Destroy(btn1); Destroy(btn2); Destroy(btn3); Destroy(btn4);
     }

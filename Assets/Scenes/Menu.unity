@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 384786199}
   - component: {fileID: 384786200}
   m_Layer: 0
-  m_Name: GameState
+  m_Name: Buttons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -164,7 +164,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 384786197}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47ac8aa933e7ae046853cc24889b7d12, type: 3}
+  m_Script: {fileID: 11500000, guid: 5c3447297ab19ca4b967dae6ac73468d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &519420028
@@ -679,7 +679,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 384786200}
-        m_TargetAssemblyTypeName: GameState, Assembly-CSharp
+        m_TargetAssemblyTypeName: Buttons, Assembly-CSharp
         m_MethodName: Game
         m_Mode: 1
         m_Arguments:
@@ -1050,7 +1050,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 384786200}
-        m_TargetAssemblyTypeName: GameState, Assembly-CSharp
+        m_TargetAssemblyTypeName: Buttons, Assembly-CSharp
         m_MethodName: Salir
         m_Mode: 1
         m_Arguments:
@@ -1105,5 +1105,5 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 1586620396}
-  - {fileID: 1219891456}
   - {fileID: 384786199}
+  - {fileID: 1219891456}

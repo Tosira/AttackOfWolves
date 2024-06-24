@@ -7,21 +7,22 @@ namespace Assets.src.Torres
     {
         [SerializeField] private GameObject _prefabBala;
         private Enemigo enemigoActual;
+        private static int precio = 20;
 
         // Use this for initialization
         void Start()
         {
-            frequency = 1f;
+            frequency = 1.5f;
             bulletSpeed = 1.5f;
-            radio = 5f;
-            damage = 1f;
+            radio = 4f;
+            damage = 1.4f;
             SetTower(transform, _prefabBala, frequency, bulletSpeed, radio, damage);
         }
 
         // Update is called once per frame
         void Update()
         {
-            Defender();
+            Defend();
         }
 
         public override void Shoot()
@@ -35,34 +36,24 @@ namespace Assets.src.Torres
             {
                 GameObject bala = Instantiate(_prefabBala, originShot.position, originShot.rotation);
                 Bala balaComponente = bala.GetComponent<Bala>();
-                if (balaComponente != null)
-                {
-                    balaComponente.SetTarget(target);
-                    balaComponente.velocidad = bulletSpeed;
-                    balaComponente.damage = damage;// Posible extensibilidad de codigo
-                    balaComponente.miTorre = gameObject;
-                }
+                if (balaComponente != null) balaComponente.Initialize(target, gameObject, bulletSpeed, damage);                
                 frequency = originalFrequency;
             }
         }
 
         public override void ImpactoBala()
         {
-
-
             Enemigo e = target.GetComponent<Enemigo>();
 
-            if (!(e != null))
-            {
-                return;
-            }
-            if(e == enemigoActual)
-            {
-                return;
-            }
+            if (e == null || e == enemigoActual) return;                         
             e.agent.speed = e.agent.speed * 0.5f;
             e.GetComponent<SpriteRenderer>().color = new Color(0.3f, 0.15f, 0.05f);
             enemigoActual = e;
+        }
+
+        public override int GetPrecio()
+        {
+            return precio; 
         }
 
     }

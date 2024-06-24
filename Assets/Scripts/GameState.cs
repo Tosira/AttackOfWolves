@@ -1,106 +1,186 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using Assets.src; 
+using Assets.src;
+using System.IO;
+using TMPro;
+
 
 public class GameState : MonoBehaviour
-{ 
-    private RouteManager routeManager;
-    private int level = 1;    
-    private int wave = 1;   // actualizacion desde la ola 2 
+{
+    [SerializeField] private List<GameObject> prefabsEnemies;
+    private string path = "Assets/Scripts/Niveles.txt";
+    List<Level> levels = new List<Level>();
+    bool levelsSuccesfullySet = false;
+    Level currentGameLevel;
+    int levelIndex = 0;
+
+    float timeInstance = 0.8f;
+    float copyTimeInstance;
+
+    private int money = 100;
+    public static GameState gs;
+
+    //  Variables temporales hasta que se ajusten interfaces. 
+    private string moneyTxt = "Monedas: "; 
+    [SerializeField] private TextMeshProUGUI txtMesh;
 
     private void Start()
     {
-        routeManager = FindObjectOfType<RouteManager>();
-        if (routeManager == null)
+        // 1. Concerning other
+        gs = this;         
+        txtMesh.text = moneyTxt + money.ToString();
+        
+        // 2. Concerning levels
+        if (prefabsEnemies.Count > 0 && ReadFileLevels())
         {
-            Debug.Log("RouteManager no encontrado");
-        } 
+            if (PrepareLevels()) levelsSuccesfullySet = true;
+        }
+        currentGameLevel = levels[levelIndex];        
+        copyTimeInstance = timeInstance;
+
+        //Debug.Log("Cantidad de niveles " + levels.Count);
+
+        //foreach (var lvl in levels)
+        //{
+        //    foreach (Wave wv in lvl.GetWaves())
+        //    {
+        //        foreach (float time in wv.GetTimeInstance())
+        //        {
+        //            Debug.Log("Time " + time);
+        //        }
+        //        foreach (var pair in wv.GetPairs())
+        //        {
+        //            Debug.Log("Cantidad " + pair.Quantity + " Enemigo " + pair.Enemy);
+        //        }
+        //    }
+        //}
+
+        //Wave wv = levels[0].GetWaves()[1];
+        //foreach(float time in wv.GetTimeInstance())
+        //{
+        //    Debug.Log("Time " + time);
+        //}
     }
 
     private void Update()
     {
-        if (routeManager == null) return;  
-        UpdateWave();
-        UpdateScene(); 
+        if (!levelsSuccesfullySet) return;
+        if (currentGameLevel.WithoutWaves())
+        {
+            if (!UpdateCurrentLevel())
+            {
+                Debug.Log("Niveles Agotados");
+                return;
+            }
+        }
+        if (!currentGameLevel.PrioritizeTimeInstance()) timeInstance -= Time.deltaTime;
+        if ((timeInstance -= Time.deltaTime) <= 0 || currentGameLevel.PrioritizeTimeInstance())
+        {
+            currentGameLevel.UpdateLevel();
+            timeInstance = copyTimeInstance;
+        }
     }
 
-    private void UpdateScene()
+    private bool ReadFileLevels()
     {
-        Enemigo enemy = FindObjectOfType<Enemigo>();       
-        if (!(routeManager.WithoutEnemies() && enemy == null && wave == 3)) return;
+        Level currentLevel = new Level();
+        Wave currentWave = new Wave();
+
+        using (StreamReader sr = new StreamReader(path))
+        {            
+            bool initializeTimes = false;   // Inidica que lineas del archivo corresponden a los datos para inicializar los tiempos. 
+            string line; 
+            while((line = sr.ReadLine()) != null)
+            {
+                if (line.StartsWith("Nivel 1") || line.StartsWith("Ola 1"))
+                {
+                    //Debug.Log("Salto"); 
+                    continue;
+                } 
+                if (line.StartsWith("Ola"))
+                {
+                    currentLevel.AddWave(currentWave); 
+                    currentWave = new Wave();
+                    initializeTimes = false;
+                    continue; 
+                }
+                if (line.StartsWith("Nivel"))
+                {
+                    if (currentLevel == null || currentWave == null)
+                    {
+                        Debug.LogError("ERROR");
+                        return false;
+                    }
+                    //  Cuando se llega al siguiente nivel, se guarda la ultima ola del nivel anterior. No hay error en que la primera ola del nuevo nivel 
+                    //  guarde una ola vacia ya que la condicion "Ola 1" salta las primeras olas de cada nivel.
+                    currentLevel.AddWave(currentWave);
+                    currentWave = new Wave();
+
+                    levels.Add(currentLevel);
+                    currentLevel = new Level();
+                    initializeTimes = false; 
+                    continue; 
+                }   
+                if (line.StartsWith("/"))   //  Despues de este caracter se encuentran los tiempos de instanciamiento.
+                {                    
+                    initializeTimes = true; 
+                    continue;
+                }                
+                if (initializeTimes)
+                {
+                    //Debug.Log("Times");
+                    var data = line.Split(',');
+                    float time = float.Parse(data[0]);
+                    currentWave.AddTimeInstance(time); 
+                }
+                else
+                {
+                    var data = line.Split(',');
+                    int quantity = int.Parse(data[0]);
+                    string enemy = data[1];
+                    //Debug.Log(quantity+" "+enemy+" "+currentWave.GetPairs().Count);
+                    currentWave.AddPair(quantity, enemy); 
+                }
+            }//while            
+        }//using
         
-        if (level == 1)
+        Debug.Log("Lectura Realizada");
+        return true;
+    }    
+
+    private bool PrepareLevels()
+    {
+        foreach (Level lvl in levels)
         {
-            SceneManager.LoadScene("Level2");
-            return;
+            if (!lvl.PrepareLevel(prefabsEnemies))
+            {
+                Debug.LogError("Error de Lectura");
+                return false;
+            }
         }
-        if (level == 2)
-        {
-            SceneManager.LoadScene("Level3");
-            return;
-        }
-        level += 1; 
-        wave = 1; 
+        return true;
     }
 
-    private void UpdateWave()
+    private bool UpdateCurrentLevel()
     {
-        if (!routeManager.WithoutEnemies() || wave >= 3) return;        
-
-        wave += 1;
-        //Debug.Log("SUMA. Wave " + wave); 
-        //  ESTO ESTA HORRIBLE!!
-        ////////////////////////////////Nivel1/////////////////////////////
-        if (level == 1 && wave == 2)
-        {
-            Nivel1 nivel1 = new Nivel1();
-            routeManager.SetInstanceVariables(nivel1.ola2_enemyInstanceTime, nivel1.ola2_enemyQuantity);
-        }
-        else if (level == 1 && wave == 3)
-        {
-            Nivel1 nivel1 = new Nivel1();
-            routeManager.SetInstanceVariables(nivel1.ola3_enemyInstanceTime, nivel1.ola3_enemyQuantity);
-        }////////////////////////////////Nivel2/////////////////////////////
-        else if (level == 2 && wave == 2)
-        {
-            Nivel2 nivel2 = new Nivel2();
-            routeManager.SetInstanceVariables(nivel2.ola2_enemyInstanceTime, nivel2.ola2_enemyQuantity);
-        }
-        else if (level == 2 && wave == 3)
-        {
-            Nivel2 nivel2 = new Nivel2();
-            routeManager.SetInstanceVariables(nivel2.ola2_enemyInstanceTime, nivel2.ola2_enemyQuantity);
-        }////////////////////////////////Nivel3/////////////////////////////
-        else if (level == 3 && wave == 2)
-        {
-            Nivel3 nivel3 = new Nivel3();
-            routeManager.SetInstanceVariables(nivel3.ola2_enemyInstanceTime, nivel3.ola2_enemyQuantity);
-        }
-        else if (level == 3 && wave == 3)
-        {
-            Nivel3 nivel3 = new Nivel3();
-            routeManager.SetInstanceVariables(nivel3.ola2_enemyInstanceTime, nivel3.ola2_enemyQuantity);
-        }
+        if (levelIndex >= levels.Count - 1) return false;
+        levelIndex++;
+        currentGameLevel = levels[levelIndex];        
+        return true;
     }
 
-    public void Menu()
+    //
+    public void AddMoney(int _money)
     {
-        SceneManager.LoadScene("Menu");
+        money += _money; 
     }
 
-    public void Game()
+    public bool Buy(int cost)
     {
-        SceneManager.LoadScene("Level1");
-    }
-    
-    public void Salir()
-    {
-        #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-        #else
-            Application.Quit(); 
-        #endif
-    }
+        if (money < cost) return false; 
+
+        money -= cost;
+        return true; 
+    }    
 }

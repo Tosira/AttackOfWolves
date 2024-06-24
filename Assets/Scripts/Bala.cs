@@ -7,20 +7,24 @@ public class Bala : MonoBehaviour
 {
     public float damage = 1;
     private float alturaArco = 10f;
-    public float velocidad;
+    public float speed;
     private Transform target;
 
     private Vector3 startPos;
     private float startTime;
 
-    public GameObject miTorre;
+    public GameObject myTower;  
 
-    public void SetTarget(Transform target)
-    {
+    public void Initialize(Transform target, GameObject tower, float speed, float damage)
+    {        
         this.target = target;
         startPos = transform.position;
         startTime = Time.time;
-    }
+
+        myTower = tower;
+        this.speed = speed;
+        this.damage = damage;
+    }    
 
     // Update is called once per frame
     void Update()
@@ -32,7 +36,7 @@ public class Bala : MonoBehaviour
             return;
         }
 
-        float t = (Time.time - startTime) * velocidad;
+        float t = (Time.time - startTime) * speed;
 
         //Calcula la posición en función del tiempo y la altura del arco
         float x = Mathf.Lerp(startPos.x, target.position.x, t);
@@ -50,7 +54,7 @@ public class Bala : MonoBehaviour
 
         if (Vector3.Distance(transform.position, target.position) < 1.1f)
         {
-            miTorre.GetComponent<Torreta>().ImpactoBala();
+            myTower.GetComponent<Torreta>().ImpactoBala();
             target.gameObject.GetComponent<Enemigo>().GetAttack(damage);
             Destroy(gameObject);
         }        

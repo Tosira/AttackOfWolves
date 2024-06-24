@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.3674237, y: 0.17672487, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 1}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 4
+  m_SortingOrder: 6
   m_Sprite: {fileID: 21300000, guid: 964dd279e78d07d48b2a797dc05ee03f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -150,5 +150,6 @@ MonoBehaviour:
   bulletSpeed: 0
   radio: 0
   damage: 0
+  spriteRend: {fileID: 0}
   _prefabBala: {fileID: 3565143859448950638, guid: 0b1f23e0735cc4d4781dfaa55a6548e4, type: 3}
   _prefabArea: {fileID: 5726553132972072990, guid: cad684514c4add34287b766c6c236431, type: 3}

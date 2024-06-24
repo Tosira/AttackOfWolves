@@ -7,7 +7,7 @@ public class AreaAgua : MonoBehaviour
     // Start is called before the first frame update
     private float radio;
     private float tick = 0.0f;
-    private float tick2 = 5.0f;
+    private float tick2 = 2.0f;
     void Start()
     {
         radio = transform.localScale.x/2;

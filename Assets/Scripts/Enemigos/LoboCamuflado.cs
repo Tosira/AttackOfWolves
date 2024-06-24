@@ -14,6 +14,7 @@ namespace Assets.src.Enemigos
         {
             vidaActual = vidaMaxima = 3;
             esVisible = false;
+            reward = 10; 
         }
 
         private void Update()

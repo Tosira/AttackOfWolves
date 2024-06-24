@@ -1,19 +1,19 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 
 namespace Assets.src.Torres
 {
-    public class TorrePiedra : Torreta
+    public class TorreRepeticionMultiple : Torreta
     {
         [SerializeField] private GameObject _prefabBala;
-        private static int precio = 15;
+        private static int precio = 25;
 
         private void Start()
         {
-            frequency = 1f;
+            frequency = 0.3f;
             bulletSpeed = 1f;
-            radio = 6f;
-            damage = 1f;
+            radio = 5f;
+            damage = 0.3f;
             SetTower(transform, _prefabBala, frequency, bulletSpeed, radio, damage);
         }
 
@@ -24,7 +24,7 @@ namespace Assets.src.Torres
 
         public override int GetPrecio()
         {
-            return precio;
+            return precio; 
         }
     }
 }

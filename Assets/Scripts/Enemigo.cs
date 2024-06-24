@@ -7,7 +7,8 @@ public class Enemigo : MonoBehaviour
 {
     private List<GameObject> route = new List<GameObject>();
     private Transform target; 
-    public NavMeshAgent agent;    
+    public NavMeshAgent agent;
+    public int reward; 
 
     // duda con el agente que esta en privado y aun asi los enemigos se mueven. 
     // implementar vida de los enemigos
@@ -34,8 +35,7 @@ public class Enemigo : MonoBehaviour
     }
 
     private void FixedUpdate()
-    {
-        
+    {        
         UpdateRoute(); 
     }
 
@@ -97,6 +97,7 @@ public class Enemigo : MonoBehaviour
     {
         if ((vidaActual -= damage) <= 0)
         {
+            GameState.gs.AddMoney(reward); 
             Destroy(gameObject); 
         }
         barraV.actualizarBarraVida(vidaMaxima, vidaActual);

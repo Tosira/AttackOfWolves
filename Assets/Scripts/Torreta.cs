@@ -16,6 +16,7 @@ public class Torreta : MonoBehaviour
     public float radio;
     public float damage;
     public SpriteRenderer spriteRend;
+    private int precio; 
 
     private float disMin = 10000000f;
     void FindEnemy()
@@ -33,20 +34,17 @@ public class Torreta : MonoBehaviour
         target = null;
         disMin = 10000000f;
         foreach(Collider2D e in enemigos)
-        {
-            //  Codigo extendible para dar prioridad a enemigos. 
+        {             
             if (e.CompareTag("Enemigo"))
             {
                 Enemigo enemigo = e.GetComponent<Enemigo>();
-                if (enemigo.esVisible) {
+                if (enemigo.esVisible && e != null) {
 
-                    float distancia = Vector3.Distance(e.gameObject.transform.position, Meta.insMeta.transform.position);   // ?? 
+                    float distancia = Vector3.Distance(e.gameObject.transform.position, Meta.insMeta.transform.position);
                     if (distancia < disMin)
                     {
                         //disMin = Vector3.Distance(e.gameObject.transform.position, Meta.insMeta.transform.position);
-                        disMin = distancia;
-
-                        //  Se define el objetivo
+                        disMin = distancia;                        
                         target = e.transform;
                     }
 
@@ -58,29 +56,21 @@ public class Torreta : MonoBehaviour
 
     void Aim()
     {
-        if(target == null)
-        {
-            return;
-        }
+        if (target == null) return;
 
         Shoot();
     }
 
+    //  'origenDisparo' no se setea desde esta clase padre en el metodo Start.
+    //  Debug.Log("prefabBala: " + prefabBala + "origenDisparo: " + origenDisparo + "objetivo: " + objetivo + "frecuencia: " + frecuencia);
+
     public virtual void Shoot()
-    {
-        //  'origenDisparo' no se setea desde esta clase padre en el metodo Start.
-        //  Debug.Log("prefabBala: " + prefabBala + "origenDisparo: " + origenDisparo + "objetivo: " + objetivo + "frecuencia: " + frecuencia); 
+    {         
         if (prefabBullet != null && originShot != null && target != null && frequency <= 0)
         {            
-            GameObject bala = Instantiate(prefabBullet, originShot.position, originShot.rotation);
-            Bala balaComponente = bala.GetComponent<Bala>();
-            if (balaComponente != null)
-            {
-                balaComponente.SetTarget(target);
-                balaComponente.velocidad = bulletSpeed;
-                balaComponente.damage = damage;// Posible extensibilidad de codigo
-                balaComponente.miTorre = gameObject;
-            }
+            GameObject bulletObject = Instantiate(prefabBullet, originShot.position, originShot.rotation);
+            Bala bulletComponent = bulletObject.GetComponent<Bala>();
+            if (bulletComponent != null) bulletComponent.Initialize(target, gameObject, bulletSpeed, damage);
             frequency = originalFrequency;
         }
     }
@@ -108,16 +98,14 @@ public class Torreta : MonoBehaviour
         this.damage = damage;
     }
     
-    public void Defender()
+    public void Defend()
     {
         FindEnemy();
         Aim();
         frequency -= Time.deltaTime;
     }
 
-    public virtual void ImpactoBala()
-    {
-        return;
-    }
+    public virtual void ImpactoBala() { }  
 
+    public virtual int GetPrecio() { return precio; }
 }

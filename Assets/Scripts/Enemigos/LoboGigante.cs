@@ -1,15 +1,15 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 
 namespace Assets.src.Enemigos
 {
-    public class Lobo : Enemigo
+    public class LoboGigante : Enemigo
     {
         public override void SetEnemy()
         {
             vidaActual = vidaMaxima = 5;
             esVisible = true;
-            reward = 5; 
+            reward = 5;
         }
 
         public override void Atacar()
