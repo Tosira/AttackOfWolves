@@ -6,7 +6,7 @@ namespace Assets.src.Torres
     public class TorreBarro : Torreta
     {
         [SerializeField] private GameObject _prefabBala;
-        private Enemigo enemigoActual;
+        private Enemigo currentEnemy;
         private static int precio = 20;
 
         // Use this for initialization
@@ -26,12 +26,7 @@ namespace Assets.src.Torres
         }
 
         public override void Shoot()
-        {
-            //  'origenDisparo' no se setea desde esta clase padre en el metodo Start.
-            //  Debug.Log("prefabBala: " + prefabBala + "origenDisparo: " + origenDisparo + "objetivo: " + objetivo + "frecuencia: " + frecuencia); 
-            
-            
-
+        {            
             if (_prefabBala != null && originShot != null && target != null && frequency <= 0)
             {
                 GameObject bala = Instantiate(_prefabBala, originShot.position, originShot.rotation);
@@ -45,10 +40,10 @@ namespace Assets.src.Torres
         {
             Enemigo e = target.GetComponent<Enemigo>();
 
-            if (e == null || e == enemigoActual) return;                         
-            e.agent.speed = e.agent.speed * 0.5f;
+            if (e == null || e == currentEnemy) return;                         
+            e.agent.speed *= 0.5f;
             e.GetComponent<SpriteRenderer>().color = new Color(0.3f, 0.15f, 0.05f);
-            enemigoActual = e;
+            currentEnemy = e;
         }
 
         public override int GetPrecio()

@@ -35,7 +35,7 @@ public class Enemigo : MonoBehaviour
     }
 
     private void FixedUpdate()
-    {        
+    {                
         UpdateRoute(); 
     }
 
@@ -46,7 +46,7 @@ public class Enemigo : MonoBehaviour
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         agent.speed = velocidad;
-
+        //agent.radius = 0.5f;        
     }
     
     private void SetTarget(Transform target)
@@ -102,7 +102,6 @@ public class Enemigo : MonoBehaviour
         }
         barraV.actualizarBarraVida(vidaMaxima, vidaActual);
     }
-    public virtual void SetEnemy() {
-    }
+    public virtual void SetEnemy() { }
     public virtual void Atacar() { }
 }

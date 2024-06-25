@@ -9,7 +9,7 @@ using TMPro;
 public class GameState : MonoBehaviour
 {
     [SerializeField] private List<GameObject> prefabsEnemies;
-    private string path = "Assets/Scripts/Niveles.txt";
+    //private string path = "Assets/Scripts/Niveles.txt";
     List<Level> levels = new List<Level>();
     bool levelsSuccesfullySet = false;
     Level currentGameLevel;
@@ -34,9 +34,12 @@ public class GameState : MonoBehaviour
         // 2. Concerning levels
         if (prefabsEnemies.Count > 0 && ReadFileLevels())
         {
-            if (PrepareLevels()) levelsSuccesfullySet = true;
+            if (PrepareLevels())
+            {
+                levelsSuccesfullySet = true;
+                currentGameLevel = levels[levelIndex];
+            }
         }
-        currentGameLevel = levels[levelIndex];        
         copyTimeInstance = timeInstance;
 
         //Debug.Log("Cantidad de niveles " + levels.Count);
@@ -86,9 +89,15 @@ public class GameState : MonoBehaviour
     {
         Level currentLevel = new Level();
         Wave currentWave = new Wave();
-
-        using (StreamReader sr = new StreamReader(path))
-        {            
+        TextAsset levelFile = Resources.Load<TextAsset>("Niveles");
+        if (levelFile == null)
+        {
+            Debug.LogError("No se pudo cargar el Archivo");
+            return false;
+        }
+        Stream StreamLevelFile = ConvertTextAssetToStream(levelFile);
+        using (StreamReader sr = new StreamReader(StreamLevelFile))
+        {
             bool initializeTimes = false;   // Inidica que lineas del archivo corresponden a los datos para inicializar los tiempos. 
             string line; 
             while((line = sr.ReadLine()) != null)
@@ -147,7 +156,16 @@ public class GameState : MonoBehaviour
         
         Debug.Log("Lectura Realizada");
         return true;
-    }    
+    }
+
+    private Stream ConvertTextAssetToStream(TextAsset textAsset)
+    {
+        // Convertir el contenido del TextAsset a un byte array
+        byte[] byteArray = System.Text.Encoding.UTF8.GetBytes(textAsset.text);
+
+        // Crear un MemoryStream a partir del byte array
+        return new MemoryStream(byteArray);
+    }
 
     private bool PrepareLevels()
     {

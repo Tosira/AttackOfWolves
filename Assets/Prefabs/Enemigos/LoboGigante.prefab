@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8051715887510818288}
   - component: {fileID: 651482911372059535}
   - component: {fileID: 1274372724020771061}
-  - component: {fileID: 5413787320026725842}
+  - component: {fileID: 7376178162861187817}
   - component: {fileID: 5340763207670701355}
   - component: {fileID: 1291046168065443662}
   m_Layer: 0
@@ -32,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 16.79, y: 1.21, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 427098839611752690}
@@ -147,7 +147,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!50 &5413787320026725842
+--- !u!50 &7376178162861187817
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0

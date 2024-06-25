@@ -7,10 +7,9 @@ using UnityEngine;
 
 class Wave
 {
-    List<float> timesInstance;    
-    List<(int Quantity, string Enemy)> pairs;
-    //  En esta misma clase puede haber variables que indiquen cual es el actual enemigo.
-    float currentInstanceTime, currentEnemyQuantity;  // Evita sobreescritura al contar tiempo. 
+    List<float> timesInstance;
+    List<(int Quantity, string Enemy)> pairs;    
+    float currentInstanceTime, currentEnemyQuantity;  // Evita sobreescritura al contar tiempo.
     int enemyIndex = 0, timeIndex = 0;
 
     public Wave()
@@ -30,11 +29,13 @@ class Wave
         pairs.Add(pair); 
     }    
 
+    // Test function
     public List<float> GetTimeInstance()
     {
         return timesInstance;
     }
 
+    // Test function
     public List<(int Quantity, string Enemy)> GetPairs()
     {
         return pairs; 
@@ -94,9 +95,8 @@ class Wave
         return currentInstanceTime;
     }
 
-    public string GetCurrentEnemyType()  //  Hacer busqueda por lista a traves de string.
-    {
-        //if (enemyIndex >= pairs.Count) Debug.LogError(enemyIndex);
+    public string GetCurrentEnemyType()
+    {        
         return pairs[enemyIndex].Enemy;
     }
 
