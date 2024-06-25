@@ -25,9 +25,8 @@ public class Bala : MonoBehaviour
         this.speed = speed;
         this.damage = damage;
     }    
-
-    // Update is called once per frame
-    void Update()
+    
+    void FixedUpdate()
     {
         //  Previene referencia a enemigo destruido
         if (target == null)

@@ -203,7 +203,7 @@ GameObject:
   - component: {fileID: 4918989924494275201}
   - component: {fileID: 4994763381906202360}
   - component: {fileID: 5052530514653996082}
-  - component: {fileID: 699447647309681269}
+  - component: {fileID: -8189725206127287647}
   - component: {fileID: 2780797467269144490}
   - component: {fileID: 1232972639250241204}
   m_Layer: 0
@@ -223,7 +223,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 16.79, y: 1.21, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 637829451815827231}
@@ -338,7 +338,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!50 &699447647309681269
+--- !u!50 &-8189725206127287647
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -399,6 +399,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
+  reward: 0
   vidaActual: 0
   vidaMaxima: 0
   esVisible: 0
