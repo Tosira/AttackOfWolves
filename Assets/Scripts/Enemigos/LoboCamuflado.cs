@@ -15,14 +15,15 @@ namespace Assets.src.Enemigos
             vidaActual = vidaMaxima = 3;
             esVisible = false;
             reward = 10; 
-        }
+        }        
 
-        private void Update()
+        public override void Attack()
         {
+            base.Attack();
             if (cont == 2)
             {
                 cont = 1;
-                spriteRend = GetComponent<SpriteRenderer>();
+                spriteRend = this.GetComponent<SpriteRenderer>();
                 Color color = spriteRend.color;
                 color.a = transparencia;
                 spriteRend.color = color;
@@ -33,20 +34,15 @@ namespace Assets.src.Enemigos
             }
             else
             {
-                if(cont == 1)
+                if (cont == 1)
                 {
-                    cont= 0;
+                    cont = 0;
                     esVisible = true;
                     Color color = spriteRend.color;
                     color.a = 1f;
                     spriteRend.color = color;
                 }
             }
-        }
-
-        public override void Atacar()
-        {
-            base.Atacar();
         }
     }
 }

@@ -1,15 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Assets.src;
 using System.IO;
 using TMPro;
 
+public class Player
+{
+    public int life = 100;
+    public int money = 100;
+}
 
 public class GameState : MonoBehaviour
-{
+{    
+    private Player player;
+
     [SerializeField] private List<GameObject> prefabsEnemies;
-    //private string path = "Assets/Scripts/Niveles.txt";
     List<Level> levels = new List<Level>();
     bool levelsSuccesfullySet = false;
     Level currentGameLevel;
@@ -18,24 +25,39 @@ public class GameState : MonoBehaviour
     float timeInstance = 0.8f;
     float copyTimeInstance;
 
-    private int money = 100;
     public static GameState gs;
+    public static GameObject target;
 
-    //  Variables temporales hasta que se ajusten interfaces. 
-    private string moneyTxt = "Monedas: "; 
-    [SerializeField] private TextMeshProUGUI txtMesh;
+    //  Variables temporales hasta que se ajusten interfaces.
+    //private int money = 100;
+    //private int life = 100;
+    private string moneyTxt = "Monedas: ";
+    private string lifeTxt = "Vidas: ";
+    [SerializeField] private TextMeshProUGUI txtMeshMoney;
+    [SerializeField] private TextMeshProUGUI txtMeshLife;
 
     private void Start()
     {
-        // 1. Concerning other
-        gs = this;         
-        txtMesh.text = moneyTxt + money.ToString();
+        // 1. Related other
+        gs = this;
+        target = GameObject.Find("Meta");
+        if (target == null)
+        {
+            Debug.LogError("Meta de escena no encontrada");
+            return;
+        }
+
+        // 2. Related to player's Stadistics
+        player = new Player();
+        txtMeshMoney.text = moneyTxt + player.money.ToString();
+        txtMeshLife.text = lifeTxt + player.life.ToString();
         
-        // 2. Concerning levels
+        // 2. Related levels
         if (prefabsEnemies.Count > 0 && ReadFileLevels())
         {
             if (PrepareLevels())
             {
+                //Debug.Log("Cantidad de niveles"+levels.Count);
                 levelsSuccesfullySet = true;
                 currentGameLevel = levels[levelIndex];
             }
@@ -68,14 +90,19 @@ public class GameState : MonoBehaviour
 
     private void Update()
     {
+        if (GameOver()) SceneManager.LoadScene("GameOver");
+        txtMeshMoney.text = moneyTxt + player.money.ToString();
+        txtMeshLife.text = lifeTxt + player.life.ToString();
+
         if (!levelsSuccesfullySet) return;
         if (currentGameLevel.WithoutWaves())
         {
             if (!UpdateCurrentLevel())
             {
-                Debug.Log("Niveles Agotados");
+                //Debug.Log("Niveles Agotados");
                 return;
             }
+            Debug.Log("NUEVO NIVEL " + (levelIndex+1));
         }
         if (!currentGameLevel.PrioritizeTimeInstance()) timeInstance -= Time.deltaTime;
         if ((timeInstance -= Time.deltaTime) <= 0 || currentGameLevel.PrioritizeTimeInstance())
@@ -173,7 +200,7 @@ public class GameState : MonoBehaviour
         {
             if (!lvl.PrepareLevel(prefabsEnemies))
             {
-                Debug.LogError("Error de Lectura");
+                Debug.LogError("ERROR DE LECTURA. Los nombres de tipos, cantidades o tiempos de instancia pueden ser incorrectos. Revise el archivo .txt de Niveles.");
                 return false;
             }
         }
@@ -191,14 +218,24 @@ public class GameState : MonoBehaviour
     //
     public void AddMoney(int _money)
     {
-        money += _money; 
+        player.money += _money; 
     }
 
     public bool Buy(int cost)
     {
-        if (money < cost) return false; 
+        if (player.money < cost) return false; 
 
-        money -= cost;
+        player.money -= cost;
         return true; 
-    }    
+    }
+
+    public void ReceiveEnemyAttack()
+    {
+        player.life -= 1;
+    }
+
+    private bool GameOver()
+    {
+        return player.life <= 0;
+    }
 }

@@ -17,11 +17,6 @@ namespace Assets.src.Torres
             SetTower(transform, _prefabBala, frequency, bulletSpeed, radio, damage);
         }
 
-        private void Update()
-        {
-            Defend(); 
-        }
-
         public override int GetPrecio()
         {
             return precio;
