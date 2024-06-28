@@ -19,12 +19,6 @@ namespace Assets.src.Torres
             SetTower(transform, _prefabBala, frequency, bulletSpeed, radio, damage);
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-            Defend();
-        }
-
         public override void Shoot()
         {            
             if (_prefabBala != null && originShot != null && target != null && frequency <= 0)
@@ -38,10 +32,11 @@ namespace Assets.src.Torres
 
         public override void ImpactoBala()
         {
+            if (target == null) return; // Parece ser que da error de referencia nula debido a que otra torre destruye al enemigo objetivo
             Enemigo e = target.GetComponent<Enemigo>();
 
-            if (e == null || e == currentEnemy) return;                         
-            e.agent.speed *= 0.5f;
+            if (e == null || e == currentEnemy) return;                        
+            e.speed *= 0.5f;
             e.GetComponent<SpriteRenderer>().color = new Color(0.3f, 0.15f, 0.05f);
             currentEnemy = e;
         }

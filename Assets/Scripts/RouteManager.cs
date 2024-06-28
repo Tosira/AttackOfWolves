@@ -31,11 +31,11 @@ public class RouteManager : MonoBehaviour
             return;
         }
 
-        if (!enemyComponent.CheckAgent())
-        {
-            Debug.Log("Agente nulo");
-            return;
-        }
+        //if (!enemyComponent.CheckAgent())
+        //{
+        //    Debug.Log("Agente nulo");
+        //    return;
+        //}
 
         enemyComponent.SetRoute(route1);        
     }       

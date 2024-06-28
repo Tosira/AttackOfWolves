@@ -1,97 +1,87 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI; 
 
 public class Enemigo : MonoBehaviour
 {
     private List<GameObject> route = new List<GameObject>();
-    private Transform target; 
-    public NavMeshAgent agent;
-    public int reward; 
+    private Transform currentTarget; 
+    public int reward;
 
     // duda con el agente que esta en privado y aun asi los enemigos se mueven. 
     // implementar vida de los enemigos
 
     public float vidaActual; 
     public float vidaMaxima; 
-    private float velocidad = 2.0f;
+    public float speed = 2.0f;
     public bool esVisible;
 
     public BarraDeVida barraV;
-
-    private Animator animator;
-
-    // Metodo llamado cuando la instancia del script se carga (llamado antes que Start). No importa si el objeto esta activo o inactivo. 
-    private void Awake()
-    {
-        SetAgent();
-    }
+    private Animator animator;    
 
     public void Start()
     {
         animator = GetComponent<Animator>();
-        SetEnemy(); 
+        SetEnemy();
+    }
+
+    private void Update()
+    {
+        if (isInTheTarget())
+        {
+            GameState.gs.ReceiveEnemyAttack();
+            Destroy(gameObject);
+        }
+        Attack();
     }
 
     private void FixedUpdate()
-    {                
-        UpdateRoute(); 
+    {        
+        UpdateRoute();
+        if (this != null && currentTarget != null) transform.position = Vector3.MoveTowards(transform.position, currentTarget.position, speed * Time.deltaTime);
     }
 
-    private void SetAgent()
+    private bool isInTheTarget()
     {
-        //Debug.Log("Agente Seteado");
-        agent = GetComponent<NavMeshAgent>();
-        agent.updateRotation = false;
-        agent.updateUpAxis = false;
-        agent.speed = velocidad;
-        //agent.radius = 0.5f;        
-    }
-    
-    private void SetTarget(Transform target)
-    {
-        this.target = target;
-        agent.SetDestination(this.target.position); 
-    }
+        return currentTarget == null;                       
+    }          
 
     public void SetRoute(List<GameObject> route)
     {
         if (route.Count == 0)
         {
-            Debug.Log("Ruta vacia");
-            return; 
+            Debug.LogError("Ruta vacia");
+            return;
         }
-        
-        foreach (GameObject nodo in route)
-        {
-            this.route.Add(nodo); 
-        }         
-
-        SetTarget(this.route[0].transform);  // Se define primer punto de la lista que debe seguir el enemigo
-    }
-
-    public bool CheckAgent()
-    {
-        return agent != null;   // Agente inicializado en Awake
+        this.route = route.ToList();
+        currentTarget = route[0].transform;
     }
 
     private void UpdateRoute()
     {
-        if (route.Count == 1) return;   // Este ultimo nodo es la meta, no existe nodo al que cambiar luego de este. 
+        if (route.Count == 0) return;
          
         foreach(GameObject nodo in route)
         {
             if (Vector2.Distance(nodo.transform.position, this.transform.position) <= 1)
             {                
                 var index = route.IndexOf(nodo);
-                SetTarget(route[index + 1].transform);
+                if (route.Count == 1)
+                {
+                    currentTarget = null;
+                }
+                else
+                {
+                    currentTarget = route[index + 1].transform;
+                }
                 route.Remove(nodo);
                 //Debug.Log("Ruta actulizada");
                 return; 
             }            
         }        
-    }
+    }    
 
     public void GetAttack(float damage)
     {
@@ -103,5 +93,5 @@ public class Enemigo : MonoBehaviour
         barraV.actualizarBarraVida(vidaMaxima, vidaActual);
     }
     public virtual void SetEnemy() { }
-    public virtual void Atacar() { }
+    public virtual void Attack() { }
 }

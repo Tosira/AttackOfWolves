@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-//  Para este caso haremos que TODOS los niveles con sus olas sean cargados al iniciar el videojuego. 
-
 class Wave
 {
     List<float> timesInstance;
@@ -54,12 +52,20 @@ class Wave
         string lastEnemyType = prefabsEnemy[prefabsEnemy.Count - 1].GetComponent<Enemigo>().GetType().Name;
         foreach ((int Quantity, string Enemy) pair in pairs)
         {
-            if (pair.Quantity <= 0) return false;
+            if (pair.Quantity <= 0)
+            {
+                Debug.LogError("Cantidad de Enemigo Invalida");
+                return false;
+            }
             foreach (GameObject gm in prefabsEnemy)
             {
                 enemyType = pair.Enemy;
                 string gmEnemyType = gm.GetComponent<Enemigo>().GetType().Name;
-                if (enemyType != gmEnemyType && gmEnemyType == lastEnemyType) return false; // Se ha llegado al ultimo prefab y enemyType aun no se encuentra
+                if (enemyType != gmEnemyType && gmEnemyType == lastEnemyType) // Se ha llegado al ultimo prefab y enemyType aun no se encuentra
+                {
+                    Debug.LogError("Tipo de Enemigo no encontrado");
+                    return false;
+                }
                 if (enemyType == gmEnemyType) break;
             }
         }        
@@ -70,7 +76,11 @@ class Wave
     {
         foreach (float time in timesInstance)
         {
-            if (time < 0) return false; // Se admite tiempos iguales que cero
+            if (time < 0) // Se admite tiempos iguales que cero
+            {
+                Debug.LogError("Tiempo de Instancia Invalido");
+                return false;
+            }
         }
         return true;
     }
@@ -119,6 +129,8 @@ class Wave
         return currentEnemyQuantity <= 0 && currentInstanceTime <= 0 && enemyIndex >= pairs.Count - 1 && timeIndex >= timesInstance.Count - 1;
     }
 }// Wave
+
+
 
 class Level
 {
@@ -170,7 +182,8 @@ class Level
         if (currentWave.WithoutEnemies())
         {
             ReduceWaves();
-            Debug.Log(currentWave.GetPairs().Count);
+            //Debug.Log(currentWave.GetPairs().Count);
+            Debug.Log("Actualizacion de Ola");
             return;
         }        
         if (currentWave.ReduceInstanceTime())
@@ -186,7 +199,7 @@ class Level
             //  Luego de la actualizacion no se debe crear ningun enemigo. De hecho, una actualizacion
             //  no asegura que haya enemigos disponibles en los siguientes datos, por lo que podria terminar 
             //  retornando "-" de forma indefinida.
-            Debug.Log("ACTUALIZACION DE OLA");
+            Debug.Log("Siguientes enemigos de la Ola");
             return; 
         }
 
@@ -221,4 +234,4 @@ class Level
     {
         return currentWave.GetCurrentInstanceTime() > 0;
     }
-}
+}// Level

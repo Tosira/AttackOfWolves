@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class Torreta : MonoBehaviour
 {
-    //  Variables que implican extensibilidad de codigo. Valores distintos dadas las mejoras de torretas. 
     public Transform target;
     public Transform originShot;
     private GameObject prefabBullet;
@@ -18,7 +17,13 @@ public class Torreta : MonoBehaviour
     public SpriteRenderer spriteRend;
     private int precio; 
 
-    private float disMin = 10000000f;
+    private float disMin = 10000000f;    
+
+    public void Update()
+    {
+        Defend();
+    }
+
     void FindEnemy()
     {
         Collider2D[] enemigos = Physics2D.OverlapCircleAll(transform.position, radio);
@@ -40,7 +45,7 @@ public class Torreta : MonoBehaviour
                 Enemigo enemigo = e.GetComponent<Enemigo>();
                 if (enemigo.esVisible && e != null) {
 
-                    float distancia = Vector3.Distance(e.gameObject.transform.position, Meta.insMeta.transform.position);
+                    float distancia = Vector3.Distance(e.gameObject.transform.position, GameState.target.transform.position);
                     if (distancia < disMin)
                     {
                         //disMin = Vector3.Distance(e.gameObject.transform.position, Meta.insMeta.transform.position);
@@ -52,27 +57,16 @@ public class Torreta : MonoBehaviour
                             
             }
         }
-    }
-
-    void Aim()
-    {
-        if (target == null) return;
-
-        Shoot();
-    }
-
-    //  'origenDisparo' no se setea desde esta clase padre en el metodo Start.
-    //  Debug.Log("prefabBala: " + prefabBala + "origenDisparo: " + origenDisparo + "objetivo: " + objetivo + "frecuencia: " + frecuencia);
+    }        
 
     public virtual void Shoot()
-    {         
-        if (prefabBullet != null && originShot != null && target != null && frequency <= 0)
-        {            
-            GameObject bulletObject = Instantiate(prefabBullet, originShot.position, originShot.rotation);
-            Bala bulletComponent = bulletObject.GetComponent<Bala>();
-            if (bulletComponent != null) bulletComponent.Initialize(target, gameObject, bulletSpeed, damage);
-            frequency = originalFrequency;
-        }
+    {
+        if (!(prefabBullet != null && originShot != null && target != null && frequency <= 0)) return;
+        
+        GameObject bulletObject = Instantiate(prefabBullet, originShot.position, originShot.rotation);
+        Bala bulletComponent = bulletObject.GetComponent<Bala>();
+        if (bulletComponent != null) bulletComponent.Initialize(target, gameObject, bulletSpeed, damage);
+        frequency = originalFrequency;
     }
 
     void OnDrawGizmosSelected()
@@ -101,7 +95,7 @@ public class Torreta : MonoBehaviour
     public void Defend()
     {
         FindEnemy();
-        Aim();
+        Shoot();
         frequency -= Time.deltaTime;
     }
 

@@ -46,14 +46,6 @@ namespace Assets.src.Torres
             }
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-
-            Defend();
-
-        }
-
         public override void ImpactoBala()
         {
 

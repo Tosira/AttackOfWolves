@@ -10,11 +10,6 @@ namespace Assets.src.Enemigos
             vidaActual = vidaMaxima = 5;
             esVisible = true;
             reward = 5; 
-        }
-
-        public override void Atacar()
-        {
-            base.Atacar();
-        }
+        }        
     }
 }
