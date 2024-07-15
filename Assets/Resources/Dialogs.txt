@@ -1,0 +1,10 @@
+Cerdito Paja
+Texto de prueba para gestor de Dialogos
+Otra linea del texto para prueba
+Texto del Cerdito de Paja
+Cerdito Madera
+Soy el cerdito de la zona de madera
+Hoy te ayudare en...
+Cerdito Ladrillo
+Soy el cerdito de la zona de Ladrillo
+Hoy te ayudare en...

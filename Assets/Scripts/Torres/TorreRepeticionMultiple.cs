@@ -13,7 +13,7 @@ namespace Assets.src.Torres
             frequency = 0.3f;
             bulletSpeed = 1f;
             radio = 5f;
-            damage = 0.3f;
+            damage = 0.45f;
             SetTower(transform, _prefabBala, frequency, bulletSpeed, radio, damage);
         }
 

@@ -2,16 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.AI; 
 
 public class Enemigo : MonoBehaviour
 {
     private List<GameObject> route = new List<GameObject>();
     private Transform currentTarget; 
     public int reward;
-
-    // duda con el agente que esta en privado y aun asi los enemigos se mueven. 
-    // implementar vida de los enemigos
 
     public float vidaActual; 
     public float vidaMaxima; 
@@ -81,7 +77,7 @@ public class Enemigo : MonoBehaviour
                 return; 
             }            
         }        
-    }    
+    }
 
     public void GetAttack(float damage)
     {
@@ -94,4 +90,4 @@ public class Enemigo : MonoBehaviour
     }
     public virtual void SetEnemy() { }
     public virtual void Attack() { }
-}
+}// Enemigo

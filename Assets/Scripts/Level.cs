@@ -169,8 +169,9 @@ class Level
     public void AddWave(Wave _wave)
     {
         waves.Add(_wave);
-    }    
+    }
 
+    //  Test function
     public List<Wave> GetWaves()
     {
         return waves;
@@ -186,10 +187,10 @@ class Level
             Debug.Log("Actualizacion de Ola");
             return;
         }        
-        if (currentWave.ReduceInstanceTime())
+        if (currentWave.ReduceInstanceTime()) /*Si es falso, no se ha podido reducir el tiempo y se debe instanciar el enemigo*/
         {
             //Debug.Log("Tiempo reduciendose");
-            return; /*Si es falso, no se ha podido reducir el tiempo y se debe instanciar el enemigo*/
+            return;
         }
         if (!currentWave.ReduceEnemies())
         {
