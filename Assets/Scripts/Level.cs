@@ -7,7 +7,8 @@ class Wave
 {
     List<float> timesInstance;
     List<(int Quantity, string Enemy)> pairs;    
-    float currentInstanceTime, currentEnemyQuantity;  // Evita sobreescritura al contar tiempo.
+    float currentInstanceTime;  // Evita sobreescritura al contar tiempo.
+    int currentEnemyQuantity;
     int enemyIndex = 0, timeIndex = 0;
 
     public Wave()
@@ -96,7 +97,6 @@ class Wave
     {
         if (currentInstanceTime <= 0) return false;
         currentInstanceTime -= Time.deltaTime;
-        //Debug.Log(currentInstanceTime);
         return true;
     }
 
@@ -126,7 +126,21 @@ class Wave
 
     public bool WithoutEnemies()
     {
-        return currentEnemyQuantity <= 0 && currentInstanceTime <= 0 && enemyIndex >= pairs.Count - 1 && timeIndex >= timesInstance.Count - 1;
+        return currentEnemyQuantity <= 0
+               && currentInstanceTime <= 0
+               && enemyIndex >= pairs.Count - 1
+               && timeIndex >= timesInstance.Count - 1;
+    }
+
+    public bool WaveNotStarted()
+    {
+        // Los indices no son los primeros en variar al ejecutar las olas, estos varian solo
+        // cuando los datos actuales(current) han sido sido agotados. Por eso se comprueba con
+        // los datos actuales.
+        return currentEnemyQuantity == pairs[enemyIndex].Quantity
+               && currentInstanceTime == timesInstance[timeIndex]
+               && enemyIndex == 0
+               && timeIndex == 0;
     }
 }// Wave
 
@@ -142,7 +156,7 @@ class Level
 
     public Level()
     {
-        waves = new List<Wave>(); 
+        waves = new List<Wave>();
     }
 
     //  Este metodo debe ser llamado luego de la lectura y antes que la actualizacion y obtencion de datos.
@@ -201,7 +215,7 @@ class Level
             //  no asegura que haya enemigos disponibles en los siguientes datos, por lo que podria terminar 
             //  retornando "-" de forma indefinida.
             Debug.Log("Siguientes enemigos de la Ola");
-            return; 
+            return;
         }
 
         //Debug.Log("PUNTO INSTANCIAMIENTO");
@@ -226,6 +240,29 @@ class Level
         currentWave.PrepareWave();
     }
 
+    public int GetWaveIndex()
+    {
+        return waveIndex;
+    }  
+
+    // Inidica si el nivel no ha iniciado ni una de sus olas
+    public bool NotStarted()
+    {
+        return waveIndex == 0
+               && currentWave.WaveNotStarted();
+    }
+
+    public bool CurrentWaveNotStarted()
+    {
+        return currentWave.WaveNotStarted();
+    }
+
+    public bool CurrentWaveWithoutEnemies()
+    {
+        return currentWave.WithoutEnemies();
+    }
+
+    // Indica si el nivel ha terminado
     public bool WithoutWaves()
     {
         return waveIndex >= waves.Count - 1 && currentWave.WithoutEnemies();

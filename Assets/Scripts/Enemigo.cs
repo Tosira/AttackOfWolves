@@ -25,6 +25,8 @@ public class Enemigo : MonoBehaviour
 
     private void Update()
     {
+        if (DialogsManager.dm.isDialogueInProgress()) return;
+
         if (isInTheTarget())
         {
             GameState.gs.ReceiveEnemyAttack();
@@ -34,14 +36,16 @@ public class Enemigo : MonoBehaviour
     }
 
     private void FixedUpdate()
-    {        
+    {
+        if (DialogsManager.dm.isDialogueInProgress()) return;
+
         UpdateRoute();
         if (this != null && currentTarget != null) transform.position = Vector3.MoveTowards(transform.position, currentTarget.position, speed * Time.deltaTime);
     }
 
     private bool isInTheTarget()
     {
-        return currentTarget == null;                       
+        return currentTarget == null;
     }          
 
     public void SetRoute(List<GameObject> route)

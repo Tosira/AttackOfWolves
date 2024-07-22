@@ -1,10 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-public class InputHandler : MonoBehaviour
+public class InputHandler : MonoBehaviour, IPointerClickHandler
 {
+    [SerializeField] GameObject TowersInterface;
+    [SerializeField] private Canvas mainCanvas; 
+
     private Camera mainCamera;
     [SerializeField] private GameObject prefabButton;
     [SerializeField] private GameObject prefabTorrePiedra;
@@ -22,22 +27,25 @@ public class InputHandler : MonoBehaviour
     public Sprite spritePiedra;
     public Sprite spriteLodo;
     private Vector3 escalaOriginal;
-    //private GameState gs; 
 
     private void Awake()
     {
         mainCamera = Camera.main;
-        //gs = FindObjectOfType<GameState>(); 
-        //if (gs == null)
-        //{
-        //    Debug.Log("InputHandler no ha encontrado el GameState");
-        //}
+        btn = null;
     }
 
+    public void  OnPointerClick(PointerEventData eventData)
+    {
+        if (DialogsManager.dm.isDialogueInProgress()
+            || btn == null)
+            return;
+                
+    }
 
     public void OnClick(InputAction.CallbackContext context)
     {
         if (!context.started) return;   // Posible llamda sin un click
+        if (DialogsManager.dm.isDialogueInProgress()) return;
 
         //  'rayHit' guarda la interseccion del rayo(que va desde un punto de la pantalla; ScreenPointToRay) con los objetos 2D del juego. 
         var rayHit = Physics2D.GetRayIntersection(mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue()));
@@ -86,7 +94,7 @@ public class InputHandler : MonoBehaviour
             }
             else
             {
-                DestroyButtons(); 
+                DestroyButtons();
                 activeTowerInterface = false;
             }
         }
@@ -95,6 +103,7 @@ public class InputHandler : MonoBehaviour
     private void InstantiateTower(GameObject rayHit, GameObject boton, GameObject prefabTower)
     {
         if (rayHit != boton) return;
+        DialogsManager.dm.DetectedDialogueInInteraction(prefabTower);
 
         Torreta tower = prefabTower.GetComponent<Torreta>();
         bool gs_buy = GameState.gs.Buy(tower.GetPrecio());

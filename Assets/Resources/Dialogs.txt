@@ -1,10 +1,9 @@
-Cerdito Paja
-Texto de prueba para gestor de Dialogos
-Otra linea del texto para prueba
-Texto del Cerdito de Paja
-Cerdito Madera
-Soy el cerdito de la zona de madera
-Hoy te ayudare en...
-Cerdito Ladrillo
-Soy el cerdito de la zona de Ladrillo
-Hoy te ayudare en...
+# Level 1 Wave 2
+* CerditoPrueba
+Prueba de nueva sintaxis
+# TorreAgua
+* CerditoPrueba
+Felicidades! Has desbloqueado la Torre de Agua
+# TorreBarro
+* CerditoPrueba
+Felicidades! Has desbloqueado la Torre de Barro

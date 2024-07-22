@@ -4,26 +4,26 @@ using TMPro;
 
 public class Piggy
 {
-    private string piggy;
-    // En que nivel esta el cerdito
-    private int level;
-    // En que ola esta el cerdito
-    private int wave;
     private TextMeshProUGUI dialogBox;
-    
-    public Piggy(string name, TextMeshProUGUI dialogBox)
+
+    public Piggy(TextMeshProUGUI _dialogBox)
     {
-        piggy = name;
-        this.dialogBox = dialogBox;
+        dialogBox = _dialogBox;
     }
 
-    public void ShowDialogueBox(char s)
+    public void ShowDialogueBox(string s)
     {
         dialogBox.text += s;
     }
 
-    public string GetName()
+    public void ResetDialogueBox()
     {
-        return piggy;
+        dialogBox.text = "";
+    }
+
+    public bool Compare(string s)
+    {
+        // Salto de linea no incluido en la integracion de caracter a caracter
+        return dialogBox.text + "\n" == s || dialogBox.text == s;
     }
 };

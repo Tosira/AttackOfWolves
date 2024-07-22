@@ -94,6 +94,7 @@ public class Torreta : MonoBehaviour
     
     public void Defend()
     {
+        if (DialogsManager.dm.isDialogueInProgress()) return;
         FindEnemy();
         Shoot();
         frequency -= Time.deltaTime;

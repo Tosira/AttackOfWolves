@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using System.IO;
 using TMPro;
 using UnityEditor.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class Player
 {
@@ -21,20 +22,22 @@ public class GameState : MonoBehaviour
     bool levelsSuccesfullySet = false;
     Level currentGameLevel;
     int levelIndex = 0;
+    private bool startWave;
 
     float timeInstance = 0.8f;
     float copyTimeInstance;
 
     public static GameState gs;
     private DialogsManager dm;
-    private Piggy currentPiggy;
     public static GameObject target;
+    [SerializeField] private List<GameObject> piggies;
     
     private string moneyTxt = "Monedas: ";
     private string lifeTxt = "Vidas: ";
     [SerializeField] private TextMeshProUGUI txtMeshMoney;
     [SerializeField] private TextMeshProUGUI txtMeshLife;
     [SerializeField] private TextMeshProUGUI txtMeshDialog;
+
 
     private void Start()
     {
@@ -53,8 +56,8 @@ public class GameState : MonoBehaviour
         GameObject gmDialogsManager = new GameObject("DialogsManager");
         dm = gmDialogsManager.AddComponent<DialogsManager>();
         
-        // Piggy
-        currentPiggy = new Piggy("Cerdito Ladrillo", txtMeshDialog);
+        // DialogsManager
+        DialogsManager.dm.Initialze(piggies, txtMeshDialog);
 
         // Estadisticas Jugador
         player = new Player();
@@ -62,19 +65,21 @@ public class GameState : MonoBehaviour
         txtMeshLife.text = lifeTxt + player.life.ToString();
         
         // Niveles del Juego
-        // if (prefabsEnemies.Count > 0 && ReadFileLevels())
-        // {
-        //     if (PrepareLevels())
-        //     {
-        //         //Debug.Log("Cantidad de niveles"+levels.Count);
-        //         levelsSuccesfullySet = true;
-        //         currentGameLevel = levels[levelIndex];
-        //     }
-        // }
-        // copyTimeInstance = timeInstance;
+        if (prefabsEnemies.Count > 0 && ReadFileLevels())
+        {
+            if (PrepareLevels())
+            {
+                //Debug.Log("Cantidad de niveles"+levels.Count);
+                levelsSuccesfullySet = true;
+                currentGameLevel = levels[levelIndex];
+            }
+        }
+        copyTimeInstance = timeInstance;
+        startWave = false;
 
         //Debug.Log("Cantidad de niveles " + levels.Count);
 
+        // Testeo niveles de juego
         //foreach (var lvl in levels)
         //{
         //    foreach (Wave wv in lvl.GetWaves())
@@ -93,32 +98,41 @@ public class GameState : MonoBehaviour
 
     private void Update()
     {
-        // 1. Related Dialogs
+        if (GameOver()) SceneManager.LoadScene("GameOver");
+        if (!levelsSuccesfullySet) return;
+        txtMeshMoney.text = moneyTxt + player.money.ToString();
+        txtMeshLife.text = lifeTxt + player.life.ToString();
+
+        // Related Dialogs
         // Considere no llamar en GameState::Start porque metodo DialogsManager::Start es llamado luego y dialog vuelve a "".
-        dm.SetCharacterDialogue(currentPiggy);
-        dm.ShowDialog(currentPiggy);
-
-        // if (GameOver()) SceneManager.LoadScene("GameOver");
-        // txtMeshMoney.text = moneyTxt + player.money.ToString();
-        // txtMeshLife.text = lifeTxt + player.life.ToString();
-
-        // if (!levelsSuccesfullySet) return;
-        // if (currentGameLevel.WithoutWaves())
-        // {
-        //     if (!UpdateCurrentLevel())
-        //     {
-        //         //Debug.Log("Niveles Agotados");
-        //         return;
-        //     }
-        //     Debug.Log("NUEVO NIVEL " + (levelIndex+1));
-        // }
-        // if (!currentGameLevel.PrioritizeTimeInstance()) timeInstance -= Time.deltaTime;
-        // if ((timeInstance -= Time.deltaTime) <= 0 || currentGameLevel.PrioritizeTimeInstance())
-        // {
-        //     currentGameLevel.UpdateLevel();
-        //     timeInstance = copyTimeInstance;
-        // }
-    }
+        if (currentGameLevel.CurrentWaveNotStarted())
+            DialogsManager.dm.SetCharacterDialogue(levelIndex+1, currentGameLevel.GetWaveIndex()+1);
+        if (Input.GetKeyDown(KeyCode.Space)) { DialogsManager.dm.Close(); DialogsManager.dm.SkipTime(); }
+        DialogsManager.dm.ShowDialog();
+        if (DialogsManager.dm.isDialogueInProgress()) return;
+                
+        if (currentGameLevel.WithoutWaves())
+        {
+            if (!UpdateCurrentLevel())
+            {
+                //Debug.Log("Niveles Agotados");
+                return;
+            }
+            startWave = false;
+            Debug.Log("NUEVO NIVEL " + (levelIndex+1));
+        }
+        if (currentGameLevel.CurrentWaveWithoutEnemies()) { currentGameLevel.UpdateLevel(); startWave = false;}
+        if (currentGameLevel.CurrentWaveNotStarted() && Input.GetKeyDown(KeyCode.X)) startWave = true;
+        if (startWave)
+        {
+            if (!currentGameLevel.PrioritizeTimeInstance()) timeInstance -= Time.deltaTime;
+            if ((timeInstance -= Time.deltaTime) <= 0 || currentGameLevel.PrioritizeTimeInstance())
+            {
+                currentGameLevel.UpdateLevel();
+                timeInstance = copyTimeInstance;
+            }
+        }
+    }    
 
     private bool ReadFileLevels()
     {
@@ -220,10 +234,11 @@ public class GameState : MonoBehaviour
     {
         if (levelIndex >= levels.Count - 1) return false;
         levelIndex++;
-        currentGameLevel = levels[levelIndex];        
+        currentGameLevel = levels[levelIndex];
         return true;
     }
-    
+
+    ///////////////////PLAYER///////////////////
     public void AddMoney(int _money)
     {
         player.money += _money; 
@@ -237,7 +252,7 @@ public class GameState : MonoBehaviour
         return true; 
     }
 
-    public void ReceiveEnemyAttack()
+    public void ReceiveEnemyAttack()    
     {
         player.life -= 1;
     }
@@ -246,4 +261,5 @@ public class GameState : MonoBehaviour
     {
         return player.life <= 0;
     }
+    ///////////////////PLAYER///////////////////
 }

@@ -3,83 +3,193 @@ using UnityEngine;
 using TMPro;
 using System.IO;
 using Unity.VisualScripting;
+using System.Linq;
 
 public class DialogsManager : MonoBehaviour
 {
     /*
     Los dialogos deben ser llamados cuando...
-    * se presione un objeto o el jugador interactue con un objetoi especifico
-    * se actulice un nivel u ola
+    * se presione un objeto o el jugador interactue con un objeto especifico
+    * se actulice un nivel u ola, solo cuando se quiera
     * se desbloquee algun poder o funcion nueva
     Los dialogos brindan informacion relevante al jugador.
     */
 
+    public static DialogsManager dm;
+
     private string dialog;
+    private string previousDialog;
     private int indexDialog;
     private float timeLetter = 0.05f;
     private float copyTimeLetter;
-    private bool dialogReady;
+    private bool dialogueInProgress;
+    private List<short> seenDialogues;
+    private List<GameObject> characters;
+    private GameObject currentPiggyInstance;
+    private Piggy currentPiggy;
 
-    private void Start()
+    private void Awake()
     {
+        dm = this;
         copyTimeLetter = timeLetter;
         indexDialog = 0;
         dialog = "";
-        dialogReady = false;
+        previousDialog = "";
+        
+        dialogueInProgress = false;
+        seenDialogues = new List<short>();
+        characters = new List<GameObject>();
+        currentPiggyInstance = null;
     }
 
-    public void ShowDialog(Piggy piggy)
+    public void Initialze(List<GameObject> _characters, TextMeshProUGUI _txtMeshDialog)
     {
-        // foreach (char s in dialog){
-        //     boxOfDialog.text += s.ToString();
-        // }
-        if (indexDialog==dialog.Length-1 || !dialogReady) return;
-        // Debug.Log("Valor indice: " + indexDialog);
-        if (TimeLetterFinished()){
-            char s = dialog[indexDialog];
-            // boxOfDialog.text += s.ToString();
-            piggy.ShowDialogueBox(s);
+        if (_characters.Count == 0) return;
+        characters.Clear();
+        characters = _characters.ToList();
+        currentPiggy = new Piggy(_txtMeshDialog);
+    }
+
+    public void ShowDialog()
+    {        
+        if (dialog.Length-1==indexDialog || !dialogueInProgress) return;
+
+        if (TimeLetterFinished())
+        {
+            string s = dialog[indexDialog].ToString();
+            currentPiggy.ShowDialogueBox(s);
             timeLetter = copyTimeLetter;
             ++indexDialog;
         }
     }
 
-    // Obtener dialogo para Piggy segun su estado
-    public void SetCharacterDialogue(Piggy piggy)
+    public void SetCharacterDialogue(string dialogOf)
     {
-        if (dialogReady) return;
+        SearchDialogue(dialogOf);
+    }
 
+    public void SetCharacterDialogue(int levelIndex, int waveIndex)
+    {
+        string dialogOf = "Level " + levelIndex.ToString() + " Wave " + waveIndex.ToString();
+        SearchDialogue(dialogOf);
+    }
+
+    // Obtener dialogo para Piggy segun su estado
+    private void SearchDialogue(string dialogOf)
+    {
+        if (characters.Count == 0
+            || dialogueInProgress
+            || (!dialogueInProgress && previousDialog == dialogOf))
+            return;
+        
         TextAsset dialogsFile = Resources.Load<TextAsset>("Dialogs");
         if (dialogsFile == null)
         {
             Debug.LogError("No se pudo cargar el archivo de dialogos");
             return;
         }
+
+        ForceClose();   // No es necesaria luego de haber llamaddo a Close()
+        string dl = "";
+        previousDialog = dialogOf;
         Stream StreamDialogsFile = ConvertTextAssetToStream(dialogsFile);
         using (StreamReader sr = new StreamReader(StreamDialogsFile))
         {
             string line;
-            string dl = "";
+            short lineNumber = 0;
             while ((line = sr.ReadLine()) != null)
             {
-                if ((line.StartsWith("Cerdito Paja")
-                    || line.StartsWith("Cerdito Madera")
-                    || line.StartsWith("Cerdito Ladrillo"))
-                    && !line.StartsWith(piggy.GetName())
+                if (line.Contains("#")
+                    && !line.Contains(dialogOf)
                     && dl.Length != 0)
                     break;
-                if (line.StartsWith(piggy.GetName()) || dl.Length != 0) dl += line.Split('\n')[0] + '\n';
+                if (line.Contains(dialogOf))
+                {
+                    if (seenDialogues.Contains(lineNumber))
+                    {
+                        sr.Close();
+                        return;
+                    }
+                    seenDialogues.Add(lineNumber);
+                    dl += line.Split('\n')[0] + '\n';
+                    continue;
+                }
+                if (dl.Length != 0)
+                {
+                    if (line.Contains("*"))
+                    {
+                        if (!SearchPiggy(line.Replace("* ", "")))
+                        {
+                            sr.Close();
+                            Debug.Log("Personaje " + line + " no encontrado");
+                            return;
+                        }
+                        currentPiggy.ResetDialogueBox();
+                    }
+                    dl += line.Split('\n')[0] + '\n';
+                }
+                lineNumber++;
             }
             sr.Close();
-            dialog = dl;
-        }
-        dialogReady = true;
-        Debug.Log("Dialogo: " + dialog);
+        }        
+        if (dl.Length != 0) { dialog=dl; dialogueInProgress=true; }
     }
 
-    public bool DialogState()
+    private bool SearchPiggy(string namePiggy)
     {
-        return dialogReady;
+        if (characters.Count <= 0) { Debug.Log("Sin personajes en los que buscar"); return false; }
+        
+        foreach (GameObject pg in characters)
+        {
+            if (pg.name == namePiggy)
+            {
+                currentPiggyInstance = Instantiate(pg, new Vector3(-9.8f,-4f,0), Quaternion.identity);
+                return true;
+            }
+        }
+        return false;
+    } 
+
+    public void DetectedDialogueInInteraction(GameObject gm)
+    {
+        string gmName = gm.GetComponent<Torreta>().GetType().Name;
+        Debug.Log("Nombre del objeto accionador de dialogo: " + gmName);
+        // Peticion forzada porque es el jugador quien activa otro dialogo y cancela el que esta en progreso.
+        SetCharacterDialogue(gmName);
+    }
+
+    public void Close()
+    {
+        // Cerrar solo cuando se haya mostrado el dialogo
+        if (!dialogueInProgress || !currentPiggy.Compare(dialog)) return;
+        indexDialog = 0;
+        currentPiggy.ResetDialogueBox();
+        if (currentPiggyInstance!=null) { Destroy(currentPiggyInstance); currentPiggyInstance=null; }
+        dialogueInProgress = false;
+        Debug.Log("Dialogo Cerrado");
+    }
+
+    public void SkipTime()
+    {
+        if (!dialogueInProgress) return;
+        currentPiggy.ResetDialogueBox();
+        currentPiggy.ShowDialogueBox(dialog);
+        indexDialog = dialog.Length-1;
+        Debug.Log("Tiempo de Dialogo Saltado");
+    }
+
+    private void ForceClose()
+    {
+        dialogueInProgress = false;
+        currentPiggy.ResetDialogueBox();
+        indexDialog = 0;
+        if (currentPiggyInstance!=null) { Destroy(currentPiggyInstance); currentPiggyInstance=null; }
+        Debug.Log("Dialogo Forzado a Cerrar");
+    }
+
+    public bool isDialogueInProgress()
+    {
+        return dialogueInProgress;
     } 
 
     private bool TimeLetterFinished()
