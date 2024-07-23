@@ -15,7 +15,7 @@ public class BtnBarricada : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetMouseButtonDown(0) && Enfriamiento.instancia.circulo.fillAmount == 0)
+        if(Input.GetMouseButtonDown(0) && Enfriamiento.instancia.circulo.fillAmount == 0 && enPausa == false)
         {
             Vector2 rayPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(rayPos, Vector2.zero);

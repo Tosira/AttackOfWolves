@@ -18,11 +18,16 @@ public class Barricada : MonoBehaviour
                 transform.Rotate(Vector3.forward, scroll * rotacion);
             }
         }
-        
+        if (Input.GetMouseButtonDown(0) && colocar)
+        {
+            dejar();
+        }
+
     }
 
-    private void OnMouseDown()
+    private void dejar()
     {
+        if (BtnBarricada.Instance.enPausa == false) return;
         colocar = false;
         BtnBarricada.Instance.cambiarPausa();
     }

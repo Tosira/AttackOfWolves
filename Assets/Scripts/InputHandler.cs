@@ -46,6 +46,7 @@ public class InputHandler : MonoBehaviour, IPointerClickHandler
     {
         if (!context.started) return;   // Posible llamda sin un click
         if (DialogsManager.dm.isDialogueInProgress()) return;
+        if (BtnBarricada.Instance.enPausa) return;
 
         //  'rayHit' guarda la interseccion del rayo(que va desde un punto de la pantalla; ScreenPointToRay) con los objetos 2D del juego. 
         var rayHit = Physics2D.GetRayIntersection(mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue()));

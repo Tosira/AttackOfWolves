@@ -97,4 +97,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c12db857027a9ec49b0ef1979d569eac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocidad: 1
+  damage: 1
+  speed: 0
+  myTower: {fileID: 0}

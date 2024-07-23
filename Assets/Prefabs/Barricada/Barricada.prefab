@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2308888856006914477}
   - component: {fileID: 8119741821676937364}
   - component: {fileID: 5945540429622703457}
-  - component: {fileID: 4334552557392841127}
+  - component: {fileID: -1612668468696928648}
   m_Layer: 0
   m_Name: Barricada
   m_TagString: Untagged
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 10000
   m_Sprite: {fileID: 21300000, guid: 2ef91424f1142a54b90189184c128752, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -131,7 +131,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 4.11, y: 2.28}
   m_EdgeRadius: 0
---- !u!114 &4334552557392841127
+--- !u!114 &-1612668468696928648
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
