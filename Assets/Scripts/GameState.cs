@@ -11,7 +11,7 @@ using System;
 public class Player
 {
     public int life = 100;
-    public int money = 100;
+    public int money = 1000;
 }
 
 public class GameState : MonoBehaviour

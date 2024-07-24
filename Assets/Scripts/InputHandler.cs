@@ -1,10 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
-using UnityEditor.Profiling.Memory.Experimental;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour
@@ -58,6 +54,9 @@ public class InputHandler : MonoBehaviour
 
         if (rayHit.collider.gameObject.CompareTag("Torre") && !ParentInputHandler.Instance.activeInterface)
         {
+            Torreta tower = rayHit.collider.gameObject.GetComponent<Torreta>();
+            if (tower == null) { Debug.Log("Componente Torreta no encontrado"); return; }
+            ParentInputHandler.Instance.txtDetails.text = tower.GetDetailsTower();
             ParentInputHandler.Instance.btn = rayHit.collider.gameObject;
             ParentInputHandler.Instance.InstantiateInterface(ParentInputHandler.Instance.towersInterface);
             // ParentInputHandler.Instance._interface = Instantiate(ParentInputHandler.Instance.towersInterface, ParentInputHandler.Instance.mainCanvas.transform);

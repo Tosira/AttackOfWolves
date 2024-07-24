@@ -15,9 +15,12 @@ public class Torreta : MonoBehaviour
     public float radio;
     public float damage;
     public SpriteRenderer spriteRend;
-    private int precio; 
 
-    private float disMin = 10000000f;    
+    protected int price;
+    protected short level;
+    protected string _name;
+    protected List<Statistics> statistics;
+    private float disMin = 10000000f;
 
     public void Update()
     {
@@ -100,7 +103,72 @@ public class Torreta : MonoBehaviour
         frequency -= Time.deltaTime;
     }
 
+    private Statistics SearchStatistics()
+    {
+        if (statistics.Count <= 0) { Debug.Log("Sin Estadisticas para mejorar"); return null; }
+        foreach (Statistics st in statistics)
+        {
+            if (st.Level > level) return st;            
+        }
+        return null;
+    }
+
+    public bool Upgrade()
+    {
+        if (statistics.Count <= 0) { Debug.Log("Sin Estadisticas para mejorar"); return false; }
+        
+        Statistics st = SearchStatistics();
+        if (st == null) return false;
+        
+        Debug.Log("Mejora de nivel " + level);
+        if (!GameState.gs.Buy(st.Precio)) return false;
+        level = st.Level;
+        damage = st.Damage;
+        originalFrequency = st.Frequency;
+        radio = st.Radio;
+        bulletSpeed = st.BulletSpeed;
+        price = st.Precio;
+        Debug.Log(" a nivel " + level);
+        return true;
+    }
+
+    public void Sell()
+    {
+        GameState.gs.AddMoney(CalculateProfit());
+        // Destruccion hecha por Buttons::FinishSellTower
+    }
+
+    public int CalculateProfit()
+    {
+        return  (int)(price*0.6);
+    }
+
+    public string GetDetailsUpgrade()
+    {
+        Statistics st = SearchStatistics();
+        if (st == null) return "Nivel Maximo Alcanzado";
+        string details = _name + " Nivel " + st.Level + "\n\n" +
+                         "Daño: " + damage + "   +" + (st.Damage-damage).ToString("F2") + "\n" +
+                         "Frecuencia: " + originalFrequency + "   +" + (st.Frequency-originalFrequency).ToString("F2") + "\n" +
+                         "Velocidad Bala: " + bulletSpeed + "   +" + (st.BulletSpeed-bulletSpeed).ToString("F2") + "\n" +
+                         "Radio: " + radio + "   +" + (st.Radio-radio).ToString("F2") + "\n\n" +
+                         "Precio Mejora: " + st.Precio;
+
+        return details;
+    }
+
+    public string GetDetailsTower()
+    {
+        string details = _name + " Nivel " + level + "\n\n" +
+                         "Daño: " + damage + "\n" +
+                         "Frecuencia: " + originalFrequency + "\n" +
+                         "Velocidad Bala: " + bulletSpeed + "\n" +
+                         "Radio: " + radio + "\n" +
+                         "Precio: " + price;
+        return details;
+    }                     
+
     public virtual void ImpactoBala() { }  
 
-    public virtual int GetPrecio() { return precio; }
+    public virtual int GetPrecio() { return price; }
 }

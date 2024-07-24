@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.src.Torres
@@ -7,15 +7,21 @@ namespace Assets.src.Torres
     {
         [SerializeField] private GameObject _prefabBala;
         private Enemigo currentEnemy;
-        private static int precio = 20;
+        // private static int precio = 20;
 
         // Use this for initialization
-        void Start()
+        void Awake()
         {
+            level = 1;
+            _name = "Torre de Barro";
             frequency = 1.5f;
             bulletSpeed = 1.5f;
             radio = 4f;
             damage = 1.4f;
+            price = 20;
+            statistics = new List<Statistics>();
+            statistics.Add(new MudTower2());
+            statistics.Add(new MudTower3());
             SetTower(transform, _prefabBala, frequency, bulletSpeed, radio, damage);
         }
 
@@ -43,7 +49,7 @@ namespace Assets.src.Torres
 
         public override int GetPrecio()
         {
-            return precio; 
+            return price; 
         }
 
     }

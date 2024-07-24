@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEditor.ShortcutManagement;
+using Assets.src.Torres;
 
 enum Option
 {
@@ -61,14 +62,18 @@ public class Buttons : MonoBehaviour
     {
         ParentInputHandler.Instance.DeleteInterface();
         ParentInputHandler.Instance.InstantiateInterface(ParentInputHandler.Instance.optionInterface);
+        ParentInputHandler.Instance.txtDetails.text = "¿Quiere vender esta torre por \n" + ParentInputHandler.Instance.btn.GetComponent<Torreta>().CalculateProfit() + " monedas?";
         option = Option.SELL;
     }
 
     private void FinishSellTower()
     {
+        Torreta tower = ParentInputHandler.Instance.btn.GetComponent<Torreta>();
+        if (tower == null) return;
+        tower.Sell();
         GameObject _base = ParentInputHandler.Instance.SearchObject("Base");
         ParentInputHandler.Instance.AddInstance(Instantiate(_base, ParentInputHandler.Instance.btn.transform.position, Quaternion.identity));
-        Debug.Log(ParentInputHandler.Instance.btn.name + " vendida");
+        Debug.Log(ParentInputHandler.Instance.btn.name + " vendida por " + tower.CalculateProfit());
         ParentInputHandler.Instance.DeleteInterfaceAndButton();
     }
 
@@ -76,13 +81,15 @@ public class Buttons : MonoBehaviour
     {
         ParentInputHandler.Instance.DeleteInterface();
         ParentInputHandler.Instance.InstantiateInterface(ParentInputHandler.Instance.optionInterface);
+        ParentInputHandler.Instance.txtDetails.text = ParentInputHandler.Instance.btn.GetComponent<Torreta>().GetDetailsUpgrade();
         option = Option.UPGRADE;
     }
 
     private void FinishUpgradeTower()
     {
-        if (ParentInputHandler.Instance.btn.GetComponent<Torreta>() == null) return;
-        Debug.Log(ParentInputHandler.Instance.btn.name + " mejorada");
+        Torreta tower = ParentInputHandler.Instance.btn.GetComponent<Torreta>();
+        if (tower == null) return;
+        if (tower.Upgrade()) { Debug.Log(ParentInputHandler.Instance.btn.name + " mejorada"); }
         ParentInputHandler.Instance.DeleteInterface();
     }
 
@@ -98,6 +105,9 @@ public class Buttons : MonoBehaviour
         ParentInputHandler.Instance.DeleteInterface();
         ParentInputHandler.Instance.InstantiateInterface(ParentInputHandler.Instance.optionInterface);
         ParentInputHandler.Instance.gm = ParentInputHandler.Instance.SearchObject("TorreAgua");
+        GameObject gm = new GameObject("Tower");
+        ParentInputHandler.Instance.txtDetails.text = gm.AddComponent<TorreAgua>().GetDetailsTower();
+        Destroy(gm);
     }
 
     public void InstantiateMudTower()
@@ -105,6 +115,9 @@ public class Buttons : MonoBehaviour
         ParentInputHandler.Instance.DeleteInterface();
         ParentInputHandler.Instance.InstantiateInterface(ParentInputHandler.Instance.optionInterface);
         ParentInputHandler.Instance.gm = ParentInputHandler.Instance.SearchObject("TorreBarro");
+        GameObject gm = new GameObject("Tower");
+        ParentInputHandler.Instance.txtDetails.text = gm.AddComponent<TorreBarro>().GetDetailsTower();
+        Destroy(gm);
     }
 
     public void InstantiateStoneTower()
@@ -112,6 +125,9 @@ public class Buttons : MonoBehaviour
         ParentInputHandler.Instance.DeleteInterface();
         ParentInputHandler.Instance.InstantiateInterface(ParentInputHandler.Instance.optionInterface);
         ParentInputHandler.Instance.gm = ParentInputHandler.Instance.SearchObject("TorrePiedra");
+        GameObject gm = new GameObject("Tower");
+        ParentInputHandler.Instance.txtDetails.text = gm.AddComponent<TorrePiedra>().GetDetailsTower();
+        Destroy(gm);
     }
 
     public void InstantiateFastTower()
@@ -119,6 +135,9 @@ public class Buttons : MonoBehaviour
         ParentInputHandler.Instance.DeleteInterface();
         ParentInputHandler.Instance.InstantiateInterface(ParentInputHandler.Instance.optionInterface);
         ParentInputHandler.Instance.gm = ParentInputHandler.Instance.SearchObject("TorreRepeticionMultiple");
+        GameObject gm = new GameObject("Tower");
+        ParentInputHandler.Instance.txtDetails.text = gm.AddComponent<TorreRepeticionMultiple>().GetDetailsTower();
+        Destroy(gm);
     }
 
 }

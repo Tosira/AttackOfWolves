@@ -1,8 +1,5 @@
 using System.Collections.Generic;
-using System.Data.Common;
-using System.Numerics;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ParentInputHandler : MonoBehaviour
@@ -64,11 +61,11 @@ public class ParentInputHandler : MonoBehaviour
     public void InstantiateInterface(GameObject interface_)
     {
         _interface = Instantiate(interface_, mainCanvas.transform);
-        UnityEngine.Vector3 worldPosition = btn.transform.position;
-        UnityEngine.Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
+        Vector3 worldPosition = btn.transform.position;
+        Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
 
         _interface.transform.position = screenPosition;
-        _interface.GetComponent<RectTransform>().localScale = UnityEngine.Vector3.one;
+        _interface.GetComponent<RectTransform>().localScale = Vector3.one;
 
         activeInterface = true;
     }
@@ -77,6 +74,7 @@ public class ParentInputHandler : MonoBehaviour
     {
         if (!activeInterface) return;
         
+        txtDetails.text = "";
         Destroy(_interface);
         activeInterface = false;
     }
@@ -85,6 +83,7 @@ public class ParentInputHandler : MonoBehaviour
     {
         if (!activeInterface) return;
 
+        txtDetails.text = "";
         RemoveInstance(btn);
         Destroy(btn);
         Destroy(_interface);

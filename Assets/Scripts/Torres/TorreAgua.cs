@@ -10,15 +10,21 @@ namespace Assets.src.Torres
         [SerializeField] private GameObject _prefabBala;
         [SerializeField] private GameObject _prefabArea;
         Bala balaComponente;
-        private static int precio = 30;
+        // private static int precio = 30;
 
         private Transform targetAgua;
-        void Start()
+        void Awake()
         {
+            level=1;
+            _name = "Torre de Agua";
             frequency = 1.2f;
             bulletSpeed = 1f;
             radio = 3.0f;
             damage = 0.25f;
+            price = 30;
+            statistics = new List<Statistics>();
+            statistics.Add(new WaterTower2());
+            statistics.Add(new WaterTower3());
             SetTower(transform, _prefabBala, frequency, bulletSpeed, radio, damage);
         }
 
@@ -54,7 +60,7 @@ namespace Assets.src.Torres
 
         public override int GetPrecio()
         {
-            return precio; 
+            return price; 
         }
     }
 }
