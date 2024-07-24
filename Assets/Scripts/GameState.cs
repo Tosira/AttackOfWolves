@@ -6,6 +6,7 @@ using System.IO;
 using TMPro;
 using UnityEditor.SceneManagement;
 using UnityEngine.InputSystem;
+using System;
 
 public class Player
 {
@@ -38,6 +39,7 @@ public class GameState : MonoBehaviour
     [SerializeField] private TextMeshProUGUI txtMeshLife;
     [SerializeField] private TextMeshProUGUI txtMeshDialog;
 
+    Stream streamLevelFile;
 
     private void Start()
     {
@@ -67,6 +69,7 @@ public class GameState : MonoBehaviour
         // Niveles del Juego
         if (prefabsEnemies.Count > 0 && ReadFileLevels())
         {
+            streamLevelFile.Close();
             if (PrepareLevels())
             {
                 //Debug.Log("Cantidad de niveles"+levels.Count);
@@ -144,66 +147,72 @@ public class GameState : MonoBehaviour
             Debug.LogError("No se pudo cargar el Archivo");
             return false;
         }
-        Stream StreamLevelFile = ConvertTextAssetToStream(levelFile);
-        using (StreamReader sr = new StreamReader(StreamLevelFile))
+        streamLevelFile = ConvertTextAssetToStream(levelFile);
+        try
         {
-            bool initializeTimes = false;   // Inidica que lineas del archivo corresponden a los datos para inicializar los tiempos. 
-            string line; 
-            while((line = sr.ReadLine()) != null)
+            using (StreamReader sr = new StreamReader(streamLevelFile))
             {
-                if (line.StartsWith("Nivel 1") || line.StartsWith("Ola 1"))
+                bool initializeTimes = false;   // Inidica que lineas del archivo corresponden a los datos para inicializar los tiempos. 
+                string line; 
+                while((line = sr.ReadLine()) != null)
                 {
-                    //Debug.Log("Salto"); 
-                    continue;
-                } 
-                if (line.StartsWith("Ola"))
-                {
-                    currentLevel.AddWave(currentWave); 
-                    currentWave = new Wave();
-                    initializeTimes = false;
-                    continue; 
-                }
-                if (line.StartsWith("Nivel"))
-                {
-                    if (currentLevel == null || currentWave == null)
+                    if (line.StartsWith("Nivel 1") || line.StartsWith("Ola 1"))
                     {
-                        Debug.LogError("ERROR");
-                        return false;
+                        //Debug.Log("Salto"); 
+                        continue;
+                    } 
+                    if (line.StartsWith("Ola"))
+                    {
+                        currentLevel.AddWave(currentWave); 
+                        currentWave = new Wave();
+                        initializeTimes = false;
+                        continue; 
                     }
-                    //  Cuando se llega al siguiente nivel, se guarda la ultima ola del nivel anterior. No hay error en que la primera ola del nuevo nivel 
-                    //  guarde una ola vacia ya que la condicion "Ola 1" salta las primeras olas de cada nivel.
-                    currentLevel.AddWave(currentWave);
-                    currentWave = new Wave();
+                    if (line.StartsWith("Nivel"))
+                    {
+                        if (currentLevel == null || currentWave == null)
+                        {
+                            Debug.LogError("ERROR");
+                            return false;
+                        }
+                        //  Cuando se llega al siguiente nivel, se guarda la ultima ola del nivel anterior. No hay error en que la primera ola del nuevo nivel 
+                        //  guarde una ola vacia ya que la condicion "Ola 1" salta las primeras olas de cada nivel.
+                        currentLevel.AddWave(currentWave);
+                        currentWave = new Wave();
 
-                    levels.Add(currentLevel);
-                    currentLevel = new Level();
-                    initializeTimes = false;
-                    continue; 
-                }   
-                if (line.StartsWith("/"))   //  Despues de este caracter se encuentran los tiempos de instanciamiento.
-                {                    
-                    initializeTimes = true; 
-                    continue;
-                }                
-                if (initializeTimes)
-                {
-                    //Debug.Log("Times");
-                    var data = line.Split(',');
-                    float time = float.Parse(data[0]);
-                    currentWave.AddTimeInstance(time); 
-                }
-                else
-                {
-                    var data = line.Split(',');
-                    int quantity = int.Parse(data[0]);
-                    string enemy = data[1];
-                    //Debug.Log(quantity+" "+enemy+" "+currentWave.GetPairs().Count);
-                    currentWave.AddPair(quantity, enemy); 
-                }
-            }//while
-            sr.Close();
-        }//using
-        
+                        levels.Add(currentLevel);
+                        currentLevel = new Level();
+                        initializeTimes = false;
+                        continue; 
+                    }   
+                    if (line.StartsWith("/"))   //  Despues de este caracter se encuentran los tiempos de instanciamiento.
+                    {                    
+                        initializeTimes = true; 
+                        continue;
+                    }                
+                    if (initializeTimes)
+                    {
+                        //Debug.Log("Times");
+                        var data = line.Split(',');
+                        float time = float.Parse(data[0]);
+                        currentWave.AddTimeInstance(time); 
+                    }
+                    else
+                    {
+                        var data = line.Split(',');
+                        int quantity = int.Parse(data[0]);
+                        string enemy = data[1];
+                        //Debug.Log(quantity+" "+enemy+" "+currentWave.GetPairs().Count);
+                        currentWave.AddPair(quantity, enemy); 
+                    }
+                }//while
+            }//using
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error leer Niveles " + e.Message);
+            return false;
+        }
         Debug.Log("Lectura Realizada");
         return true;
     }
@@ -211,10 +220,10 @@ public class GameState : MonoBehaviour
     private Stream ConvertTextAssetToStream(TextAsset textAsset)
     {
         // Convertir el contenido del TextAsset a un byte array
-        byte[] byteArray = System.Text.Encoding.UTF8.GetBytes(textAsset.text);
+        // byte[] byteArray = System.Text.Encoding.UTF8.GetBytes(textAsset.text);
 
         // Crear un MemoryStream a partir del byte array
-        return new MemoryStream(byteArray);
+        return new MemoryStream(textAsset.bytes);
     }
 
     private bool PrepareLevels()

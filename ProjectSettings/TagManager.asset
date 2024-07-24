@@ -7,6 +7,8 @@ TagManager:
   - Bases
   - Boton
   - Enemigo
+  - Torre
+  - Cerrar
   layers:
   - Default
   - TransparentFX

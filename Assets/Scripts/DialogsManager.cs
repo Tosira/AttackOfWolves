@@ -4,6 +4,7 @@ using TMPro;
 using System.IO;
 using Unity.VisualScripting;
 using System.Linq;
+using System;
 
 public class DialogsManager : MonoBehaviour
 {
@@ -93,45 +94,51 @@ public class DialogsManager : MonoBehaviour
         string dl = "";
         previousDialog = dialogOf;
         Stream StreamDialogsFile = ConvertTextAssetToStream(dialogsFile);
-        using (StreamReader sr = new StreamReader(StreamDialogsFile))
+        try
         {
-            string line;
-            short lineNumber = 0;
-            while ((line = sr.ReadLine()) != null)
+            using (StreamReader sr = new StreamReader(StreamDialogsFile))
             {
-                if (line.Contains("#")
-                    && !line.Contains(dialogOf)
-                    && dl.Length != 0)
-                    break;
-                if (line.Contains(dialogOf))
+                string line;
+                short lineNumber = 0;
+                while ((line = sr.ReadLine()) != null)
                 {
-                    if (seenDialogues.Contains(lineNumber))
+                    if (line.Contains("#")
+                        && !line.Contains(dialogOf)
+                        && dl.Length != 0)
+                        break;
+                    if (line.Contains(dialogOf))
                     {
-                        sr.Close();
-                        return;
-                    }
-                    seenDialogues.Add(lineNumber);
-                    dl += line.Split('\n')[0] + '\n';
-                    continue;
-                }
-                if (dl.Length != 0)
-                {
-                    if (line.Contains("*"))
-                    {
-                        if (!SearchPiggy(line.Replace("* ", "")))
+                        if (seenDialogues.Contains(lineNumber))
                         {
-                            sr.Close();
-                            Debug.Log("Personaje " + line + " no encontrado");
-                            return;
+                            break;
                         }
-                        currentPiggy.ResetDialogueBox();
+                        seenDialogues.Add(lineNumber);
+                        dl += line.Split('\n')[0] + '\n';
+                        continue;
                     }
-                    dl += line.Split('\n')[0] + '\n';
+                    if (dl.Length != 0)
+                    {
+                        if (line.Contains("*"))
+                        {
+                            if (!SearchPiggy(line.Replace("* ", "")))
+                            {
+                                Debug.Log("Personaje " + line + " no encontrado");
+                                break;
+                            }
+                            currentPiggy.ResetDialogueBox();
+                        }
+                        dl += line.Split('\n')[0] + '\n';
+                    }
+                    lineNumber++;
                 }
-                lineNumber++;
-            }
-            sr.Close();
-        }        
+            }//using
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error lectura de dialogos " + e.Message);
+            dl = "";
+        }
+        StreamDialogsFile.Close();
         if (dl.Length != 0) { dialog=dl; dialogueInProgress=true; }
     }
 
@@ -200,9 +207,9 @@ public class DialogsManager : MonoBehaviour
     private Stream ConvertTextAssetToStream(TextAsset textAsset)
     {
         // Convertir el contenido del TextAsset a un byte array
-        byte[] byteArray = System.Text.Encoding.UTF8.GetBytes(textAsset.text);
+        // byte[] byteArray = System.Text.Encoding.UTF8.GetBytes(textAsset.text);
 
         // Crear un MemoryStream a partir del byte array
-        return new MemoryStream(byteArray);
+        return new MemoryStream(textAsset.bytes);
     }
 }// DialogManager
