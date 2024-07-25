@@ -1,6 +1,7 @@
 using Assets.src.Torres;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Bala : MonoBehaviour
@@ -48,10 +49,13 @@ public class Bala : MonoBehaviour
 
         //Mueve la bala hacia la nueva posición
         transform.position = newPos;
-        float dist = 1.1f;
+        float dist = 0.5f;
+
+        Vector2 target2D = new Vector2(target.position.x, target.position.y);
+        Vector2 my2D = new Vector2(transform.position.x, transform.position.y);
+
         //transform.position = Vector2.MoveTowards(transform.position, objetivo.position, velocidad*Time.deltaTime);
-        
-        if (Vector3.Distance(transform.position, target.position) < dist)
+        if (Vector2.Distance(target2D, my2D) < dist)
         {
             myTower.GetComponent<Torreta>().ImpactoBala();
             target.gameObject.GetComponent<Enemigo>().GetAttack(damage);
