@@ -5,6 +5,8 @@ public class Statistics
 {
     protected short level;
     public short Level { get{ return level; } }
+    protected short availableLevel; // No se usa
+    public short AvailableLevel { get{ return availableLevel; } }
     protected float damage;
     public float Damage { get{ return damage; } }
     protected float bulletSpeed;
@@ -22,6 +24,7 @@ public class WaterTower2 : Statistics
     public WaterTower2()
     {
         level = 2;
+        availableLevel = 2;
         damage = 0.35f; //
         bulletSpeed = 1.3f; //
         radio = 3.0f;
@@ -35,6 +38,7 @@ public class WaterTower3 : Statistics
     public WaterTower3()
     {
         level = 3;
+        availableLevel = 2;
         damage = 0.40f; //
         bulletSpeed = 1.3f;
         radio = 3.0f;
@@ -48,6 +52,7 @@ public class StoneTower2 : Statistics
     public StoneTower2()
     {
         level = 2;
+        availableLevel = 1;
         damage = 1f;
         bulletSpeed = 1f;
         radio = 6f;
@@ -61,6 +66,7 @@ public class StoneTower3 : Statistics
     public StoneTower3()
     {
         level = 3;
+        availableLevel = 1;
         damage = 1.3f; //
         bulletSpeed = 1f;
         radio = 6f;
@@ -74,6 +80,7 @@ public class MudTower2 : Statistics
     public MudTower2()
     {
         level = 2;
+        availableLevel = 1;
         damage = 1.6f; //
         bulletSpeed = 1.5f;
         radio = 4f;
@@ -87,6 +94,7 @@ public class MudTower3 : Statistics
     public MudTower3()
     {
         level = 3;
+        availableLevel = 1;
         damage = 1.8f; //
         bulletSpeed = 1.6f; //
         radio = 4.2f; //
@@ -100,6 +108,7 @@ public class FastTower2 : Statistics
     public FastTower2()
     {
         level = 2;
+        availableLevel = 3;
         damage = 0.55f; //
         bulletSpeed = 1.3f; //
         radio = 5f;
@@ -113,6 +122,7 @@ public class FastTower3 : Statistics
     public FastTower3()
     {
         level = 3;
+        availableLevel = 3;
         damage = 0.65f; //
         bulletSpeed = 1.3f;
         radio = 5f;

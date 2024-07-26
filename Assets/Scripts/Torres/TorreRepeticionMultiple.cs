@@ -12,6 +12,7 @@ namespace Assets.src.Torres
         private void Awake()
         {
             level=1;
+            availableLevel = 3;
             _name = "Torre de Rápida";
             frequency = 0.3f;
             bulletSpeed = 1f;

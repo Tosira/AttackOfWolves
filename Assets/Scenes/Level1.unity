@@ -500,6 +500,8 @@ MonoBehaviour:
   - {fileID: 3424610959873749677, guid: ae7c5348fa686264ea34cd86dfcbe729, type: 3}
   piggies:
   - {fileID: 4446456425738833181, guid: 22f696393fff8b2428bd5a911567a3f1, type: 3}
+  - {fileID: 4446456425738833181, guid: 52bbaacc35c4fca4f9605d28456d36e7, type: 3}
+  - {fileID: 4446456425738833181, guid: 692c492590812914596126d04d4519b5, type: 3}
   txtMeshMoney: {fileID: 1786919894}
   txtMeshLife: {fileID: 1163568189}
   txtMeshDialog: {fileID: 742541187}
@@ -1291,8 +1293,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -346.59332, y: -177.22331}
-  m_SizeDelta: {x: 363.1745, y: 155.6723}
+  m_AnchoredPosition: {x: -364.4575, y: -177.22331}
+  m_SizeDelta: {x: 327.4462, y: 155.6723}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &742541187
 MonoBehaviour:
@@ -1520,8 +1522,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 620.65454, y: 189.9}
-  m_SizeDelta: {x: 298.4686, y: 226.4316}
+  m_AnchoredPosition: {x: 570.98267, y: 189.9}
+  m_SizeDelta: {x: 199.1249, y: 226.4316}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &951612152
 MonoBehaviour:

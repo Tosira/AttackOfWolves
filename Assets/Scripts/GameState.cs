@@ -23,6 +23,7 @@ public class GameState : MonoBehaviour
     bool levelsSuccesfullySet = false;
     Level currentGameLevel;
     int levelIndex = 0;
+    public int LevelIndex { get { return levelIndex+1; } }
     private bool startWave;
 
     float timeInstance = 0.8f;
@@ -108,8 +109,9 @@ public class GameState : MonoBehaviour
 
         // Related Dialogs
         // Considere no llamar en GameState::Start porque metodo DialogsManager::Start es llamado luego y dialog vuelve a "".
-        if (currentGameLevel.CurrentWaveNotStarted())
+        if (currentGameLevel.CurrentWaveNotStarted() && !GameObject.FindWithTag("Enemigo"))
             DialogsManager.dm.SetCharacterDialogue(levelIndex+1, currentGameLevel.GetWaveIndex()+1);
+        if (Input.GetKeyDown(KeyCode.D)) { DialogsManager.dm.ShowRestDialog(); }
         if (Input.GetKeyDown(KeyCode.Space)) { DialogsManager.dm.Close(); DialogsManager.dm.SkipTime(); }
         DialogsManager.dm.ShowDialog();
         if (DialogsManager.dm.isDialogueInProgress()) return;

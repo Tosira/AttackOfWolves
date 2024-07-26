@@ -18,6 +18,8 @@ public class Torreta : MonoBehaviour
 
     protected int price;
     protected short level;
+    protected short availableLevel;
+    public short AvailableLevel { get { return availableLevel; } }
     protected string _name;
     protected List<Statistics> statistics;
     private float disMin = 10000000f;
@@ -166,7 +168,7 @@ public class Torreta : MonoBehaviour
                          "Radio: " + radio + "\n" +
                          "Precio: " + price;
         return details;
-    }                     
+    }
 
     public virtual void ImpactoBala() { }  
 

@@ -102,41 +102,69 @@ public class Buttons : MonoBehaviour
 
     public void InstantiateWaterTower()
     {
+        GameObject gm = new GameObject("Tower");
+        TorreAgua t = gm.AddComponent<TorreAgua>();
+        if (GameState.gs.LevelIndex < t.AvailableLevel)
+        {
+            ParentInputHandler.Instance.txtDetails.text = "Desbloquee esta torre en el nivel " + t.AvailableLevel;
+            Destroy(gm);
+            return;
+        }
         ParentInputHandler.Instance.DeleteInterface();
         ParentInputHandler.Instance.InstantiateInterface(ParentInputHandler.Instance.optionInterface);
         ParentInputHandler.Instance.gm = ParentInputHandler.Instance.SearchObject("TorreAgua");
-        GameObject gm = new GameObject("Tower");
-        ParentInputHandler.Instance.txtDetails.text = gm.AddComponent<TorreAgua>().GetDetailsTower();
+        ParentInputHandler.Instance.txtDetails.text = t.GetDetailsTower();
         Destroy(gm);
     }
 
     public void InstantiateMudTower()
     {
+        GameObject gm = new GameObject("Tower");
+        TorreBarro t = gm.AddComponent<TorreBarro>();
+        if (GameState.gs.LevelIndex < t.AvailableLevel)
+        {
+            ParentInputHandler.Instance.txtDetails.text = "Desbloquee esta torre en el nivel " + t.AvailableLevel;
+            Destroy(gm);
+            return;
+        }
         ParentInputHandler.Instance.DeleteInterface();
         ParentInputHandler.Instance.InstantiateInterface(ParentInputHandler.Instance.optionInterface);
         ParentInputHandler.Instance.gm = ParentInputHandler.Instance.SearchObject("TorreBarro");
-        GameObject gm = new GameObject("Tower");
-        ParentInputHandler.Instance.txtDetails.text = gm.AddComponent<TorreBarro>().GetDetailsTower();
+        ParentInputHandler.Instance.txtDetails.text = t.GetDetailsTower();
         Destroy(gm);
     }
 
     public void InstantiateStoneTower()
     {
+        GameObject gm = new GameObject("Tower");
+        TorrePiedra t = gm.AddComponent<TorrePiedra>();
+        if (GameState.gs.LevelIndex < t.AvailableLevel)
+        {
+            ParentInputHandler.Instance.txtDetails.text = "Desbloquee esta torre en el nivel " + t.AvailableLevel;
+            Destroy(gm);
+            return;
+        }
         ParentInputHandler.Instance.DeleteInterface();
         ParentInputHandler.Instance.InstantiateInterface(ParentInputHandler.Instance.optionInterface);
         ParentInputHandler.Instance.gm = ParentInputHandler.Instance.SearchObject("TorrePiedra");
-        GameObject gm = new GameObject("Tower");
-        ParentInputHandler.Instance.txtDetails.text = gm.AddComponent<TorrePiedra>().GetDetailsTower();
+        ParentInputHandler.Instance.txtDetails.text = t.GetDetailsTower();
         Destroy(gm);
     }
 
     public void InstantiateFastTower()
     {
+        GameObject gm = new GameObject("Tower");
+        TorreRepeticionMultiple t = gm.AddComponent<TorreRepeticionMultiple>();
+        if (GameState.gs.LevelIndex < t.AvailableLevel)
+        {
+            ParentInputHandler.Instance.txtDetails.text = "Desbloquee esta torre en el nivel " + t.AvailableLevel;
+            Destroy(gm);
+            return;
+        }
         ParentInputHandler.Instance.DeleteInterface();
         ParentInputHandler.Instance.InstantiateInterface(ParentInputHandler.Instance.optionInterface);
         ParentInputHandler.Instance.gm = ParentInputHandler.Instance.SearchObject("TorreRepeticionMultiple");
-        GameObject gm = new GameObject("Tower");
-        ParentInputHandler.Instance.txtDetails.text = gm.AddComponent<TorreRepeticionMultiple>().GetDetailsTower();
+        ParentInputHandler.Instance.txtDetails.text = t.GetDetailsTower();
         Destroy(gm);
     }
 

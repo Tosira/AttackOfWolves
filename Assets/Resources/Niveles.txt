@@ -1,8 +1,8 @@
 Nivel 1
 Ola 1
-10,Lobo
-2,LoboCamuflado
-3,LoboGigante
+1,Lobo
+1,LoboCamuflado
+1,LoboGigante
 /
 0,
 0,

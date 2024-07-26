@@ -1,9 +1,25 @@
+# Level 1 Wave 1
+* CerditoPaja
+Hola! Soy el Cerdito encargado
+de la zona de Paja. Estamos bajo el
+ataque de lobos, ayudame a defender mi zona.
+# Level 1 Wave 1
+* CerditoLadrillo
+Mano, usted encarguese de defender
+esta zona lo mejor que se pueda. No dejes
+que los lobos lleguen a la zona de madera.
+# Level 1 Wave 1
+* CerditoPaja
+Dale mano, como digas. Yo me encargare de defender esta zona.
 # Level 1 Wave 2
-* CerditoPrueba
-Prueba de nueva sintaxis
-# TorreAgua
-* CerditoPrueba
-Felicidades! Has desbloqueado la Torre de Agua
+* CerditoPaja
+Bien hecho! Hemos defendido de los lobos a esta zona. Pero ten cuidado! Ahi vienen mas lobos.
+# Level 1 Wave 1
+* CerditoMadera
+Escuchame bien cerdo de paja bueno para nada, sera mejor que defiendas bien tu zona porque no quiero ver ni un lobo por aqui.
+# Level 1 Wave 1
+* CerditoPaja
+Yaya kl, xupame el pico, si no soy na tu perkin, sapo e la ctm.
 # TorreBarro
 * CerditoPrueba
 Felicidades! Has desbloqueado la Torre de Barro
