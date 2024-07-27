@@ -134,6 +134,12 @@ public class Torreta : MonoBehaviour
         return true;
     }
 
+    public bool Buy()
+    {
+        Debug.Log("Compra " + price);
+        return GameState.gs.Buy(price);
+    }
+
     public void Sell()
     {
         GameState.gs.AddMoney(CalculateProfit());

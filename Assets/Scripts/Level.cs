@@ -47,6 +47,14 @@ class Wave
         currentEnemyQuantity = pairs[0].Quantity;
     }
 
+    public void Reiniciar()
+    {
+        currentInstanceTime = timesInstance[0];
+        currentEnemyQuantity = pairs[0].Quantity;
+        enemyIndex = 0;
+        timeIndex = 0;
+    }
+
     public bool CheckPairs(List<GameObject> prefabsEnemy)
     {
         string enemyType;
@@ -228,6 +236,15 @@ class Level
                 return;
             }
         }        
+    }
+
+    public void Reiniciar()
+    {
+        foreach (Wave w in waves)
+        {
+            w.Reiniciar();
+        }
+        waveIndex = 0;
     }
 
     private void ReduceWaves()

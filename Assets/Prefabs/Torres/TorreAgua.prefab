@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2737084656668777811}
   - component: {fileID: 7088203211648656711}
-  - component: {fileID: 6611115588871256120}
   - component: {fileID: 1972223542490331816}
+  - component: {fileID: 5562563007574481665}
   m_Layer: 0
   m_Name: TorreAgua
   m_TagString: Torre
@@ -86,7 +86,29 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &6611115588871256120
+--- !u!114 &1972223542490331816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1897153753072636241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faf46223d6a9a3a48aecf1c7281e3ab3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  originShot: {fileID: 0}
+  frequency: 0
+  originalFrequency: 0
+  bulletSpeed: 0
+  radio: 0
+  damage: 0
+  spriteRend: {fileID: 0}
+  _prefabBala: {fileID: 3565143859448950638, guid: 0b1f23e0735cc4d4781dfaa55a6548e4, type: 3}
+  _prefabArea: {fileID: 5726553132972072990, guid: cad684514c4add34287b766c6c236431, type: 3}
+--- !u!61 &5562563007574481665
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,7 +140,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.21133333}
+  m_Offset: {x: 0.5917711, y: -0.5060073}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -129,27 +151,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 6.747425, y: 6.667985}
   m_EdgeRadius: 0
---- !u!114 &1972223542490331816
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1897153753072636241}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: faf46223d6a9a3a48aecf1c7281e3ab3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  originShot: {fileID: 0}
-  frequency: 0
-  originalFrequency: 0
-  bulletSpeed: 0
-  radio: 0
-  damage: 0
-  spriteRend: {fileID: 0}
-  _prefabBala: {fileID: 3565143859448950638, guid: 0b1f23e0735cc4d4781dfaa55a6548e4, type: 3}
-  _prefabArea: {fileID: 5726553132972072990, guid: cad684514c4add34287b766c6c236431, type: 3}

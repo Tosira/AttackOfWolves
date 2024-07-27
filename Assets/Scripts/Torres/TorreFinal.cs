@@ -76,16 +76,16 @@ public class TorreFinal : MonoBehaviour
             // Calcular la distancia al objetivo
             float distance = directionToTarget.magnitude*0.85f;
 
-            // Calcular el ángulo de rotación hacia el objetivo en 2D
+            // Calcular el ï¿½ngulo de rotaciï¿½n hacia el objetivo en 2D
             float angle = Mathf.Atan2(directionToTarget.y, directionToTarget.x) * Mathf.Rad2Deg;
 
-            // Asignar la rotación al objeto que se va a estirar
+            // Asignar la rotaciï¿½n al objeto que se va a estirar
             stretchObject.rotation = Quaternion.Euler(0, 0, angle);
 
             // Ajustar la escala del objeto estirado (asumiendo que se estira en el eje X)
             stretchObject.localScale = new Vector3(distance, stretchObject.localScale.y, stretchObject.localScale.z);
 
-            // Ajustar la posición del objeto estirado para que comience en el objeto original y termine en el objetivo
+            // Ajustar la posiciï¿½n del objeto estirado para que comience en el objeto original y termine en el objetivo
             stretchObject.position = (transform.position + target.position) / 2;
         }
     }

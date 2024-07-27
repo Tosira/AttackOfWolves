@@ -156,7 +156,7 @@ public class DialogsManager : MonoBehaviour
             dialog=dl; dialogueInProgress=true;
             Debug.Log("Tamanno dialogo: " + dialog.Length);
             endIndicesForSubString=GetIndicesToEndSubString();
-            ParentInputHandler.Instance.txtDetails.text = "Presione ESAPCIO para cerrar el dialogo o saltar el tiempo.\n" +
+            ParentInputHandler.Instance.txtDetails.text = "Presione ESPACIO para cerrar el dialogo o saltar el tiempo.\n" +
                                                           "Presione D para continuar con el dialogo.";
         }
         else
@@ -272,6 +272,11 @@ public class DialogsManager : MonoBehaviour
     private bool TimeLetterFinished()
     {
         return (timeLetter-=Time.deltaTime) <= 0;
+    }
+
+    public void ReiniciarDialogos()
+    {
+        seenDialogues.Clear();
     }
 
     private Stream ConvertTextAssetToStream(TextAsset textAsset)

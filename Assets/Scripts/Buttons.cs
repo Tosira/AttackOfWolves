@@ -145,8 +145,11 @@ public class Buttons : MonoBehaviour
 
     private void InstantiateTower(GameObject tower)
     {
-        if (tower==null) return;
-        ParentInputHandler.Instance.AddInstance(Instantiate(tower, ParentInputHandler.Instance.btn.transform.position, Quaternion.identity));
+        if (tower == null) return;
+        GameObject t = Instantiate(tower, ParentInputHandler.Instance.btn.transform.position, Quaternion.identity);
+        if (!t.GetComponent<Torreta>().Buy()) { Destroy(t); return;}
+        // ParentInputHandler.Instance.AddInstance(Instantiate(tower, ParentInputHandler.Instance.btn.transform.position, Quaternion.identity));
+        ParentInputHandler.Instance.AddInstance(t);
         Debug.Log(tower.name + " instanciado");
     }
 

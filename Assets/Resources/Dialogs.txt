@@ -25,6 +25,6 @@ Tengo una nueva torre que mi hermano no tenia, la Torre de Agua. Esta torre tien
 # Level 3 Wave 1
 * CerditoLadrillo
 No te preocupes, heramno, seguro que con la torre suprema podremos derrotar a todos los lobos.
-# Level 3 Wave 3
+# Level 3 Wave 2
 * CerditoLadrillo
 Me llegó la noticia de que el enemigo tiene a un aliado muy fuerte para esta última ola, asi que preparate muy bien para defender.

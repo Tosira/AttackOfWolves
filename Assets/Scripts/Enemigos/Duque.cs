@@ -7,7 +7,7 @@ namespace Assets.src.Enemigos
     {
         public override void SetEnemy()
         {
-            vidaActual = vidaMaxima = 200;
+            vidaActual = vidaMaxima = 50;
             esVisible = true;
             reward = 5;
             speed = 1.0f;

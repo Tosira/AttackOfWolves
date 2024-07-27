@@ -51,7 +51,7 @@ Ola 3
 Nivel 3
 Ola 1
 15,LoboCamuflado
-1,Duque
+20,Lobo
 7,LoboCamuflado
 10,Lobo
 /
@@ -61,7 +61,7 @@ Ola 1
 2,
 Ola 2
 20,LoboCamuflado
-2,Lobo
+1,Duque
 10,LoboCamuflado
 12,Lobo
 /

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,8 +7,8 @@ using System;
 
 public class Player
 {
-    public int life = 100;
-    public int money = 1000;
+    public int life = 10;
+    public int money = 200;
 }
 
 public class GameState : MonoBehaviour
@@ -121,7 +120,22 @@ public class GameState : MonoBehaviour
 
     private void Update()
     {
-        if (currentScene.name == "GameOver" || currentScene.name == "Menu") return;
+        if (currentScene.name == "GameOver" || currentScene.name == "Menu")
+        {
+            player.life = 10;
+            player.money = 200;
+            txtMeshMoney = null;
+            txtMeshLife = null;
+            DialogsManager.dm.ReiniciarDialogos();
+            foreach (Level lvl in levels)
+            {
+                lvl.Reiniciar();
+            }
+            levelIndex = 0;
+            currentGameLevel = levels[levelIndex];
+            Debug.Log("RECONFIGURACION");
+            return;
+        }
         // if(currentScene != SceneManager.GetActiveScene()) { currentScene = SceneManager.GetActiveScene(); return; }
         if(currentScene != SceneManager.GetActiveScene())
         {
@@ -140,13 +154,12 @@ public class GameState : MonoBehaviour
                 }
             }
         }
-        
+        if (txtMeshLife == null || txtMeshMoney == null) return;
 
         target = GameObject.Find("Meta");
         if (GameOver()) SceneManager.LoadScene("GameOver");
         if (!levelsSuccesfullySet) return;
 
-        
         txtMeshMoney.text = player.money.ToString();
         txtMeshLife.text = player.life.ToString();
 
