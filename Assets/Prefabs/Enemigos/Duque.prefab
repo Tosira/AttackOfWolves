@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8051715887510818288}
   - component: {fileID: 1274372724020771061}
   - component: {fileID: 5340763207670701355}
-  - component: {fileID: 1291046168065443662}
+  - component: {fileID: 4815121029041002724}
   m_Layer: 0
   m_Name: Duque
   m_TagString: Enemigo
@@ -144,7 +144,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1291046168065443662
+--- !u!114 &4815121029041002724
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,7 +153,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3424610959873749677}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e120b8ae0245b2740a250960f2f33a0e, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b5cdadc22396274e838639cc4ef22c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   reward: 0
@@ -161,7 +161,7 @@ MonoBehaviour:
   vidaMaxima: 0
   speed: 2
   esVisible: 0
-  barraV: {fileID: 5219075544330471385}
+  barraV: {fileID: 0}
 --- !u!1 &5153734827599945573
 GameObject:
   m_ObjectHideFlags: 0

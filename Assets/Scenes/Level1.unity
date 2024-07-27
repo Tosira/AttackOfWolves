@@ -498,6 +498,7 @@ MonoBehaviour:
   - {fileID: 8717751999533671802, guid: 5a2f42cfb3a95634fbfc269a1d879f2c, type: 3}
   - {fileID: 8717751999533671802, guid: 71db8b5e7c93da94bbcf61683046591b, type: 3}
   - {fileID: 3424610959873749677, guid: ae7c5348fa686264ea34cd86dfcbe729, type: 3}
+  - {fileID: 3424610959873749677, guid: c1ef42a2919b1444882db7c250736b3c, type: 3}
   piggies:
   - {fileID: 4251460772314417450, guid: c72bb85c4cc9ca64f9eba053b991cd3f, type: 3}
   - {fileID: 4251460772314417450, guid: cb4903afea4e6b049a473beefd08ed7a, type: 3}
@@ -1167,7 +1168,7 @@ GameObject:
   - component: {fileID: 716711914}
   - component: {fileID: 716711913}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: CanvasMain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2748,8 +2749,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -271.85, y: -99.436}
-  m_SizeDelta: {x: 289.8124, y: 50}
+  m_AnchoredPosition: {x: -635.50037, y: -97.70401}
+  m_SizeDelta: {x: 270.31, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1786919894
 MonoBehaviour:
