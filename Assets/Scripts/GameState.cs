@@ -36,8 +36,8 @@ public class GameState : MonoBehaviour
     
     [SerializeField] private GameObject gmVida;
     [SerializeField] private GameObject gmMoneda;
-    private TextMeshProUGUI txtMeshMoney;
-    private TextMeshProUGUI txtMeshLife;
+    [SerializeField] private TextMeshProUGUI txtMeshMoney;
+    [SerializeField] private TextMeshProUGUI txtMeshLife;
 
     Stream streamLevelFile;
 
@@ -123,10 +123,30 @@ public class GameState : MonoBehaviour
     {
         if (currentScene.name == "GameOver" || currentScene.name == "Menu") return;
         // if(currentScene != SceneManager.GetActiveScene()) { currentScene = SceneManager.GetActiveScene(); return; }
+        if(currentScene != SceneManager.GetActiveScene())
+        {
+            currentScene = SceneManager.GetActiveScene();
+            TextMeshProUGUI[] tmAll;
+            tmAll = FindObjectsOfType<TextMeshProUGUI>();
+            foreach (TextMeshProUGUI tm in tmAll)
+            {
+                if (tm.name == "Monedas")
+                {
+                    txtMeshMoney = tm;
+                }
+                if (tm.name == "VidaMeta")
+                {
+                    txtMeshLife = tm;
+                }
+            }
+        }
+        
 
         target = GameObject.Find("Meta");
         if (GameOver()) SceneManager.LoadScene("GameOver");
         if (!levelsSuccesfullySet) return;
+
+        
         txtMeshMoney.text = player.money.ToString();
         txtMeshLife.text = player.life.ToString();
 
