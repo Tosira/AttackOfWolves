@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5340763207670701355}
   - component: {fileID: 1291046168065443662}
   m_Layer: 0
-  m_Name: LoboGigante
+  m_Name: Duque
   m_TagString: Enemigo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 3424610959873749677}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 16.79, y: 1.21, z: 0}
+  m_LocalPosition: {x: 16.67, y: 1.43, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 10
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -133,7 +133,7 @@ Animator:
   m_GameObject: {fileID: 3424610959873749677}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 44f245a331e8c55428e40115d8573669, type: 2}
+  m_Controller: {fileID: 9100000, guid: 2a341c96ff78d3a46a7c0576b15ef50d, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -275,7 +275,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.4504, y: 1.1557}
+  m_AnchoredPosition: {x: 0.4, y: 1.65}
   m_SizeDelta: {x: 1304.4636, y: 476.672}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &8338110619948011079
