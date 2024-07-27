@@ -161,7 +161,7 @@ MonoBehaviour:
   vidaMaxima: 0
   speed: 2
   esVisible: 0
-  barraV: {fileID: 0}
+  barraV: {fileID: 5219075544330471385}
 --- !u!1 &5153734827599945573
 GameObject:
   m_ObjectHideFlags: 0
