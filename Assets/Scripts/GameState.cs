@@ -42,6 +42,8 @@ public class GameState : MonoBehaviour
 
     Stream streamLevelFile;
 
+    private static GameState instancia;
+
     private void Start()
     {
         // GameState
@@ -99,6 +101,20 @@ public class GameState : MonoBehaviour
         //    }
         //}
     }
+
+    private void Awake()
+    {
+        if(instancia == null)
+        {
+            instancia = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
 
     private void Update()
     {
