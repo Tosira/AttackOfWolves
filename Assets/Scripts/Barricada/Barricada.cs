@@ -11,9 +11,11 @@ public class Barricada : MonoBehaviour
     private Collider2D col;
     private List<Enemigo> enemigos0;
     private Vector2 tamanio;
+    private List<float> velocidades;
 
     private void Start()
     {
+        velocidades = new List<float>();
         enemigos0 = new List<Enemigo>();
         col = GetComponent<Collider2D>();
         tamanio = col.bounds.size;
@@ -27,7 +29,8 @@ public class Barricada : MonoBehaviour
         Debug.Log(enemigos0.Count);
         foreach (Enemigo enemigo in enemigos0)
         {
-            enemigo.speed = 2f;
+            
+            enemigo.speed = velocidades[enemigos0.IndexOf(enemigo)];
         }
 
         //col = GetComponent<Collider2D>();
@@ -44,11 +47,14 @@ public class Barricada : MonoBehaviour
                     Enemigo enemigo = e.GetComponent<Enemigo>();
                     if(enemigo.speed != 0f)
                     {
-                        enemigo.speed = 0f;
+
+                        
                         if (!enemigos0.Contains(enemigo))
                         {
+                            velocidades.Add(enemigo.speed);
                             enemigos0.Add(enemigo);
                         }
+                        enemigo.speed = 0f;
                     }
                     
                 }
