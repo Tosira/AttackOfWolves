@@ -121,6 +121,7 @@ public class GameState : MonoBehaviour
 
     private void Update()
     {
+        target = GameObject.Find("Meta");
         if (GameOver()) SceneManager.LoadScene("GameOver");
         if (!levelsSuccesfullySet) return;
         txtMeshMoney.text = moneyTxt + player.money.ToString();

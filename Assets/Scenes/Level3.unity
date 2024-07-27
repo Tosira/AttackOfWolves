@@ -1456,7 +1456,7 @@ GameObject:
   - component: {fileID: 716711914}
   - component: {fileID: 716711913}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: CanvasMain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2176,11 +2176,6 @@ PrefabInstance:
 --- !u!224 &1483714607 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5365228703626863932, guid: d595e11b0ea2d6d458ed0153d314a070, type: 3}
-  m_PrefabInstance: {fileID: 1483714606}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1483714608 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 956873260723368791, guid: d595e11b0ea2d6d458ed0153d314a070, type: 3}
   m_PrefabInstance: {fileID: 1483714606}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1538820292

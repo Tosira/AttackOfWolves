@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ParentInputHandler : MonoBehaviour
 {
@@ -22,6 +23,8 @@ public class ParentInputHandler : MonoBehaviour
     [SerializeField] public List<GameObject> allObjects;
     private List<GameObject> instantiatedObjcts;
 
+    private Scene currentScene;
+
     private ParentInputHandler() { }
     
     private void Awake()
@@ -32,6 +35,7 @@ public class ParentInputHandler : MonoBehaviour
 
     public void Start()
     {
+        currentScene = SceneManager.GetActiveScene();
         mainCamera=Camera.main;
         instantiatedObjcts = new List<GameObject>();
         if (detailsInterface.transform.Find("Detalles").GetComponent<TextMeshProUGUI>() != null)
@@ -40,6 +44,26 @@ public class ParentInputHandler : MonoBehaviour
             Debug.Log("Configurado Interfaz Detalles");
         }
         // detailsInterface.SetActive(false);
+    }
+
+    private void Update()
+    {
+        if(currentScene != SceneManager.GetActiveScene())
+        {
+            mainCamera = Camera.main;
+            Canvas[] canvases;
+            canvases = FindObjectsOfType<Canvas>();
+            foreach (Canvas c in canvases)
+            {
+                if(c.name == "CanvasMain")
+                {
+                    Debug.Log("Canvas Encontrado");
+                    mainCanvas = c;
+                }
+            }
+            detailsInterface = GameObject.Find("InterfazDetalles");
+            currentScene = SceneManager.GetActiveScene();
+        }
     }
 
     public static ParentInputHandler Instance
