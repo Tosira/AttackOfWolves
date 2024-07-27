@@ -62,6 +62,11 @@ public class ParentInputHandler : MonoBehaviour
                 }
             }
             detailsInterface = GameObject.Find("InterfazDetalles");
+            if (detailsInterface != null)
+            {
+                detailsInterface.SetActive(false);
+                txtDetails = detailsInterface.transform.Find("Detalles").GetComponent<TextMeshProUGUI>();
+            }
             currentScene = SceneManager.GetActiveScene();
         }
     }
