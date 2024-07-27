@@ -71,28 +71,4 @@ public class InputHandler : MonoBehaviour
             return;
         }
     }
-
-    void AdjustarEscala(SpriteRenderer spriteRend, GameObject btn)
-    {
-        if (spriteRend.sprite != null)
-        {
-            Vector2 spriteSize = spriteRend.sprite.bounds.size;
-            float widthScale = escalaOriginal.x / spriteSize.x;
-            float heightScale = escalaOriginal.y / spriteSize.y;
-
-            float targetScale = Mathf.Min(widthScale, heightScale);
-
-            btn.transform.localScale = new Vector3(targetScale, targetScale, btn.transform.localScale.z);
-        }
-    }
-
-    void AdjustarCollider(GameObject btn)
-    {
-        SpriteRenderer spriteRenderer = btn.GetComponent<SpriteRenderer>();
-        CircleCollider2D circleCollider = btn.GetComponent<CircleCollider2D>();
-        if (circleCollider != null && spriteRenderer.sprite != null)
-        {
-            circleCollider.radius = spriteRenderer.sprite.bounds.size.x/2;
-        }
-    }
 }

@@ -62,7 +62,7 @@ public class GameState : MonoBehaviour
         dm = gmDialogsManager.AddComponent<DialogsManager>();
         
         // DialogsManager
-        DialogsManager.dm.Initialze(piggies, txtMeshDialog);
+        DialogsManager.dm.Initialze(piggies);
 
         // Estadisticas Jugador
         player = new Player();

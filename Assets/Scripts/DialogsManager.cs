@@ -2,10 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.IO;
-using Unity.VisualScripting;
 using System.Linq;
 using System;
-using UnityEditor.Search;
 
 public class DialogsManager : MonoBehaviour
 {
@@ -51,12 +49,12 @@ public class DialogsManager : MonoBehaviour
         currentPiggyInstance = null;
     }
 
-    public void Initialze(List<GameObject> _characters, TextMeshProUGUI _txtMeshDialog)
+    public void Initialze(List<GameObject> _characters)
     {
         if (_characters.Count == 0) return;
         characters.Clear();
         characters = _characters.ToList();
-        currentPiggy = new Piggy(_txtMeshDialog);
+        currentPiggy = new Piggy();
     }
 
     public void ShowDialog()
@@ -100,7 +98,7 @@ public class DialogsManager : MonoBehaviour
             return;
         }
 
-        ForceClose();   // No es necesaria luego de haber llamaddo a Close()
+        // ForceClose();   // No es necesaria luego de haber llamaddo a Close()
         string dl = "";
         Stream StreamDialogsFile = ConvertTextAssetToStream(dialogsFile);
         try
@@ -153,6 +151,7 @@ public class DialogsManager : MonoBehaviour
         StreamDialogsFile.Close();
         if (dl.Length != 0)
         {
+            ForceClose();
             dialog=dl; dialogueInProgress=true;
             Debug.Log("Tamanno dialogo: " + dialog.Length);
             endIndicesForSubString=GetIndicesToEndSubString();
@@ -173,7 +172,13 @@ public class DialogsManager : MonoBehaviour
         {
             if (pg.name == namePiggy)
             {
-                currentPiggyInstance = Instantiate(pg, new Vector3(-9.8f,-4f,0), Quaternion.identity);
+                // new Vector3(-6f,-4f,0)
+                currentPiggyInstance = Instantiate(pg, ParentInputHandler.Instance.mainCanvas.transform);
+                currentPiggyInstance.GetComponent<RectTransform>().anchoredPosition = new Vector3(-400, -200, 0);
+                TextMeshProUGUI t = null;
+                Debug.Log("Nombre: " + currentPiggyInstance.transform.Find("Dialogo").name);
+                if ((t = currentPiggyInstance.transform.Find("Dialogo").GetComponent<TextMeshProUGUI>()) != null)
+                    currentPiggy.Initialize(t);
                 return true;
             }
         }
@@ -254,7 +259,7 @@ public class DialogsManager : MonoBehaviour
         dialogueInProgress = false;
         currentPiggy.ResetDialogueBox();
         indexDialog = 0;
-        if (currentPiggyInstance!=null) { Destroy(currentPiggyInstance); currentPiggyInstance=null; }
+        // if (currentPiggyInstance!=null) { Destroy(currentPiggyInstance); currentPiggyInstance=null; }
         Debug.Log("Dialogo Forzado a Cerrar");
     }
 

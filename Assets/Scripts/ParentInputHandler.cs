@@ -8,13 +8,13 @@ public class ParentInputHandler : MonoBehaviour
     
     [SerializeField] public Canvas mainCanvas;
     [HideInInspector] public Camera mainCamera;
-    [SerializeField] public TextMeshProUGUI txtDetails;
-    [SerializeField] public GameObject squareDetails;
+    [HideInInspector] public TextMeshProUGUI txtDetails;
 
     [HideInInspector] public GameObject btn;
     [HideInInspector] public GameObject _interface;
     [HideInInspector] public GameObject gm;
     [HideInInspector] public bool activeInterface;
+    [SerializeField] public GameObject detailsInterface;
     [SerializeField] public GameObject towersInterface;
     [SerializeField] public GameObject baseInterface;
     [SerializeField] public GameObject optionInterface;
@@ -28,6 +28,13 @@ public class ParentInputHandler : MonoBehaviour
         instance = this;
         mainCamera=Camera.main;
         instantiatedObjcts = new List<GameObject>();
+        if (detailsInterface.transform.Find("Detalles").GetComponent<TextMeshProUGUI>() != null)
+        {
+            txtDetails = detailsInterface.transform.Find("Detalles").GetComponent<TextMeshProUGUI>();
+            Debug.Log("Configurado Interfaz Detalles");
+        }
+        // Instantiate(detailsInterface, mainCanvas.transform);
+        detailsInterface.SetActive(false);
     }
 
     public static ParentInputHandler Instance
@@ -66,7 +73,7 @@ public class ParentInputHandler : MonoBehaviour
 
         _interface.transform.position = screenPosition;
         _interface.GetComponent<RectTransform>().localScale = Vector3.one;
-
+        detailsInterface.SetActive(true);
         activeInterface = true;
     }
 
@@ -74,7 +81,8 @@ public class ParentInputHandler : MonoBehaviour
     {
         if (!activeInterface) return;
         
-        txtDetails.text = "";
+        // txtDetails.text = "";
+        detailsInterface.SetActive(false);
         Destroy(_interface);
         activeInterface = false;
     }
@@ -83,7 +91,8 @@ public class ParentInputHandler : MonoBehaviour
     {
         if (!activeInterface) return;
 
-        txtDetails.text = "";
+        // txtDetails.text = "";
+        detailsInterface.SetActive(false);
         RemoveInstance(btn);
         Destroy(btn);
         Destroy(_interface);

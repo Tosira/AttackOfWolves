@@ -6,7 +6,12 @@ public class Piggy
 {
     private TextMeshProUGUI dialogBox;
 
-    public Piggy(TextMeshProUGUI _dialogBox)
+    public Piggy()
+    {
+        
+    }
+
+    public void Initialize(TextMeshProUGUI _dialogBox)
     {
         dialogBox = _dialogBox;
     }
