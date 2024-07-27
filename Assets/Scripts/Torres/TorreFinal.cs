@@ -14,6 +14,20 @@ public class TorreFinal : MonoBehaviour
     {
         FindEnemy();
         Shoot();
+        Attack();
+        if (target == null)
+        {
+            stretchObject.localScale = new Vector3(0, stretchObject.localScale.y, stretchObject.localScale.z);
+        }
+    }
+
+    void Attack()
+    {
+        if (target == null) return;
+
+        if (target.CompareTag("Enemigo")){
+            target.gameObject.GetComponent<Enemigo>().GetAttack(0.01f);
+        }
     }
 
     void FindEnemy()
@@ -60,7 +74,7 @@ public class TorreFinal : MonoBehaviour
             Vector3 directionToTarget = target.position - transform.position;
 
             // Calcular la distancia al objetivo
-            float distance = directionToTarget.magnitude;
+            float distance = directionToTarget.magnitude*0.85f;
 
             // Calcular el ángulo de rotación hacia el objetivo en 2D
             float angle = Mathf.Atan2(directionToTarget.y, directionToTarget.x) * Mathf.Rad2Deg;
