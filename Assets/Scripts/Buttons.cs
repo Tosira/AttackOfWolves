@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEditor.ShortcutManagement;
 using Assets.src.Torres;
+using UnityEngine.Scripting;
 
 enum Option
 {
@@ -14,25 +15,77 @@ enum Option
 
 public class Buttons : MonoBehaviour
 {
+    AudioSource audio_;
     private Option option = Option.NONE;
-    public void Menu()
+
+    private void Awake()
     {
-        SceneManager.LoadScene("Menu");
+        audio_ = GetComponent<AudioSource>();
     }
 
     public void Game()
     {
-        SceneManager.LoadScene("Level1");
+        AudioClip clip = Resources.Load<AudioClip>("Click");
+        if (clip != null)
+        {
+            audio_.clip = clip;
+            audio_.Play();
+            StartCoroutine(LoadScene(audio_.clip.length, "Level1"));
+        }
+        else
+        {
+            Debug.LogError("AudioClip no encontrado en la ruta especificada.");
+            SceneManager.LoadScene("Level1");
+        }
+    }
+
+    public void Menu()
+    {
+        AudioClip clip = Resources.Load<AudioClip>("Click");
+        if (clip != null)
+        {
+            audio_.clip = clip;
+            audio_.Play();
+            StartCoroutine(LoadScene(audio_.clip.length, "Menu"));
+        }
+        else
+        {
+            Debug.LogError("AudioClip no encontrado en la ruta especificada.");
+            SceneManager.LoadScene("Level1");
+        }
     }
 
     public void Salir()
     {
+        AudioClip clip = Resources.Load<AudioClip>("Click");
+        if (clip != null)
+        {
+            audio_.clip = clip;
+            audio_.Play();
+            StartCoroutine(LoadScene(audio_.clip.length));
+        }
+        else
+        {
+            Debug.LogError("AudioClip no encontrado en la ruta especificada.");
+            SceneManager.LoadScene("Level1");
+        }
+    }
+
+    private IEnumerator LoadScene(float clipLength, string scene="")
+    {
+        yield return new WaitForSeconds(clipLength);
+        if (scene!="") {SceneManager.LoadScene(scene);}
+        else 
+        {
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
             Application.Quit(); 
 #endif
+        }
     }
+
+//////////////////////////////////////////////////////////////////////
 
     public void CloseInterface()
     {

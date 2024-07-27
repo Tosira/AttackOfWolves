@@ -4,8 +4,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.IO;
 using TMPro;
-using UnityEditor.SceneManagement;
-using UnityEngine.InputSystem;
 using System;
 
 public class Player
@@ -32,15 +30,14 @@ public class GameState : MonoBehaviour
     public static GameState gs;
     private DialogsManager dm;
     public static GameObject target;
-    // private Scene currentScene;
+    private Scene currentScene;
     // public Scene CurrentScene { get { return currentScene; } }
     [SerializeField] private List<GameObject> piggies;
     
-    private string moneyTxt = "Monedas: ";
-    private string lifeTxt = "Vidas: ";
-    [SerializeField] private TextMeshProUGUI txtMeshMoney;
-    [SerializeField] private TextMeshProUGUI txtMeshLife;
-    [SerializeField] private TextMeshProUGUI txtMeshDialog;
+    [SerializeField] private GameObject gmVida;
+    [SerializeField] private GameObject gmMoneda;
+    private TextMeshProUGUI txtMeshMoney;
+    private TextMeshProUGUI txtMeshLife;
 
     Stream streamLevelFile;
 
@@ -51,6 +48,9 @@ public class GameState : MonoBehaviour
         // GameState
         gs = FindObjectOfType<GameState>();
         DontDestroyOnLoad(gs);
+
+        // Scene
+        currentScene = SceneManager.GetActiveScene();
 
         // Meta de Enemigos
         target = GameObject.Find("Meta");
@@ -69,8 +69,8 @@ public class GameState : MonoBehaviour
 
         // Estadisticas Jugador
         player = new Player();
-        txtMeshMoney.text = moneyTxt + player.money.ToString();
-        txtMeshLife.text = lifeTxt + player.life.ToString();
+        txtMeshMoney.text = player.money.ToString();
+        txtMeshLife.text = player.life.ToString();
         
         // Niveles del Juego
         if (prefabsEnemies.Count > 0 && ReadFileLevels())
@@ -121,11 +121,14 @@ public class GameState : MonoBehaviour
 
     private void Update()
     {
+        if (currentScene.name == "GameOver" || currentScene.name == "Menu") return;
+        // if(currentScene != SceneManager.GetActiveScene()) { currentScene = SceneManager.GetActiveScene(); return; }
+
         target = GameObject.Find("Meta");
         if (GameOver()) SceneManager.LoadScene("GameOver");
         if (!levelsSuccesfullySet) return;
-        txtMeshMoney.text = moneyTxt + player.money.ToString();
-        txtMeshLife.text = lifeTxt + player.life.ToString();
+        txtMeshMoney.text = player.money.ToString();
+        txtMeshLife.text = player.life.ToString();
 
         // Related Dialogs
         // Considere no llamar en GameState::Start porque metodo DialogsManager::Start es llamado luego y dialog vuelve a "".
@@ -138,7 +141,12 @@ public class GameState : MonoBehaviour
 
         if (currentGameLevel.WithoutWaves() && !GameObject.FindWithTag("Enemigo"))
         {
-            if (!UpdateCurrentLevel()) { Debug.Log("Niveles Agotados"); return; }
+            if (!UpdateCurrentLevel())
+            {
+                Debug.Log("Niveles Agotados");
+                SceneManager.LoadScene("Menu");
+                return; 
+            }
             if (levelIndex+1 == 2)
             {
                 SceneManager.LoadScene("Level2");

@@ -16,6 +16,23 @@ public class Bala : MonoBehaviour
 
     public GameObject myTower;
 
+    private AudioSource audio_;
+    private bool isPlayingSound = false;
+
+    private void Awake()
+    {
+        // Debug.Log("Sonido");
+        audio_ = GetComponent<AudioSource>();
+    }
+
+    private IEnumerator SonidoImpacto(float clipLength)
+    {
+        isPlayingSound = true;
+        gameObject.GetComponent<Renderer>().enabled = false;
+        yield return new WaitForSeconds(clipLength);
+        Destroy(gameObject);
+    }
+
     public void Initialize(Transform target, GameObject tower, float speed, float damage)
     {
         this.target = target;
@@ -29,6 +46,7 @@ public class Bala : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (isPlayingSound) return;
         //  Previene referencia a enemigo destruido
         if (target == null)
         {
@@ -38,16 +56,16 @@ public class Bala : MonoBehaviour
 
         float t = (Time.time - startTime) * speed;
 
-        //Calcula la posición en función del tiempo y la altura del arco
+        //Calcula la posiciï¿½n en funciï¿½n del tiempo y la altura del arco
         float x = Mathf.Lerp(startPos.x, target.position.x, t);
 
         // Por favor, explique que es lo que sucede aqui. 
         float y = startPos.y + (target.position.y - startPos.y) * t - (t * (t - 1)) * alturaArco;
 
-        //Crea el vector de posición
+        //Crea el vector de posiciï¿½n
         Vector3 newPos = new Vector3(x, y, 0);
 
-        //Mueve la bala hacia la nueva posición
+        //Mueve la bala hacia la nueva posiciï¿½n
         transform.position = newPos;
         float dist = 0.5f;
 
@@ -59,7 +77,8 @@ public class Bala : MonoBehaviour
         {
             myTower.GetComponent<Torreta>().ImpactoBala();
             target.gameObject.GetComponent<Enemigo>().GetAttack(damage);
-            Destroy(gameObject);
+            audio_.Play();
+            StartCoroutine(SonidoImpacto(audio_.clip.length));
         }
     }
 }

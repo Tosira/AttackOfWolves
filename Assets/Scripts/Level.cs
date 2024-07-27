@@ -197,8 +197,6 @@ class Level
         if (currentWave.WithoutEnemies())
         {
             ReduceWaves();
-            //Debug.Log(currentWave.GetPairs().Count);
-            Debug.Log("Actualizacion de Ola");
             return;
         }        
         if (currentWave.ReduceInstanceTime()) /*Si es falso, no se ha podido reducir el tiempo y se debe instanciar el enemigo*/
@@ -234,10 +232,12 @@ class Level
 
     private void ReduceWaves()
     {
+        if (!CurrentWaveWithoutEnemies()) return;   // La ola tiene enemigos
         if (waveIndex >= waves.Count-1) return;
         waveIndex++; 
         currentWave = waves[waveIndex];
         currentWave.PrepareWave();
+        Debug.Log("Actualizacion de Ola");
     }
 
     public int GetWaveIndex()
