@@ -32,6 +32,8 @@ public class GameState : MonoBehaviour
     public static GameState gs;
     private DialogsManager dm;
     public static GameObject target;
+    // private Scene currentScene;
+    // public Scene CurrentScene { get { return currentScene; } }
     [SerializeField] private List<GameObject> piggies;
     
     private string moneyTxt = "Monedas: ";
@@ -47,7 +49,8 @@ public class GameState : MonoBehaviour
     private void Start()
     {
         // GameState
-        gs = this;
+        gs = FindObjectOfType<GameState>();
+        DontDestroyOnLoad(gs);
 
         // Meta de Enemigos
         target = GameObject.Find("Meta");
@@ -131,13 +134,21 @@ public class GameState : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space)) { DialogsManager.dm.Close(); DialogsManager.dm.SkipTime(); }
         DialogsManager.dm.ShowDialog();
         if (DialogsManager.dm.isDialogueInProgress()) return;
-                
-        if (currentGameLevel.WithoutWaves())
+
+        if (currentGameLevel.WithoutWaves() && !GameObject.FindWithTag("Enemigo"))
         {
-            if (!UpdateCurrentLevel())
+            if (!UpdateCurrentLevel()) { Debug.Log("Niveles Agotados"); return; }
+            if (levelIndex+1 == 2)
             {
-                //Debug.Log("Niveles Agotados");
-                return;
+                SceneManager.LoadScene("Level2");
+                ParentInputHandler.Instance.mainCamera = Camera.main;
+                ParentInputHandler.Instance.mainCanvas = FindObjectOfType<Canvas>();
+            }
+            if (levelIndex+1 == 3)
+            {
+                SceneManager.LoadScene("Level3");
+                ParentInputHandler.Instance.mainCamera = Camera.main;
+                ParentInputHandler.Instance.mainCanvas = FindObjectOfType<Canvas>();
             }
             startWave = false;
             Debug.Log("NUEVO NIVEL " + (levelIndex+1));

@@ -23,9 +23,15 @@ public class ParentInputHandler : MonoBehaviour
     private List<GameObject> instantiatedObjcts;
 
     private ParentInputHandler() { }
+    
+    private void Awake()
+    {
+        instance = FindObjectOfType<ParentInputHandler>();
+        DontDestroyOnLoad(instance);
+    }
+
     public void Start()
     {
-        instance = this;
         mainCamera=Camera.main;
         instantiatedObjcts = new List<GameObject>();
         if (detailsInterface.transform.Find("Detalles").GetComponent<TextMeshProUGUI>() != null)
@@ -33,15 +39,13 @@ public class ParentInputHandler : MonoBehaviour
             txtDetails = detailsInterface.transform.Find("Detalles").GetComponent<TextMeshProUGUI>();
             Debug.Log("Configurado Interfaz Detalles");
         }
-        // Instantiate(detailsInterface, mainCanvas.transform);
-        detailsInterface.SetActive(false);
+        // detailsInterface.SetActive(false);
     }
 
     public static ParentInputHandler Instance
     {
         get
         {
-            if (instance == null) instance = new ParentInputHandler();
             return instance;
         }
     }

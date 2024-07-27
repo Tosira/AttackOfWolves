@@ -1,20 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour
 {    
-    private GameObject myTower;
-    private Vector3 escalaOriginal;
-
     public void OnClick(InputAction.CallbackContext context)
     {
         if (!context.started) return;   // Posible llamda sin un click
         if (DialogsManager.dm.isDialogueInProgress()) return;
         if (BtnBarricada.Instance.enPausa) return;
 
-        //  'rayHit' guarda la interseccion del rayo(que va desde un punto de la pantalla; ScreenPointToRay) con los objetos 2D del juego. 
+        //  'rayHit' guarda la interseccion del rayo(que va desde un punto de la pantalla; ScreenPointToRay) con los objetos 2D del juego.
+        // if (ParentInputHandler.Instance.mainCamera == null)
+        // {
+        //     ParentInputHandler.Instance.mainCamera = Camera.main;
+        //     ParentInputHandler.Instance.mainCanvas = FindObjectOfType<Canvas>();
+        //     Debug.Log("Nueva configuracion camara y main");
+        // }
+        // if (ParentInputHandler.Instance.detailsInterface == null && ParentInputHandler.Instance.mainCanvas != null)
+        // {
+        //     ParentInputHandler.Instance.detailsInterface = ParentInputHandler.Instance.mainCanvas.transform.Find("InterfazDetalles").gameObject;
+        //     ParentInputHandler.Instance.txtDetails = ParentInputHandler.Instance.detailsInterface.GetComponent<TextMeshProUGUI>();
+        //     Debug.Log("Nueva configuracion detailsInterface");
+        // }
         var rayHit = Physics2D.GetRayIntersection(ParentInputHandler.Instance.mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue()));
         if (!rayHit) return;
 

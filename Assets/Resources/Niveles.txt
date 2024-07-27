@@ -7,22 +7,6 @@ Ola 1
 0,
 0,
 1.5,
-Ola 2
-20,Lobo
-7,LoboCamuflado
-5,LoboGigante
-/
-0,
-3,
-5,
-Ola 3
-10,Lobo
-10,LoboCamuflado
-7,LoboGigante
-/
-0,
-1,
-4,
 Nivel 2
 Ola 1
 20,Lobo
