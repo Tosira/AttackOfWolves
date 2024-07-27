@@ -7,7 +7,7 @@ public class Barricada : MonoBehaviour
 {
     private bool colocar = true;
     private float rotacion = 100f;
-    private float duracion = 10f;
+    private float duracion = 5f;
     private Collider2D col;
     private List<Enemigo> enemigos0;
     private Vector2 tamanio;

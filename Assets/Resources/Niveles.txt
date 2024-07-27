@@ -1,22 +1,93 @@
 Nivel 1
 Ola 1
-5,Lobo
+2,Lobo
 1,LoboCamuflado
-1,Duque
+1,Lobo
+/
+0,
+0,
+1.5,
+Ola 2
+3,Lobo
+2,LoboCamuflado
+2,Lobo
+/
+0,
+0,
+1.5,
+Ola 3
+5,Lobo
+3,LoboCamuflado
+3,Lobo
 /
 0,
 0,
 1.5,
 Nivel 2
 Ola 1
-20,Lobo
-8,LoboCamuflado
-5,Lobo
-10,LoboGigante
+4,Lobo
+3,LoboCamuflado
+2,Lobo
 /
 0,
+5,
+5,
+Ola 2
+7,Lobo
+5,LoboCamuflado
+4,Lobo
+/
+0,
+5,
+7,
+Ola 3
+10,Lobo
+10,Lobo
+12,LoboCamuflado
+/
+0,
+7,
+10,
+Nivel 3
+Ola 1
+15,LoboCamuflado
+1,Duque
+7,LoboCamuflado
+10,Lobo
+/
+0,
+3,
 2,
+2,
+Ola 2
+20,LoboCamuflado
+2,Lobo
+10,LoboCamuflado
+12,Lobo
+/
+0,
+4,
+4,
+3,
+Ola 3
+25,LoboCamuflado
+1,Duque
+7,LoboCamuflado
+1,Duque
+10,LoboCamuflado
+1,Duque
+10,LoboCamuflado
+30,Lobo
+3,Duque
+/
+0,
+4,
 3,
 5,
-Nivel 3
+3,
+3,
+2,
+8,
+2,
+Nivel 4
 Ola 1

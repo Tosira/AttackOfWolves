@@ -18,7 +18,7 @@ public class DialogsManager : MonoBehaviour
     public static DialogsManager dm;
 
     private string dialog;
-    private const int sizeBox = 90;
+    private const int sizeBox = 160;
     private int factor;
     private int endIndicesForSubString;
     private int previousEndIndicesForSubString;
@@ -88,7 +88,8 @@ public class DialogsManager : MonoBehaviour
     {
         if (characters.Count == 0
             || dialogueInProgress
-            || noDialogues.Contains(dialogOf))
+            || noDialogues.Contains(dialogOf)
+            || ParentInputHandler.Instance.mainCanvas==null)
             return;
         
         TextAsset dialogsFile = Resources.Load<TextAsset>("Dialogs");
@@ -101,8 +102,8 @@ public class DialogsManager : MonoBehaviour
         // ForceClose();   // No es necesaria luego de haber llamaddo a Close()
         string dl = "";
         Stream StreamDialogsFile = ConvertTextAssetToStream(dialogsFile);
-        try
-        {
+        // try
+        // {
             using (StreamReader sr = new StreamReader(StreamDialogsFile))
             {
                 string line;
@@ -142,12 +143,12 @@ public class DialogsManager : MonoBehaviour
                     }
                 }
             }//using
-        }
-        catch (Exception e)
-        {
-            Debug.LogError("Error lectura de dialogos " + e.Message);
-            dl = "";
-        }
+        // }
+        // catch (Exception e)
+        // {
+        //     Debug.LogError("Error lectura de dialogos " + e.Message);
+        //     dl = "";
+        // }
         StreamDialogsFile.Close();
         if (dl.Length != 0)
         {

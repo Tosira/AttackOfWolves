@@ -16,7 +16,7 @@ namespace Assets.src.Torres
         void Awake()
         {
             level=1;
-            availableLevel=2;
+            availableLevel=1;
             _name = "Torre de Agua";
             frequency = 1.2f;
             bulletSpeed = 1f;

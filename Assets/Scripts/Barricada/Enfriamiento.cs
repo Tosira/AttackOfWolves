@@ -7,7 +7,7 @@ public class Enfriamiento : MonoBehaviour
 {
     public static Enfriamiento instancia;
     public Image circulo;
-    public float duracion = 5f;
+    public float duracion = 10f;
 
     public float circuloTiempo = 0f;
 

@@ -1,10 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
-using UnityEditor.ShortcutManagement;
 using Assets.src.Torres;
-using UnityEngine.Scripting;
 
 enum Option
 {
