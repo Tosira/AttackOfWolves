@@ -26,32 +26,35 @@ public class GameState : MonoBehaviour
     float timeInstance = 0.8f;
     float copyTimeInstance;
 
-    public static GameState gs;
-    private DialogsManager dm;
+    private static GameState _gs;
+    public static GameState gs { get { return _gs; } }
     public static GameObject target;
     private Scene currentScene;
+    private bool updateCurrentScene;
     // public Scene CurrentScene { get { return currentScene; } }
     [SerializeField] private List<GameObject> piggies;
     
-    [SerializeField] private GameObject gmVida;
-    [SerializeField] private GameObject gmMoneda;
     [SerializeField] private TextMeshProUGUI txtMeshMoney;
     [SerializeField] private TextMeshProUGUI txtMeshLife;
 
     Stream streamLevelFile;
 
-    private static GameState instancia;
-
     private void Start()
     {
+        Debug.Log("START GAME STATE");
+    }
+
+    private void Awake()
+    {
+        Debug.Log("AWAKE GAME STATE");
+        if (gs != null) { Destroy(gameObject); return; } // Destruir GameState creado en cambio de escena
+
         // GameState
-        gs = FindObjectOfType<GameState>();
-        DontDestroyOnLoad(gs);
+        Debug.Log("GS NULL");
+        _gs = FindObjectOfType<GameState>();
+        DontDestroyOnLoad(gameObject);
 
-        // Scene
-        currentScene = SceneManager.GetActiveScene();
-
-        // Meta de Enemigos
+        // Meta enemigo
         target = GameObject.Find("Meta");
         if (target == null)
         {
@@ -60,11 +63,15 @@ public class GameState : MonoBehaviour
         }
         
         // DialogManager
-        GameObject gmDialogsManager = new GameObject("DialogsManager");
-        dm = gmDialogsManager.AddComponent<DialogsManager>();
+        // Esto genera errores de referencia nula cuando se declara en el DialogsManager a gmDialogsManager como no destruible.
+        // if (dm == null)
+        // {
+        //     GameObject gmDialogsManager = new GameObject("DialogsManager_");
+        //     dm = gmDialogsManager.AddComponent<DialogsManager>();
+        // }
         
         // DialogsManager
-        DialogsManager.dm.Initialze(piggies);
+        DialogsManager.Instance.Initialze(piggies);
 
         // Estadisticas Jugador
         player = new Player();
@@ -85,93 +92,32 @@ public class GameState : MonoBehaviour
         copyTimeInstance = timeInstance;
         startWave = false;
 
-        //Debug.Log("Cantidad de niveles " + levels.Count);
-
-        // Testeo niveles de juego
-        //foreach (var lvl in levels)
-        //{
-        //    foreach (Wave wv in lvl.GetWaves())
-        //    {
-        //        foreach (float time in wv.GetTimeInstance())
-        //        {
-        //            Debug.Log("Time " + time);
-        //        }
-        //        foreach (var pair in wv.GetPairs())
-        //        {
-        //            Debug.Log("Cantidad " + pair.Quantity + " Enemigo " + pair.Enemy);
-        //        }
-        //    }
-        //}
+        // Scene
+        currentScene = SceneManager.GetActiveScene();
     }
-
-    private void Awake()
-    {
-        if(instancia == null)
-        {
-            instancia = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
 
     private void Update()
     {
-        if (currentScene.name == "GameOver" || currentScene.name == "Menu")
-        {
-            player.life = 10;
-            player.money = 200;
-            txtMeshMoney = null;
-            txtMeshLife = null;
-            DialogsManager.dm.ReiniciarDialogos();
-            foreach (Level lvl in levels)
-            {
-                lvl.Reiniciar();
-            }
-            levelIndex = 0;
-            currentGameLevel = levels[levelIndex];
-            Debug.Log("RECONFIGURACION");
-            return;
-        }
-        // if(currentScene != SceneManager.GetActiveScene()) { currentScene = SceneManager.GetActiveScene(); return; }
-        if(currentScene != SceneManager.GetActiveScene())
-        {
-            currentScene = SceneManager.GetActiveScene();
-            TextMeshProUGUI[] tmAll;
-            tmAll = FindObjectsOfType<TextMeshProUGUI>();
-            foreach (TextMeshProUGUI tm in tmAll)
-            {
-                if (tm.name == "Monedas")
-                {
-                    txtMeshMoney = tm;
-                }
-                if (tm.name == "VidaMeta")
-                {
-                    txtMeshLife = tm;
-                }
-            }
-        }
-        if (txtMeshLife == null || txtMeshMoney == null) return;
-
-        target = GameObject.Find("Meta");
-        if (GameOver()) SceneManager.LoadScene("GameOver");
         if (!levelsSuccesfullySet) return;
+
+        if (updateCurrentScene) { updateCurrentScene=false; currentScene=SceneManager.GetActiveScene(); ReConfigure(); }
+        if (currentScene.name == "GameOver" || currentScene.name == "Menu") return;
+
+        if (GameOver()) { updateCurrentScene=true; SceneManager.LoadScene("GameOver"); return;}
 
         txtMeshMoney.text = player.money.ToString();
         txtMeshLife.text = player.life.ToString();
 
-        // Related Dialogs
+        // Dialogs
         // Considere no llamar en GameState::Start porque metodo DialogsManager::Start es llamado luego y dialog vuelve a "".
         if (currentGameLevel.CurrentWaveNotStarted() && !GameObject.FindWithTag("Enemigo"))
-            DialogsManager.dm.SetCharacterDialogue(levelIndex+1, currentGameLevel.GetWaveIndex()+1);
-        if (Input.GetKeyDown(KeyCode.D)) { DialogsManager.dm.ShowRestDialog(); }
-        if (Input.GetKeyDown(KeyCode.Space)) { DialogsManager.dm.Close(); DialogsManager.dm.SkipTime(); }
-        DialogsManager.dm.ShowDialog();
-        if (DialogsManager.dm.isDialogueInProgress()) return;
+            DialogsManager.Instance.SetCharacterDialogue(levelIndex+1, currentGameLevel.GetWaveIndex()+1);
+        if (Input.GetKeyDown(KeyCode.D)) { DialogsManager.Instance.ShowRestDialog(); }
+        if (Input.GetKeyDown(KeyCode.Space)) { DialogsManager.Instance.Close(); DialogsManager.Instance.SkipTime(); }
+        DialogsManager.Instance.ShowDialog();
+        if (DialogsManager.Instance.DialogueInProgress) return;
 
+        // Niveles
         if (currentGameLevel.WithoutWaves() && !GameObject.FindWithTag("Enemigo"))
         {
             if (!UpdateCurrentLevel())
@@ -180,20 +126,8 @@ public class GameState : MonoBehaviour
                 SceneManager.LoadScene("Menu");
                 return; 
             }
-            if (levelIndex+1 == 2)
-            {
-                SceneManager.LoadScene("Level2");
-                ParentInputHandler.Instance.mainCamera = Camera.main;
-                ParentInputHandler.Instance.mainCanvas = FindObjectOfType<Canvas>();
-            }
-            if (levelIndex+1 == 3)
-            {
-                SceneManager.LoadScene("Level3");
-                ParentInputHandler.Instance.mainCamera = Camera.main;
-                ParentInputHandler.Instance.mainCanvas = FindObjectOfType<Canvas>();
-            }
+            LoadLevel();
             startWave = false;
-            Debug.Log("NUEVO NIVEL " + (levelIndex+1));
         }
         if (currentGameLevel.CurrentWaveWithoutEnemies()) { currentGameLevel.UpdateLevel(); startWave = false;}
         if (currentGameLevel.CurrentWaveNotStarted() && Input.GetKeyDown(KeyCode.X)) startWave = true;
@@ -206,12 +140,19 @@ public class GameState : MonoBehaviour
                 timeInstance = copyTimeInstance;
             }
         }
-    }    
+    }
+
+    private void LoadLevel()
+    {
+        SceneManager.LoadScene(currentGameLevel.Name);
+        ParentInputHandler.Instance.mainCamera = Camera.main;
+        ParentInputHandler.Instance.mainCanvas = FindObjectOfType<Canvas>();
+        updateCurrentScene = true;
+        Debug.Log("NUEVO NIVEL " + (levelIndex+1));
+    }
 
     private bool ReadFileLevels()
     {
-        Level currentLevel = new Level();
-        Wave currentWave = new Wave();
         TextAsset levelFile = Resources.Load<TextAsset>("Niveles");
         if (levelFile == null)
         {
@@ -223,47 +164,48 @@ public class GameState : MonoBehaviour
         {
             using (StreamReader sr = new StreamReader(streamLevelFile))
             {
+                Level currentLevel = new Level();
+                Wave currentWave = new Wave();
                 bool initializeTimes = false;   // Inidica que lineas del archivo corresponden a los datos para inicializar los tiempos. 
-                string line; 
+                string line;
+
                 while((line = sr.ReadLine()) != null)
                 {
-                    if (line.StartsWith("Nivel 1") || line.StartsWith("Ola 1"))
+                    // Lee directamente a los datos
+                    if (line.StartsWith("Level1")) { currentLevel.ChangeName(line.Split('\n')[0]); continue; }
+                    if (line.StartsWith("Wave 1")) continue;
+                    
+                    if (line.StartsWith("Wave"))
                     {
-                        //Debug.Log("Salto"); 
-                        continue;
-                    } 
-                    if (line.StartsWith("Ola"))
-                    {
-                        currentLevel.AddWave(currentWave); 
+                        currentLevel.AddWave(currentWave);  // agrega ola anterior
                         currentWave = new Wave();
                         initializeTimes = false;
                         continue; 
                     }
-                    if (line.StartsWith("Nivel"))
+                    if (line.StartsWith("Level"))
                     {
                         if (currentLevel == null || currentWave == null)
                         {
                             Debug.LogError("ERROR");
                             return false;
                         }
-                        //  Cuando se llega al siguiente nivel, se guarda la ultima ola del nivel anterior. No hay error en que la primera ola del nuevo nivel 
-                        //  guarde una ola vacia ya que la condicion "Ola 1" salta las primeras olas de cada nivel.
+                        //  Cuando se llega al siguiente nivel, se guarda la ultima ola del nivel anterior. No hay error en que la primera ola del nuevo nivel
+                        //  guarde una ola vacia ya que la condicion "Ola 1" evita que se llegue a la condicion "Ola" antes de que esa ola se haya inicializado.
                         currentLevel.AddWave(currentWave);
-                        currentWave = new Wave();
-
                         levels.Add(currentLevel);
-                        currentLevel = new Level();
-                        initializeTimes = false;
+                        currentWave = new Wave();
+                        currentLevel = new Level(); // Finaliza nivel
+                        currentLevel.ChangeName(line.Split('\n')[0]);
+                        initializeTimes = false;    // Luego de "Nivel" empiezan los tiempos de instanciamiento
                         continue; 
                     }   
                     if (line.StartsWith("/"))   //  Despues de este caracter se encuentran los tiempos de instanciamiento.
-                    {                    
+                    {
                         initializeTimes = true; 
                         continue;
-                    }                
+                    }
                     if (initializeTimes)
                     {
-                        //Debug.Log("Times");
                         var data = line.Split(',');
                         float time = float.Parse(data[0]);
                         currentWave.AddTimeInstance(time); 
@@ -273,7 +215,6 @@ public class GameState : MonoBehaviour
                         var data = line.Split(',');
                         int quantity = int.Parse(data[0]);
                         string enemy = data[1];
-                        //Debug.Log(quantity+" "+enemy+" "+currentWave.GetPairs().Count);
                         currentWave.AddPair(quantity, enemy); 
                     }
                 }//while
@@ -281,10 +222,10 @@ public class GameState : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.LogError("Error leer Niveles " + e.Message);
+            Debug.LogError("ERROR LECTURA NIVELES: " + e.Message);
             return false;
         }
-        Debug.Log("Lectura Realizada");
+        Debug.Log("Lectura Niveles Realizada");
         return true;
     }
 
@@ -303,7 +244,7 @@ public class GameState : MonoBehaviour
         {
             if (!lvl.PrepareLevel(prefabsEnemies))
             {
-                Debug.LogError("ERROR DE LECTURA. Los nombres de tipos, cantidades o tiempos de instancia pueden ser incorrectos. Revise el archivo .txt de Niveles.");
+                Debug.LogError("ERROR ARCHIVO LEIDO. Los nombres de tipos, cantidades o tiempos de instancia pueden ser incorrectos. Revise el archivo .txt de Niveles.");
                 return false;
             }
         }
@@ -317,6 +258,44 @@ public class GameState : MonoBehaviour
         currentGameLevel = levels[levelIndex];
         return true;
     }
+
+    private void ReConfigure()
+    {
+        if (currentScene.name == "GameOver" || currentScene.name == "Menu")
+        {
+            player.life = 10;
+            player.money = 200;
+            DialogsManager.Instance.RestartDialogs();
+            foreach (Level lvl in levels)
+            {
+                lvl.Restart();
+            }
+            levelIndex = 0;
+            currentGameLevel = levels[levelIndex];
+            Debug.Log("REINICIO JUEGO");
+            Debug.Log(currentGameLevel.Name + " wave " + (currentGameLevel.GetWaveIndex()+1));
+        }
+        else
+        {
+            TextMeshProUGUI[] tmAll;
+            tmAll = FindObjectsOfType<TextMeshProUGUI>();
+            foreach (TextMeshProUGUI tm in tmAll)
+            {
+                if (tm.name == "Monedas")
+                {
+                    txtMeshMoney = tm;
+                }
+                if (tm.name == "VidaMeta")
+                {
+                    txtMeshLife = tm;
+                }
+            }
+            target = GameObject.Find("Meta");
+            Debug.Log("BUSQUEDA REFERENCIAS");
+        }
+    }
+
+    public void UpdateCurrentScene() { updateCurrentScene = true; }
 
     ///////////////////PLAYER///////////////////
     public void AddMoney(int _money)

@@ -47,7 +47,7 @@ class Wave
         currentEnemyQuantity = pairs[0].Quantity;
     }
 
-    public void Reiniciar()
+    public void Restart()
     {
         currentInstanceTime = timesInstance[0];
         currentEnemyQuantity = pairs[0].Quantity;
@@ -66,6 +66,7 @@ class Wave
                 Debug.LogError("Cantidad de Enemigo Invalida");
                 return false;
             }
+            // Lo siguiente es innecesario, solo compruebe si lo contiene
             foreach (GameObject gm in prefabsEnemy)
             {
                 enemyType = pair.Enemy;
@@ -156,6 +157,8 @@ class Wave
 
 class Level
 {
+    private string name;
+    public string Name { get { return name; } }
     private List<Wave> waves;
     Wave currentWave;
     List<GameObject> referencesPrefabEnemies;
@@ -181,23 +184,19 @@ class Level
     private bool CheckWaves(List<GameObject> prefabsEnemies)
     {
         if (waves.Count == 0) return false;
-        foreach (Wave wv in waves)
+        foreach (Wave w in waves)
         {
-            if (!wv.CheckInstanceTime() || !wv.CheckPairs(prefabsEnemies)) return false;            
+            if (!w.CheckInstanceTime() || !w.CheckPairs(prefabsEnemies)) return false;
         }
         return true;
     }
 
-    public void AddWave(Wave _wave)
-    {
-        waves.Add(_wave);
-    }
+    public void ChangeName(string _name) { name = _name; }
+
+    public void AddWave(Wave _wave) { waves.Add(_wave); }
 
     //  Test function
-    public List<Wave> GetWaves()
-    {
-        return waves;
-    }
+    public List<Wave> GetWaves() { return waves; }
 
     public void UpdateLevel()
     {
@@ -218,14 +217,11 @@ class Level
             currentWave.NextInstanceTime();
             currentWave.NextPairEnemyQuantity();
             //  Luego de la actualizacion no se debe crear ningun enemigo. De hecho, una actualizacion
-            //  no asegura que haya enemigos disponibles en los siguientes datos, por lo que podria terminar 
-            //  retornando "-" de forma indefinida.
+            //  no asegura que haya enemigos disponibles en los siguientes datos
             Debug.Log("Siguientes enemigos de la Ola");
             return;
         }
 
-        //Debug.Log("PUNTO INSTANCIAMIENTO");
-        //Debug.Log(currentWave.GetCurrentEnemyType());
         foreach (GameObject prefabEnemy in referencesPrefabEnemies)
         {
             Enemigo enemyComponent = prefabEnemy.GetComponent<Enemigo>();
@@ -238,13 +234,14 @@ class Level
         }        
     }
 
-    public void Reiniciar()
+    public void Restart()
     {
         foreach (Wave w in waves)
         {
-            w.Reiniciar();
+            w.Restart();
         }
         waveIndex = 0;
+        currentWave = waves[waveIndex];
     }
 
     private void ReduceWaves()

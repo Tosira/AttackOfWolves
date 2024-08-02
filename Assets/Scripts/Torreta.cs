@@ -17,6 +17,7 @@ public class Torreta : MonoBehaviour
     public SpriteRenderer spriteRend;
 
     protected int price;
+    public int Price { get { return price; } }
     protected short level;
     protected short availableLevel;
     public short AvailableLevel { get { return availableLevel; } }
@@ -99,7 +100,7 @@ public class Torreta : MonoBehaviour
     
     public void Defend()
     {
-        if (DialogsManager.dm.isDialogueInProgress()) return;
+        if (DialogsManager.Instance.DialogueInProgress) return;
         FindEnemy();
         Shoot();
         frequency -= Time.deltaTime;
@@ -122,8 +123,8 @@ public class Torreta : MonoBehaviour
         Statistics st = SearchStatistics();
         if (st == null) return false;
         
-        Debug.Log("Mejora de nivel " + level);
         if (!GameState.gs.Buy(st.Precio)) return false;
+        Debug.Log("Mejora de nivel " + level);
         level = st.Level;
         damage = st.Damage;
         originalFrequency = st.Frequency;
@@ -132,12 +133,6 @@ public class Torreta : MonoBehaviour
         price = st.Precio;
         Debug.Log(" a nivel " + level);
         return true;
-    }
-
-    public bool Buy()
-    {
-        Debug.Log("Compra " + price);
-        return GameState.gs.Buy(price);
     }
 
     public void Sell()

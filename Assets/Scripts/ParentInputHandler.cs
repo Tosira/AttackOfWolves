@@ -11,9 +11,9 @@ public class ParentInputHandler : MonoBehaviour
     [HideInInspector] public Camera mainCamera;
     [HideInInspector] public TextMeshProUGUI txtDetails;
 
-    [HideInInspector] public GameObject btn;
+    [HideInInspector] public GameObject clickedObject;
     [HideInInspector] public GameObject _interface;
-    [HideInInspector] public GameObject gm;
+    [HideInInspector] public GameObject objectToInstantiate;
     [HideInInspector] public bool activeInterface;
     [SerializeField] public GameObject detailsInterface;
     [SerializeField] public GameObject towersInterface;
@@ -29,12 +29,11 @@ public class ParentInputHandler : MonoBehaviour
     
     private void Awake()
     {
+        if (instance != null) {Destroy(gameObject); return;}
+        
         instance = FindObjectOfType<ParentInputHandler>();
-        DontDestroyOnLoad(instance);
-    }
+        DontDestroyOnLoad(gameObject);
 
-    public void Start()
-    {
         currentScene = SceneManager.GetActiveScene();
         mainCamera=Camera.main;
         instantiatedObjcts = new List<GameObject>();
@@ -43,6 +42,18 @@ public class ParentInputHandler : MonoBehaviour
             txtDetails = detailsInterface.transform.Find("Detalles").GetComponent<TextMeshProUGUI>();
             Debug.Log("Configurado Interfaz Detalles");
         }
+    }
+
+    public void Start()
+    {
+        // currentScene = SceneManager.GetActiveScene();
+        // mainCamera=Camera.main;
+        // instantiatedObjcts = new List<GameObject>();
+        // if (detailsInterface.transform.Find("Detalles").GetComponent<TextMeshProUGUI>() != null)
+        // {
+        //     txtDetails = detailsInterface.transform.Find("Detalles").GetComponent<TextMeshProUGUI>();
+        //     Debug.Log("Configurado Interfaz Detalles");
+        // }
         // detailsInterface.SetActive(false);
     }
 
@@ -101,7 +112,7 @@ public class ParentInputHandler : MonoBehaviour
     public void InstantiateInterface(GameObject interface_)
     {
         _interface = Instantiate(interface_, mainCanvas.transform);
-        Vector3 worldPosition = btn.transform.position;
+        Vector3 worldPosition = clickedObject.transform.position;
         Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
 
         _interface.transform.position = screenPosition;
@@ -126,9 +137,10 @@ public class ParentInputHandler : MonoBehaviour
 
         // txtDetails.text = "";
         detailsInterface.SetActive(false);
-        RemoveInstance(btn);
-        Destroy(btn);
+        RemoveInstance(clickedObject);
+        Destroy(clickedObject);
         Destroy(_interface);
+        objectToInstantiate = null;
         activeInterface = false;
     }
 }

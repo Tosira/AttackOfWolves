@@ -15,7 +15,8 @@ public class DialogsManager : MonoBehaviour
     Los dialogos brindan informacion relevante al jugador.
     */
 
-    public static DialogsManager dm;
+    private static DialogsManager dm;
+    private static GameObject gmDialogsManager;
 
     private string dialog;
     private const int sizeBox = 160;
@@ -32,9 +33,24 @@ public class DialogsManager : MonoBehaviour
     private GameObject currentPiggyInstance;
     private Piggy currentPiggy;
 
+    public static DialogsManager Instance
+    {
+        get
+        {
+            if (dm == null)
+            {
+                gmDialogsManager = new GameObject("DialogsManager");
+                dm = gmDialogsManager.AddComponent<DialogsManager>();
+            }
+            return dm;
+        }
+    }
+
     private void Awake()
     {
-        dm = this;
+        dm = null;
+        DontDestroyOnLoad(gmDialogsManager);
+
         copyTimeLetter = timeLetter;
         indexDialog = 0;
         factor = 1;
@@ -42,7 +58,7 @@ public class DialogsManager : MonoBehaviour
         endIndicesForSubString = 0;
         previousEndIndicesForSubString = 0;
         noDialogues = new List<string>();
-        
+
         dialogueInProgress = false;
         seenDialogues = new List<short>();
         characters = new List<GameObject>();
@@ -62,7 +78,7 @@ public class DialogsManager : MonoBehaviour
         if (!dialogueInProgress) return;
         // Inidice esta al inicio de nueva parte del dialogo. Indice ha llegado al final del dialogo.
         if (indexDialog>sizeBox*factor-1+endIndicesForSubString || indexDialog>=dialog.Length-1) return;
-        
+
         if (TimeLetterFinished())
         {
             string s = dialog[indexDialog].ToString();
@@ -83,7 +99,6 @@ public class DialogsManager : MonoBehaviour
         SearchDialogue(dialogOf);
     }
 
-    // Obtener dialogo para Piggy segun su estado
     private void SearchDialogue(string dialogOf)
     {
         if (characters.Count == 0
@@ -91,7 +106,17 @@ public class DialogsManager : MonoBehaviour
             || noDialogues.Contains(dialogOf)
             || ParentInputHandler.Instance.mainCanvas==null)
             return;
-        
+
+        /*
+            seenDialogues
+            Almacena el numero de la linea donde se encuentre el dialogOf(#) y personaje(*).
+            No se usa para evitar procesar un dialogOf porque no contiene directamente a este.
+
+            noDialogues
+            Almacena los dialogOf que no han podido ser procesados o que no han encontrado un dialogo.
+            Un dialogOf que si tiene un dialogo no sera procesado si se encuentra en seenDialogues.
+        */
+
         TextAsset dialogsFile = Resources.Load<TextAsset>("Dialogs");
         if (dialogsFile == null)
         {
@@ -99,11 +124,10 @@ public class DialogsManager : MonoBehaviour
             return;
         }
 
-        // ForceClose();   // No es necesaria luego de haber llamaddo a Close()
         string dl = "";
         Stream StreamDialogsFile = ConvertTextAssetToStream(dialogsFile);
-        // try
-        // {
+        try
+        {
             using (StreamReader sr = new StreamReader(StreamDialogsFile))
             {
                 string line;
@@ -123,13 +147,13 @@ public class DialogsManager : MonoBehaviour
                         dl += line.Split('\n')[0] + '\n';
                         continue;
                     }
-                    
+
                     if (dl.Length != 0)
                     {
                         if (line.Contains("*"))
                         {
                             if (seenDialogues.Contains(lineNumber)) continue;
-                            
+
                             if (!SearchPiggy(line.Replace("* ", "")))
                             {
                                 Debug.Log("Personaje " + line + " no encontrado");
@@ -143,12 +167,12 @@ public class DialogsManager : MonoBehaviour
                     }
                 }
             }//using
-        // }
-        // catch (Exception e)
-        // {
-        //     Debug.LogError("Error lectura de dialogos " + e.Message);
-        //     dl = "";
-        // }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error lectura de dialogos " + e.Message);
+            dl = "";
+        }
         StreamDialogsFile.Close();
         if (dl.Length != 0)
         {
@@ -168,12 +192,11 @@ public class DialogsManager : MonoBehaviour
     private bool SearchPiggy(string namePiggy)
     {
         if (characters.Count <= 0) { Debug.Log("Sin personajes en los que buscar"); return false; }
-        
+
         foreach (GameObject pg in characters)
         {
             if (pg.name == namePiggy)
             {
-                // new Vector3(-6f,-4f,0)
                 currentPiggyInstance = Instantiate(pg, ParentInputHandler.Instance.mainCanvas.transform);
                 currentPiggyInstance.GetComponent<RectTransform>().anchoredPosition = new Vector3(-400, -200, 0);
                 TextMeshProUGUI t = null;
@@ -184,14 +207,6 @@ public class DialogsManager : MonoBehaviour
             }
         }
         return false;
-    } 
-
-    public void DetectedDialogueInInteraction(GameObject gm)
-    {
-        string gmName = gm.GetComponent<Torreta>().GetType().Name;
-        Debug.Log("Nombre del objeto accionador de dialogo: " + gmName);
-        // Peticion forzada porque es el jugador quien activa otro dialogo y cancela el que esta en progreso.
-        SetCharacterDialogue(gmName);
     }
 
     private int GetIndicesToEndSubString()
@@ -202,9 +217,9 @@ public class DialogsManager : MonoBehaviour
             || dialog.Length-1 == indexDialog)
             return 0;  // No debe agregar valor para finalizar la sub cadena
         int i;
-        Debug.Log("initialIndex: " + initialIndex);
+        // Debug.Log("initialIndex: " + initialIndex);
         for (i = initialIndex; dialog[i] != ' ' && dialog[i] != '\n'; ++i) {}
-        Debug.Log("endIndicesForSubString: " + (i - initialIndex) + " previousEndIndicesForSubString: " + previousEndIndicesForSubString);
+        // Debug.Log("endIndicesForSubString: " + (i - initialIndex) + " previousEndIndicesForSubString: " + previousEndIndicesForSubString);
         return i - initialIndex;
     }
 
@@ -223,7 +238,6 @@ public class DialogsManager : MonoBehaviour
     public void Close()
     {
         // Cerrar solo cuando se haya mostrado el dialogo
-        // Debug.Log("index: " + indexDialog + " tamanno Dialog: " + dialog.Length);
         if (!dialogueInProgress || indexDialog<dialog.Length-1) return;
 
         indexDialog = 0;
@@ -264,19 +278,15 @@ public class DialogsManager : MonoBehaviour
         Debug.Log("Dialogo Forzado a Cerrar");
     }
 
-    public bool isDialogueInProgress()
-    {
-        return dialogueInProgress;
-    } 
-
     private bool TimeLetterFinished()
     {
         return (timeLetter-=Time.deltaTime) <= 0;
     }
 
-    public void ReiniciarDialogos()
+    public void RestartDialogs()
     {
         seenDialogues.Clear();
+        noDialogues.Clear();
     }
 
     private Stream ConvertTextAssetToStream(TextAsset textAsset)
@@ -287,4 +297,6 @@ public class DialogsManager : MonoBehaviour
         // Crear un MemoryStream a partir del byte array
         return new MemoryStream(textAsset.bytes);
     }
+
+    public bool DialogueInProgress { get { return dialogueInProgress; } }
 }// DialogManager

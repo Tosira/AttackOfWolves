@@ -5,7 +5,7 @@ public class Statistics
 {
     protected short level;
     public short Level { get{ return level; } }
-    protected short availableLevel; // No se usa
+    protected short availableLevel;
     public short AvailableLevel { get{ return availableLevel; } }
     protected float damage;
     public float Damage { get{ return damage; } }

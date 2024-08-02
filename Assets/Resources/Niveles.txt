@@ -1,5 +1,5 @@
-Nivel 1
-Ola 1
+Level1
+Wave 1
 2,Lobo
 1,LoboCamuflado
 1,Lobo
@@ -7,7 +7,7 @@ Ola 1
 0,
 0,
 1.5,
-Ola 2
+Wave 2
 3,Lobo
 2,LoboCamuflado
 2,Lobo
@@ -15,7 +15,7 @@ Ola 2
 0,
 0,
 1.5,
-Ola 3
+Wave 3
 5,Lobo
 3,LoboCamuflado
 3,Lobo
@@ -23,8 +23,8 @@ Ola 3
 0,
 0,
 1.5,
-Nivel 2
-Ola 1
+Level2
+Wave 1
 4,Lobo
 3,LoboCamuflado
 2,Lobo
@@ -32,7 +32,7 @@ Ola 1
 0,
 5,
 5,
-Ola 2
+Wave 2
 7,Lobo
 5,LoboCamuflado
 4,Lobo
@@ -40,7 +40,7 @@ Ola 2
 0,
 5,
 7,
-Ola 3
+Wave 3
 10,Lobo
 10,Lobo
 12,LoboCamuflado
@@ -48,8 +48,8 @@ Ola 3
 0,
 7,
 10,
-Nivel 3
-Ola 1
+Level3
+Wave 1
 15,LoboCamuflado
 20,Lobo
 7,LoboCamuflado
@@ -59,7 +59,7 @@ Ola 1
 3,
 2,
 2,
-Ola 2
+Wave 2
 20,LoboCamuflado
 1,Duque
 10,LoboCamuflado
@@ -69,7 +69,7 @@ Ola 2
 4,
 4,
 3,
-Ola 3
+Wave 3
 25,LoboCamuflado
 1,Duque
 7,LoboCamuflado
@@ -89,5 +89,5 @@ Ola 3
 2,
 8,
 2,
-Nivel 4
-Ola 1
+Level4
+Wave 1

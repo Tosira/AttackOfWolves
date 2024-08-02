@@ -48,7 +48,7 @@ public class Buttons : MonoBehaviour
         else
         {
             Debug.LogError("AudioClip no encontrado en la ruta especificada.");
-            SceneManager.LoadScene("Level1");
+            SceneManager.LoadScene("Menu");
         }
     }
 
@@ -64,7 +64,11 @@ public class Buttons : MonoBehaviour
         else
         {
             Debug.LogError("AudioClip no encontrado en la ruta especificada.");
-            SceneManager.LoadScene("Level1");
+            #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+            #else
+                Application.Quit();
+            #endif
         }
     }
 
@@ -72,14 +76,15 @@ public class Buttons : MonoBehaviour
     {
         yield return new WaitForSeconds(clipLength);
         if (scene!="") {SceneManager.LoadScene(scene);}
-        else 
+        else
         {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-            Application.Quit(); 
-#endif
+            #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+            #else
+                Application.Quit();
+            #endif
         }
+        if (GameState.gs != null) GameState.gs.UpdateCurrentScene();
     }
 
 //////////////////////////////////////////////////////////////////////
@@ -99,11 +104,9 @@ public class Buttons : MonoBehaviour
         {
             FinishSellTower();
         }
-        if (ParentInputHandler.Instance.gm != null)
+        if (ParentInputHandler.Instance.objectToInstantiate != null)
         {
-            if (ParentInputHandler.Instance.gm.GetComponent<Torreta>() != null) InstantiateTower(ParentInputHandler.Instance.gm);
-            ParentInputHandler.Instance.DeleteInterfaceAndButton();
-            ParentInputHandler.Instance.gm = null;
+            InstantiateTower(ParentInputHandler.Instance.objectToInstantiate);
         }
         option = Option.NONE;
     }
@@ -112,18 +115,18 @@ public class Buttons : MonoBehaviour
     {
         ParentInputHandler.Instance.DeleteInterface();
         ParentInputHandler.Instance.InstantiateInterface(ParentInputHandler.Instance.optionInterface);
-        ParentInputHandler.Instance.txtDetails.text = "¿Quiere vender esta torre por \n" + ParentInputHandler.Instance.btn.GetComponent<Torreta>().CalculateProfit() + " monedas?";
+        ParentInputHandler.Instance.txtDetails.text = "¿Quiere vender esta torre por \n" + ParentInputHandler.Instance.clickedObject.GetComponent<Torreta>().CalculateProfit() + " monedas?";
         option = Option.SELL;
     }
 
     private void FinishSellTower()
     {
-        Torreta tower = ParentInputHandler.Instance.btn.GetComponent<Torreta>();
+        Torreta tower = ParentInputHandler.Instance.clickedObject.GetComponent<Torreta>();
         if (tower == null) return;
         tower.Sell();
         GameObject _base = ParentInputHandler.Instance.SearchObject("Base");
-        ParentInputHandler.Instance.AddInstance(Instantiate(_base, ParentInputHandler.Instance.btn.transform.position, Quaternion.identity));
-        Debug.Log(ParentInputHandler.Instance.btn.name + " vendida por " + tower.CalculateProfit());
+        ParentInputHandler.Instance.AddInstance(Instantiate(_base, ParentInputHandler.Instance.clickedObject.transform.position, Quaternion.identity));
+        Debug.Log(ParentInputHandler.Instance.clickedObject.name + " vendida por " + tower.CalculateProfit());
         ParentInputHandler.Instance.DeleteInterfaceAndButton();
     }
 
@@ -131,24 +134,37 @@ public class Buttons : MonoBehaviour
     {
         ParentInputHandler.Instance.DeleteInterface();
         ParentInputHandler.Instance.InstantiateInterface(ParentInputHandler.Instance.optionInterface);
-        ParentInputHandler.Instance.txtDetails.text = ParentInputHandler.Instance.btn.GetComponent<Torreta>().GetDetailsUpgrade();
+        ParentInputHandler.Instance.txtDetails.text = ParentInputHandler.Instance.clickedObject.GetComponent<Torreta>().GetDetailsUpgrade();
         option = Option.UPGRADE;
     }
 
     private void FinishUpgradeTower()
     {
-        Torreta tower = ParentInputHandler.Instance.btn.GetComponent<Torreta>();
+        Torreta tower = ParentInputHandler.Instance.clickedObject.GetComponent<Torreta>();
         if (tower == null) return;
-        if (tower.Upgrade()) { Debug.Log(ParentInputHandler.Instance.btn.name + " mejorada"); }
+        if (!tower.Upgrade())
+        {
+            ParentInputHandler.Instance.txtDetails.text = "Dinero insuficiente";
+            return;
+        }
+        Debug.Log(ParentInputHandler.Instance.clickedObject.name + " mejorada");
         ParentInputHandler.Instance.DeleteInterface();
     }
 
     private void InstantiateTower(GameObject tower)
     {
         if (tower == null) return;
-        GameObject t = Instantiate(tower, ParentInputHandler.Instance.btn.transform.position, Quaternion.identity);
-        if (!t.GetComponent<Torreta>().Buy()) { Destroy(t); return;}
-        // ParentInputHandler.Instance.AddInstance(Instantiate(tower, ParentInputHandler.Instance.btn.transform.position, Quaternion.identity));
+
+        GameObject t = Instantiate(tower, ParentInputHandler.Instance.clickedObject.transform.position, Quaternion.identity);
+        if (!GameState.gs.Buy(t.GetComponent<Torreta>().Price))
+        {
+            Destroy(t);
+            ParentInputHandler.Instance.txtDetails.text = "Dinero insuficiente";
+            // Puedo devolver ParentInputHandler::objectToInstantiate a null aqui, pero si jugador llega al dinero suficiente
+            // la interfaz seguira activa y ya no tendra la referencia. Deje que la funcion ParentInputHandler::DeleteInterfaceAndButton se encargue.
+            return;
+        }
+        ParentInputHandler.Instance.DeleteInterfaceAndButton();
         ParentInputHandler.Instance.AddInstance(t);
         Debug.Log(tower.name + " instanciado");
     }
@@ -165,7 +181,7 @@ public class Buttons : MonoBehaviour
         }
         ParentInputHandler.Instance.DeleteInterface();
         ParentInputHandler.Instance.InstantiateInterface(ParentInputHandler.Instance.optionInterface);
-        ParentInputHandler.Instance.gm = ParentInputHandler.Instance.SearchObject("TorreAgua");
+        ParentInputHandler.Instance.objectToInstantiate = ParentInputHandler.Instance.SearchObject("TorreAgua");
         ParentInputHandler.Instance.txtDetails.text = t.GetDetailsTower();
         Destroy(gm);
     }
@@ -182,7 +198,7 @@ public class Buttons : MonoBehaviour
         }
         ParentInputHandler.Instance.DeleteInterface();
         ParentInputHandler.Instance.InstantiateInterface(ParentInputHandler.Instance.optionInterface);
-        ParentInputHandler.Instance.gm = ParentInputHandler.Instance.SearchObject("TorreBarro");
+        ParentInputHandler.Instance.objectToInstantiate = ParentInputHandler.Instance.SearchObject("TorreBarro");
         ParentInputHandler.Instance.txtDetails.text = t.GetDetailsTower();
         Destroy(gm);
     }
@@ -199,7 +215,7 @@ public class Buttons : MonoBehaviour
         }
         ParentInputHandler.Instance.DeleteInterface();
         ParentInputHandler.Instance.InstantiateInterface(ParentInputHandler.Instance.optionInterface);
-        ParentInputHandler.Instance.gm = ParentInputHandler.Instance.SearchObject("TorrePiedra");
+        ParentInputHandler.Instance.objectToInstantiate = ParentInputHandler.Instance.SearchObject("TorrePiedra");
         ParentInputHandler.Instance.txtDetails.text = t.GetDetailsTower();
         Destroy(gm);
     }
@@ -216,7 +232,7 @@ public class Buttons : MonoBehaviour
         }
         ParentInputHandler.Instance.DeleteInterface();
         ParentInputHandler.Instance.InstantiateInterface(ParentInputHandler.Instance.optionInterface);
-        ParentInputHandler.Instance.gm = ParentInputHandler.Instance.SearchObject("TorreRepeticionMultiple");
+        ParentInputHandler.Instance.objectToInstantiate = ParentInputHandler.Instance.SearchObject("TorreRepeticionMultiple");
         ParentInputHandler.Instance.txtDetails.text = t.GetDetailsTower();
         Destroy(gm);
     }
