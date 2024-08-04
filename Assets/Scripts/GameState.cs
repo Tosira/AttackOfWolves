@@ -145,15 +145,15 @@ public class GameState : MonoBehaviour
     private void LoadLevel()
     {
         SceneManager.LoadScene(currentGameLevel.Name);
-        ParentInputHandler.Instance.mainCamera = Camera.main;
-        ParentInputHandler.Instance.mainCanvas = FindObjectOfType<Canvas>();
+        InputHandler.Instance.mainCamera = Camera.main;
+        InputHandler.Instance.mainCanvas = FindObjectOfType<Canvas>();
         updateCurrentScene = true;
         Debug.Log("NUEVO NIVEL " + (levelIndex+1));
     }
 
     private bool ReadFileLevels()
     {
-        TextAsset levelFile = Resources.Load<TextAsset>("Niveles");
+        TextAsset levelFile = Resources.Load<TextAsset>("Texto/Niveles");
         if (levelFile == null)
         {
             Debug.LogError("No se pudo cargar el Archivo");

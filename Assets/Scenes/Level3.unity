@@ -651,11 +651,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 941474406464820655, guid: a98b7b43ff63c814d8723afce4365151, type: 3}
   m_PrefabInstance: {fileID: 155623839}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &155623841 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 911042266145008078, guid: a98b7b43ff63c814d8723afce4365151, type: 3}
-  m_PrefabInstance: {fileID: 155623839}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &190539591
 GameObject:
   m_ObjectHideFlags: 0
@@ -693,8 +688,6 @@ MonoBehaviour:
   - {fileID: 4446456425738833181, guid: 22f696393fff8b2428bd5a911567a3f1, type: 3}
   - {fileID: 4446456425738833181, guid: 52bbaacc35c4fca4f9605d28456d36e7, type: 3}
   - {fileID: 4446456425738833181, guid: 692c492590812914596126d04d4519b5, type: 3}
-  gmVida: {fileID: 155623841}
-  gmMoneda: {fileID: 984553761}
   txtMeshMoney: {fileID: 1786919894}
   txtMeshLife: {fileID: 1163568189}
 --- !u!4 &190539593
@@ -1900,11 +1893,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 941474406464820655, guid: 8b4568041f4d59944a952db4911c3282, type: 3}
   m_PrefabInstance: {fileID: 984553759}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &984553761 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 911042266145008078, guid: 8b4568041f4d59944a952db4911c3282, type: 3}
-  m_PrefabInstance: {fileID: 984553759}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1073745468
 GameObject:
   m_ObjectHideFlags: 0
@@ -3025,9 +3013,9 @@ MonoBehaviour:
   mainCanvas: {fileID: 716711915}
   mainCamera: {fileID: 0}
   txtDetails: {fileID: 0}
-  btn: {fileID: 0}
+  clickedObject: {fileID: 0}
   _interface: {fileID: 0}
-  gm: {fileID: 0}
+  objectToInstantiate: {fileID: 0}
   activeInterface: 0
   detailsInterface: {fileID: 956873260723368791, guid: d595e11b0ea2d6d458ed0153d314a070, type: 3}
   towersInterface: {fileID: 1968070959561621086, guid: fb46237c2d755ed438d5101941ecfdfc, type: 3}
@@ -3995,97 +3983,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1262581940}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2093675443
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2093675446}
-  - component: {fileID: 2093675445}
-  - component: {fileID: 2093675444}
-  m_Layer: 0
-  m_Name: InputHandler
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2093675444
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2093675443}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a7eb9303d7fadb4585c97a0355dd15a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2093675445
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2093675443}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 0cadeecc9cb33b247bca23f6e06b0837, type: 3}
-  m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2093675444}
-        m_TargetAssemblyTypeName: InputHandler, Assembly-CSharp
-        m_MethodName: OnClick
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: a1f8b56a-2ffb-4abe-b0fb-1d6afa8b4f19
-    m_ActionName: Gameplay/Click[/Mouse/leftButton]
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Gameplay
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
---- !u!4 &2093675446
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2093675443}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.3294065, y: -1.4535854, z: -0.012281129}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2100911277
 GameObject:
   m_ObjectHideFlags: 0
@@ -4304,7 +4201,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 1623535943}
   - {fileID: 1684691719}
-  - {fileID: 2093675446}
   - {fileID: 716711912}
   - {fileID: 190539593}
   - {fileID: 752662127}

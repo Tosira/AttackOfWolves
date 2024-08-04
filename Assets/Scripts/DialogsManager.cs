@@ -104,7 +104,7 @@ public class DialogsManager : MonoBehaviour
         if (characters.Count == 0
             || dialogueInProgress
             || noDialogues.Contains(dialogOf)
-            || ParentInputHandler.Instance.mainCanvas==null)
+            || InputHandler.Instance.mainCanvas==null)
             return;
 
         /*
@@ -117,7 +117,7 @@ public class DialogsManager : MonoBehaviour
             Un dialogOf que si tiene un dialogo no sera procesado si se encuentra en seenDialogues.
         */
 
-        TextAsset dialogsFile = Resources.Load<TextAsset>("Dialogs");
+        TextAsset dialogsFile = Resources.Load<TextAsset>("Texto/Dialogs");
         if (dialogsFile == null)
         {
             Debug.LogError("No se pudo cargar el archivo de dialogos");
@@ -180,7 +180,7 @@ public class DialogsManager : MonoBehaviour
             dialog=dl; dialogueInProgress=true;
             Debug.Log("Tamanno dialogo: " + dialog.Length);
             endIndicesForSubString=GetIndicesToEndSubString();
-            ParentInputHandler.Instance.txtDetails.text = "Presione ESPACIO para cerrar el dialogo o saltar el tiempo.\n" +
+            InputHandler.Instance.txtDetails.text = "Presione ESPACIO para cerrar el dialogo o saltar el tiempo.\n" +
                                                           "Presione D para continuar con el dialogo.";
         }
         else
@@ -197,7 +197,7 @@ public class DialogsManager : MonoBehaviour
         {
             if (pg.name == namePiggy)
             {
-                currentPiggyInstance = Instantiate(pg, ParentInputHandler.Instance.mainCanvas.transform);
+                currentPiggyInstance = Instantiate(pg, InputHandler.Instance.mainCanvas.transform);
                 currentPiggyInstance.GetComponent<RectTransform>().anchoredPosition = new Vector3(-400, -200, 0);
                 TextMeshProUGUI t = null;
                 Debug.Log("Nombre: " + currentPiggyInstance.transform.Find("Dialogo").name);
@@ -246,7 +246,7 @@ public class DialogsManager : MonoBehaviour
         currentPiggy.ResetDialogueBox();
         if (currentPiggyInstance!=null) { Destroy(currentPiggyInstance); currentPiggyInstance=null; }
         dialogueInProgress = false;
-        ParentInputHandler.Instance.txtDetails.text = "";
+        InputHandler.Instance.txtDetails.text = "";
         Debug.Log("Dialogo Cerrado");
     }
 

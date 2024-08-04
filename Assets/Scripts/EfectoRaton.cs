@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EfectoRaton : MonoBehaviour
 {
     private Vector3 originalScale;
-    public Vector3 enlargedScale; // Lo que aumenta de tamaño el objeto
+    public Vector3 enlargedScale; // Lo que aumenta de tamaï¿½o el objeto
 
     void Start()
     {
@@ -17,14 +15,14 @@ public class EfectoRaton : MonoBehaviour
     // Este metodo es cuando el raton entra al objeto (sin clickear)
     void OnMouseEnter()
     {
-        // Aumentar el tamaño del objeto
+        // Aumentar el tamaï¿½o del objeto
         transform.localScale = enlargedScale;
     }
 
     // El raton sale del objeto
     void OnMouseExit()
     {
-        // Restaurar el tamaño original del objeto
+        // Restaurar el tamaï¿½o original del objeto
         transform.localScale = originalScale;
     }
 }
