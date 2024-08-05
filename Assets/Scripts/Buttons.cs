@@ -89,6 +89,11 @@ public class Buttons : MonoBehaviour
 
 //////////////////////////////////////////////////////////////////////
 
+    /*
+        Las siguientes funciones de interfaces no pueden ser llamadas al iniciar el juego;
+        la instancia InputHandler es inicializada en la escena de nivel.
+    */
+
     public void CloseInterface()
     {
         InputHandler.Instance.DeleteInterface();

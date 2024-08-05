@@ -5,11 +5,10 @@ namespace Assets.src.Enemigos
 {
     public class Lobo : Enemigo
     {
-        public override void SetEnemy()
+        private void Awake()
         {
             vidaActual = vidaMaxima = 4;
-            esVisible = true;
-            reward = 5; 
-        }        
+            reward = 5;
+        }
     }
 }

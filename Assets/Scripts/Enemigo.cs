@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 public class Enemigo : MonoBehaviour
@@ -8,11 +9,12 @@ public class Enemigo : MonoBehaviour
     private List<GameObject> route = new List<GameObject>();
     private Transform currentTarget; 
     public int reward;
+    protected bool isAttackable = true;
+    public bool IsAttackable { get { return isAttackable; } }
 
     public float vidaActual; 
     public float vidaMaxima; 
     public float speed = 2.0f;
-    public bool esVisible;
 
     public BarraDeVida barraV;
     private Animator animator;    
@@ -20,7 +22,6 @@ public class Enemigo : MonoBehaviour
     public void Start()
     {
         animator = GetComponent<Animator>();
-        SetEnemy();
     }
 
     private void Update()
@@ -33,6 +34,7 @@ public class Enemigo : MonoBehaviour
             Destroy(gameObject);
         }
         Attack();
+        MakeUnattackable();
     }
 
     private void FixedUpdate()
@@ -46,7 +48,7 @@ public class Enemigo : MonoBehaviour
     private bool isInTheTarget()
     {
         return currentTarget == null;
-    }          
+    }
 
     public void SetRoute(List<GameObject> route)
     {
@@ -92,6 +94,11 @@ public class Enemigo : MonoBehaviour
         }
         barraV.actualizarBarraVida(vidaMaxima, vidaActual);
     }
-    public virtual void SetEnemy() { }
+
+    public virtual void MakeUnattackable()
+    {
+        // Implementar como o cuando un enemigo no es atacable
+    }
+
     public virtual void Attack() { }
 }// Enemigo

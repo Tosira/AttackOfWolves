@@ -31,7 +31,7 @@ public class GameState : MonoBehaviour
     public static GameObject target;
     private Scene currentScene;
     private bool updateCurrentScene;
-    // public Scene CurrentScene { get { return currentScene; } }
+    public Scene CurrentScene { get { return currentScene; } }
     [SerializeField] private List<GameObject> piggies;
     
     [SerializeField] private TextMeshProUGUI txtMeshMoney;
@@ -39,18 +39,17 @@ public class GameState : MonoBehaviour
 
     Stream streamLevelFile;
 
-    private void Start()
-    {
-        Debug.Log("START GAME STATE");
-    }
-
     private void Awake()
     {
-        Debug.Log("AWAKE GAME STATE");
+        Debug.Log("GS AWAKE");
         if (gs != null) { Destroy(gameObject); return; } // Destruir GameState creado en cambio de escena
 
+        // Processor
+        Process process = new Process(ReConfigure);
+        Processor.Instance.AddSceneUpdateProcess(process);
+        
         // GameState
-        Debug.Log("GS NULL");
+        Debug.Log("GS instancia null");
         _gs = FindObjectOfType<GameState>();
         DontDestroyOnLoad(gameObject);
 
@@ -61,14 +60,6 @@ public class GameState : MonoBehaviour
             Debug.LogError("Meta de escena no encontrada");
             return;
         }
-        
-        // DialogManager
-        // Esto genera errores de referencia nula cuando se declara en el DialogsManager a gmDialogsManager como no destruible.
-        // if (dm == null)
-        // {
-        //     GameObject gmDialogsManager = new GameObject("DialogsManager_");
-        //     dm = gmDialogsManager.AddComponent<DialogsManager>();
-        // }
         
         // DialogsManager
         DialogsManager.Instance.Initialze(piggies);
@@ -100,7 +91,13 @@ public class GameState : MonoBehaviour
     {
         if (!levelsSuccesfullySet) return;
 
-        if (updateCurrentScene) { updateCurrentScene=false; currentScene=SceneManager.GetActiveScene(); ReConfigure(); }
+        if (updateCurrentScene)
+        {
+            updateCurrentScene=false;
+            currentScene=SceneManager.GetActiveScene();
+            Processor.Instance.RunSceneUpdateProcess();
+        }
+
         if (currentScene.name == "GameOver" || currentScene.name == "Menu") return;
 
         if (GameOver()) { updateCurrentScene=true; SceneManager.LoadScene("GameOver"); return;}
@@ -124,10 +121,14 @@ public class GameState : MonoBehaviour
             {
                 Debug.Log("Niveles Agotados");
                 SceneManager.LoadScene("Menu");
-                return; 
+                updateCurrentScene = true;
             }
-            LoadLevel();
+            else
+            {
+                LoadLevel();
+            }
             startWave = false;
+            return;
         }
         if (currentGameLevel.CurrentWaveWithoutEnemies()) { currentGameLevel.UpdateLevel(); startWave = false;}
         if (currentGameLevel.CurrentWaveNotStarted() && Input.GetKeyDown(KeyCode.X)) startWave = true;
@@ -225,7 +226,7 @@ public class GameState : MonoBehaviour
             Debug.LogError("ERROR LECTURA NIVELES: " + e.Message);
             return false;
         }
-        Debug.Log("Lectura Niveles Realizada");
+        Debug.Log("GS Lectura Niveles Realizada");
         return true;
     }
 
@@ -272,8 +273,8 @@ public class GameState : MonoBehaviour
             }
             levelIndex = 0;
             currentGameLevel = levels[levelIndex];
-            Debug.Log("REINICIO JUEGO");
-            Debug.Log(currentGameLevel.Name + " wave " + (currentGameLevel.GetWaveIndex()+1));
+            Debug.Log("GS Carga escena: reinicio juego");
+            // Debug.Log(currentGameLevel.Name + " wave " + (currentGameLevel.GetWaveIndex()+1));
         }
         else
         {
@@ -291,7 +292,8 @@ public class GameState : MonoBehaviour
                 }
             }
             target = GameObject.Find("Meta");
-            Debug.Log("BUSQUEDA REFERENCIAS");
+            
+            Debug.Log("GS Carga escena: busqueda referencias");
         }
     }
 

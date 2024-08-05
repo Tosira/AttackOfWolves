@@ -10,7 +10,6 @@ namespace Assets.src.Torres
         [SerializeField] private GameObject _prefabBala;
         [SerializeField] private GameObject _prefabArea;
         Bala balaComponente;
-        // private static int precio = 30;
 
         private Transform targetAgua;
         void Awake()
@@ -19,21 +18,24 @@ namespace Assets.src.Torres
             availableLevel=1;
             _name = "Torre de Agua";
             frequency = 1.2f;
+            originalFrequency = frequency;
             bulletSpeed = 1f;
             radio = 3.0f;
             damage = 0.25f;
             price = 30;
+            prefabBullet = _prefabBala;
+
+            //  Estadisticas niveles
             statistics = new List<Statistics>();
             statistics.Add(new WaterTower2());
             statistics.Add(new WaterTower3());
-            SetTower(transform, _prefabBala, frequency, bulletSpeed, radio, damage);
         }
 
         public override void Shoot()
         {
             //  'origenDisparo' no se setea desde esta clase padre en el metodo Start.
             //  Debug.Log("prefabBala: " + prefabBala + "origenDisparo: " + origenDisparo + "objetivo: " + objetivo + "frecuencia: " + frecuencia); 
-            if (_prefabBala != null && originShot != null && target != null && frequency <= 0)
+            if (_prefabBala != null && target != null && frequency <= 0)
             {
                 if (targetAgua == target)
                 {
@@ -45,7 +47,7 @@ namespace Assets.src.Torres
                 }
                 targetAgua = target;
 
-                GameObject bala = Instantiate(_prefabBala, originShot.position, originShot.rotation);
+                GameObject bala = Instantiate(_prefabBala, transform.position, transform.rotation);
                 balaComponente = bala.GetComponent<Bala>();
                 if (balaComponente != null) balaComponente.Initialize(target, gameObject, bulletSpeed, damage);               
                 frequency = originalFrequency;
@@ -57,11 +59,6 @@ namespace Assets.src.Torres
         {
 
             Instantiate(_prefabArea, balaComponente.transform.position, balaComponente.transform.rotation);
-        }
-
-        public override int GetPrecio()
-        {
-            return price; 
         }
     }
 }

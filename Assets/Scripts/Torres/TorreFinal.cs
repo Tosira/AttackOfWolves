@@ -49,7 +49,7 @@ public class TorreFinal : MonoBehaviour
             if (e.CompareTag("Enemigo"))
             {
                 Enemigo enemigo = e.GetComponent<Enemigo>();
-                if (enemigo.esVisible && e != null)
+                if (enemigo.IsAttackable && e != null)
                 {
 
                     float distancia = Vector3.Distance(e.gameObject.transform.position, GameState.target.transform.position);

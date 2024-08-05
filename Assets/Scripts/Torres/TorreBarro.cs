@@ -7,32 +7,33 @@ namespace Assets.src.Torres
     {
         [SerializeField] private GameObject _prefabBala;
         private Enemigo currentEnemy;
-        // private static int precio = 20;
 
-        // Use this for initialization
         void Awake()
         {
             level = 1;
             availableLevel = 1;
             _name = "Torre de Barro";
             frequency = 1.5f;
+            originalFrequency = frequency;
             bulletSpeed = 1.5f;
             radio = 4f;
             damage = 1.4f;
             price = 20;
+            prefabBullet = _prefabBala;
+
+            // Estadisticas niveles
             statistics = new List<Statistics>();
             statistics.Add(new MudTower2());
             statistics.Add(new MudTower3());
-            SetTower(transform, _prefabBala, frequency, bulletSpeed, radio, damage);
         }
 
         public override void Shoot()
-        {            
-            if (_prefabBala != null && originShot != null && target != null && frequency <= 0)
+        {
+            if (_prefabBala != null && target != null && frequency <= 0)
             {
-                GameObject bala = Instantiate(_prefabBala, originShot.position, originShot.rotation);
+                GameObject bala = Instantiate(_prefabBala, transform.position, transform.rotation);
                 Bala balaComponente = bala.GetComponent<Bala>();
-                if (balaComponente != null) balaComponente.Initialize(target, gameObject, bulletSpeed, damage);                
+                if (balaComponente != null) balaComponente.Initialize(target, gameObject, bulletSpeed, damage);
                 frequency = originalFrequency;
             }
         }
@@ -47,11 +48,5 @@ namespace Assets.src.Torres
             e.GetComponent<SpriteRenderer>().color = new Color(0.3f, 0.15f, 0.05f);
             currentEnemy = e;
         }
-
-        public override int GetPrecio()
-        {
-            return price; 
-        }
-
     }
 }

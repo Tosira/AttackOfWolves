@@ -16,7 +16,6 @@ public class DialogsManager : MonoBehaviour
     */
 
     private static DialogsManager dm;
-    private static GameObject gmDialogsManager;
 
     private string dialog;
     private const int sizeBox = 160;
@@ -39,7 +38,7 @@ public class DialogsManager : MonoBehaviour
         {
             if (dm == null)
             {
-                gmDialogsManager = new GameObject("DialogsManager");
+                GameObject gmDialogsManager = new GameObject("DialogsManager");
                 dm = gmDialogsManager.AddComponent<DialogsManager>();
             }
             return dm;
@@ -48,8 +47,11 @@ public class DialogsManager : MonoBehaviour
 
     private void Awake()
     {
-        dm = null;
-        DontDestroyOnLoad(gmDialogsManager);
+        Debug.Log("DM AWAKE");
+
+        if (dm != null) { Destroy(gameObject); return; }
+        dm = this;  // En caso de no ser creado con Instance
+        DontDestroyOnLoad(gameObject);
 
         copyTimeLetter = timeLetter;
         indexDialog = 0;

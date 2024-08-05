@@ -5,43 +5,33 @@ namespace Assets.src.Enemigos
 {
     public class LoboCamuflado : Enemigo
     {
-        float contador = 8f;
-        int cont = 2;
+        float time = 6f;
         SpriteRenderer spriteRend;
-        public float transparencia = 0.5f;
+        float transparencia = 0.5f;
 
-        public override void SetEnemy()
+        private void Awake()
         {
             vidaActual = vidaMaxima = 3;
-            esVisible = false;
-            reward = 10; 
-        }        
+            isAttackable = false;
+            reward = 10;
+            
+            spriteRend = gameObject.GetComponent<SpriteRenderer>();
+            Color color = spriteRend.color;
+            color.a = transparencia;
+            spriteRend.color = color;
+        }    
 
-        public override void Attack()
+        public override void MakeUnattackable()
         {
-            base.Attack();
-            if (cont == 2)
-            {
-                cont = 1;
-                spriteRend = this.GetComponent<SpriteRenderer>();
-                Color color = spriteRend.color;
-                color.a = transparencia;
-                spriteRend.color = color;
-            }
-            if (!esVisible && contador > 0)
-            {
-                contador -= Time.deltaTime;
-            }
+            if (isAttackable) return;
+            
+            if (time > 0) time -= Time.deltaTime;
             else
             {
-                if (cont == 1)
-                {
-                    cont = 0;
-                    esVisible = true;
-                    Color color = spriteRend.color;
-                    color.a = 1f;
-                    spriteRend.color = color;
-                }
+                isAttackable = true;
+                Color color = spriteRend.color;
+                color.a = 1f;
+                spriteRend.color = color;
             }
         }
     }

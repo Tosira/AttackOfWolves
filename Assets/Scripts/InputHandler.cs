@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using TMPro;
-using UnityEngine.EventSystems;
 
 public class InputHandler : MonoBehaviour
 {
@@ -27,29 +26,30 @@ public class InputHandler : MonoBehaviour
     [SerializeField] public List<GameObject> allObjects;
     private List<GameObject> instantiatedObjcts;
 
-    private Scene currentScene;
-
     private InputHandler() { }
     
     private void Awake()
     {
-        Debug.Log("AWAKE PARENT INPUT HANDLER");
+        Debug.Log("IH AWAKE");
 
         if (instance != null) {Destroy(gameObject); return;}
-        
-        instance = FindObjectOfType<InputHandler>();
+
+        instance = this;
         DontDestroyOnLoad(gameObject);
 
-        currentScene = SceneManager.GetActiveScene();
+        // Processor
+        Process process = new Process(ReConfigure);
+        Processor.Instance.AddSceneUpdateProcess(process);
+
         mainCamera=Camera.main;
         instantiatedObjcts = new List<GameObject>();
-        if (detailsInterface.transform.Find("Detalles").GetComponent<TextMeshProUGUI>() != null)
+        TextMeshProUGUI txtMeshDetails;
+        if ((txtMeshDetails = detailsInterface.transform.Find("Detalles").GetComponent<TextMeshProUGUI>()) != null)
         {
-            txtDetails = detailsInterface.transform.Find("Detalles").GetComponent<TextMeshProUGUI>();
-            Debug.Log("Configurado Interfaz Detalles");
+            txtDetails = txtMeshDetails;
+            Debug.Log("IH Configurado Interfaz Detalles");
         }
-
-        if (FindObjectOfType<EventSystem>() == null) Debug.Log("SIN EventSystem");
+        detailsInterface.SetActive(false);
 
         playerInput = gameObject.AddComponent<PlayerInput>();
         if ((playerInput.actions = Resources.Load<InputActionAsset>("PlayerInput")) == null) return;
@@ -58,34 +58,9 @@ public class InputHandler : MonoBehaviour
         if (actionMap != null)
         {
             var clickAction = actionMap.FindAction("Click");
-            if (clickAction != null) {clickAction.performed += OnClick; Debug.Log("Metodo OnClick suscrito a la accion Click"); }
+            if (clickAction != null) {clickAction.performed += OnClick; Debug.Log("IH Metodo OnClick suscrito a la accion Click"); }
             // Todas las acciones de un mapa de acciones estan desactivadas por defecto. Como vrgs iba a saberlo?
             clickAction.Enable();
-        }
-    }
-
-    private void Update()
-    {
-        if(currentScene != SceneManager.GetActiveScene())
-        {
-            mainCamera = Camera.main;
-            Canvas[] canvases;
-            canvases = FindObjectsOfType<Canvas>();
-            foreach (Canvas c in canvases)
-            {
-                if(c.name == "CanvasMain")
-                {
-                    Debug.Log("Canvas Encontrado");
-                    mainCanvas = c;
-                }
-            }
-            detailsInterface = GameObject.Find("InterfazDetalles");
-            if (detailsInterface != null)
-            {
-                detailsInterface.SetActive(false);
-                txtDetails = detailsInterface.transform.Find("Detalles").GetComponent<TextMeshProUGUI>();
-            }
-            currentScene = SceneManager.GetActiveScene();
         }
     }
 
@@ -93,12 +68,36 @@ public class InputHandler : MonoBehaviour
 
     public void AddInstance(GameObject gm) { instantiatedObjcts.Add(gm); }
 
+    private void ReConfigure()
+    {
+        mainCamera = Camera.main;
+        Canvas[] canvases;
+        canvases = FindObjectsOfType<Canvas>();
+        foreach (Canvas c in canvases)
+        {
+            if(c.name == "CanvasMain")
+            {
+                // Debug.Log("Canvas Encontrado");
+                mainCanvas = c;
+            }
+        }
+        detailsInterface = GameObject.Find("InterfazDetalles");
+        if (detailsInterface != null)
+        {
+            detailsInterface.SetActive(false);
+            txtDetails = detailsInterface.transform.Find("Detalles").GetComponent<TextMeshProUGUI>();
+        }
+
+        Debug.Log("IH Carga escena");
+    }
+
     public void OnClick(InputAction.CallbackContext context)
     {
-        Debug.Log("LLAMADA PARENT INPUT HANDLER");
-        if (!context.performed) return;   // Posible llamda sin un click
-        if (DialogsManager.Instance.DialogueInProgress) return;
-        if (BtnBarricada.Instance.enPausa) return;
+        Debug.Log("IH OnCLick");
+        if (!context.performed  // Posible llamda sin un click
+            || DialogsManager.Instance.DialogueInProgress
+            || BtnBarricada.Instance.enPausa)
+            return;
 
         var rayHit = Physics2D.GetRayIntersection(mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue()));
         if (!rayHit) return;
@@ -152,7 +151,6 @@ public class InputHandler : MonoBehaviour
     {
         if (!activeInterface) return;
         
-        // txtDetails.text = "";
         detailsInterface.SetActive(false);
         Destroy(_interface);
         activeInterface = false;
@@ -162,7 +160,6 @@ public class InputHandler : MonoBehaviour
     {
         if (!activeInterface) return;
 
-        // txtDetails.text = "";
         detailsInterface.SetActive(false);
         RemoveInstance(clickedObject);
         Destroy(clickedObject);
